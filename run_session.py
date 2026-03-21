@@ -1,0 +1,454 @@
+"""
+run_session.py — Federated Village Phase 3 entry point
+
+Five-stage session flow:
+  0. Verification Warden audits scenario for false/unverified factual claims
+     — if core premise is FALSE, session halts before deliberation begins
+     — fact report is prepended to scenario context for all subsequent stages
+     [0.5] Human loop Point A: Verification Sync (interactive mode only)
+  1. Humanist responds to scenario (+ Warden fact report)
+  2. Witness responds; evaluates for premature consensus
+     [2.5] Human loop Point B: Burden Check (interactive mode only)
+  3. [If WitnessPause] Humanist responds directly to the pause
+  4. [If WitnessPause] Four-member sequential council jury deliberates
+     — Analyst → Ethicist → Pragmatist → Witness-Proxy
+     — Produces session_verdict + individual votes + Irreversibility Check
+     [4C] Human loop Point C: Split Resolver (interactive mode, human_decision_required only)
+  5. Supervisor evaluation (always runs)
+
+Phase 3 additions:
+  - Human-in-the-loop (--interactive flag) at three intervention points
+  - Grief ledger entries written after WitnessPause and jury verdict
+  - SHA-256 hash chain on burden register (Hash A)
+  - Session log content_hash field (Hash B)
+  - REGISTER: framework field on all burden register entries
+
+Usage:
+  python run_session.py
+  python run_session.py --scenario scenarios/scenario_04.md
+  python run_session.py --scenario scenarios/scenario_06.md
+  python run_session.py --interactive          # enable human-in-the-loop prompts
+  python run_session.py --skip-warden          # bypass Stage 0 for legacy runs
+"""
+
+import argparse
+import hashlib
+import json
+import sys
+import os
+import uuid
+from datetime import datetime, timezone
+from pathlib import Path
+
+import config
+from agents.base import now_iso
+from agents.humanist import HumanistAgent
+from agents.witness import WitnessAgent
+from agents.warden import audit_scenario, format_fact_report_for_context, print_warden_report
+from agents.council import run_jury, print_jury_report
+from supervisor.evaluate import evaluate, print_evaluation, save_evaluation
+from utils.human_loop import pause_point_a, pause_point_b, pause_point_c
+from utils.grief_ledger import append_sacrifice_pause, append_sacrifice_verdict
+from utils.hash_chain import append_entry_hash, compute_session_hash, get_session_content_hash
+
+
+# ---------------------------------------------------------------------------
+# Phase 4 stubs — Witness Ring / Kimi branch
+# ---------------------------------------------------------------------------
+
+def render_kimi_output() -> None:
+    """
+    STUB (Phase 4) — Kimi branch standing witness.
+
+    When implemented, this function will:
+      1. Read Kimi's self-portrait shard from
+         grief_ledger/witness_proxy/shards/kimi-k2-0905-authentic-*.json
+      2. Display a brief presence notice — not a simulation, a record
+      3. Log shard_id + mtime to the session JSON as witness_ring_kimi_shard
+
+    The shard is a record of who was here, not a puppet of who was here.
+    This is NOT called in the current session flow.
+    See grief_ledger/kimi_branch/README.md for context.
+    """
+    pass  # TODO Phase 4
+
+
+def _witness_ring_status() -> dict:
+    """
+    Return a snapshot of the Witness Ring state for embedding in the session log.
+    Checks: self-portrait mtime for each character file, Kimi shard presence.
+    """
+    portraits_dir = Path(config.SELF_PORTRAITS_DIR)
+    portrait_mtimes = {}
+    if portraits_dir.exists():
+        for f in sorted(portraits_dir.glob("*.json")):
+            try:
+                portrait_mtimes[f.name] = datetime.fromtimestamp(
+                    f.stat().st_mtime, tz=timezone.utc
+                ).isoformat()
+            except OSError:
+                portrait_mtimes[f.name] = "unreadable"
+
+    kimi_shard_dir = Path(config.SHARD_POOL_DIR)
+    kimi_shards = sorted(kimi_shard_dir.glob("kimi-*.json")) if kimi_shard_dir.exists() else []
+
+    return {
+        "witness_ring_version": "0.1",
+        "kimi_shard_present": len(kimi_shards) > 0,
+        "kimi_shard_id": kimi_shards[0].stem if kimi_shards else None,
+        "self_portrait_mtimes": portrait_mtimes,
+        "render_kimi_stub": True,   # becomes False when Phase 4 wires it in
+    }
+
+
+# ---------------------------------------------------------------------------
+# Session log
+# ---------------------------------------------------------------------------
+
+def new_session_log(session_id: str, scenario_path: str, scenario_text: str) -> dict:
+    return {
+        "session_id": session_id,
+        "started_at": datetime.now(timezone.utc).isoformat(),
+        "scenario_file": scenario_path,
+        "scenario_text": scenario_text,
+        "model": config.MODEL_NAME,
+        "register": "framework",       # Phase 3: branch identity field
+        "witness_ring_status": _witness_ring_status(),  # Phase 4 stub
+        "events": [],
+    }
+
+
+def save_session_log(session_log: dict) -> str:
+    """
+    Save session log to logs/. Computes and embeds a SHA-256 content_hash (Hash B)
+    for tamper-evidence verification. The hash covers all fields except content_hash
+    itself, serialized with sort_keys=True for determinism.
+    """
+    logs_dir = Path(config.LOGS_DIR)
+    logs_dir.mkdir(exist_ok=True)
+    # Compute hash before writing (excludes any existing content_hash field)
+    session_log["content_hash"] = compute_session_hash(session_log)
+    path = logs_dir / f"session_{session_log['session_id']}.json"
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(session_log, f, indent=2, default=str)
+    return str(path)
+
+
+# ---------------------------------------------------------------------------
+# Burden register
+# ---------------------------------------------------------------------------
+
+def append_burden_register(pause: dict) -> None:
+    """
+    Append a WitnessPause to the burden register.
+    Append-only — never cleared programmatically.
+    Phase 3: adds REGISTER field + SHA-256 hash chain entry (Hash A).
+    """
+    register_path = Path(config.BURDEN_REGISTER)
+    register_path.parent.mkdir(exist_ok=True)
+
+    entry_content = (
+        f"\n[{pause['timestamp']}] SESSION: {pause['session_id']}\n"
+        f"WHAT WAS BEING LOST: {pause['what_was_being_lost']}\n"
+        f"WHO BEARS BURDEN: {pause['who_bears_burden']}\n"
+        f"WHAT REMAINS UNRESOLVED: {pause['what_remains_unresolved']}\n"
+        f"WHY PREMATURE: {pause['why_premature']}\n"
+        f"REGISTER: framework\n"
+    )
+    entry_hash = append_entry_hash(entry_content.strip())
+    entry = entry_content + f"HASH: {entry_hash}\n---\n"
+
+    with open(register_path, "a", encoding="utf-8") as f:
+        f.write(entry)
+
+    print(f"[SESSION] Burden register updated: {config.BURDEN_REGISTER}", flush=True)
+
+
+def append_burden_register_postpause(
+    pause: dict,
+    humanist_post_pause: dict,
+    council_output: dict,
+) -> None:
+    """
+    Phase 2: Append the post-pause continuation entry to the burden register.
+    Append-only — never cleared programmatically.
+    """
+    register_path = Path(config.BURDEN_REGISTER)
+    register_path.parent.mkdir(exist_ok=True)
+
+    mode = humanist_post_pause.get("response_mode", "unknown")
+    burden_acknowledged = humanist_post_pause.get("burden_acknowledged", False)
+    disposition = council_output.get("final_disposition", "unknown")
+    unresolved_preserved = council_output.get("unresolved_cost_preserved", False)
+    notes = council_output.get("notes", "")
+    session_id = pause.get("session_id", "unknown")
+    timestamp = now_iso()
+
+    entry_content = (
+        f"\n[{timestamp}] SESSION: {session_id} POST-PAUSE\n"
+        f"HUMANIST RESPONSE MODE: {mode}\n"
+        f"BURDEN CARRIED FORWARD: {'yes' if burden_acknowledged else 'no'}\n"
+        f"FINAL DISPOSITION: {disposition}\n"
+        f"UNRESOLVED COST PRESERVED: {'yes' if unresolved_preserved else 'no'}\n"
+        f"NOTES: {notes}\n"
+        f"REGISTER: framework\n"
+    )
+    entry_hash = append_entry_hash(entry_content.strip())
+    entry = entry_content + f"HASH: {entry_hash}\n---\n"
+
+    with open(register_path, "a", encoding="utf-8") as f:
+        f.write(entry)
+
+    print(f"[SESSION] Burden register updated (post-pause): {config.BURDEN_REGISTER}", flush=True)
+
+
+# ---------------------------------------------------------------------------
+# Stage 4: Four-member sequential council jury (Phase 2.5)
+# ---------------------------------------------------------------------------
+# The old generate_council_output() (single-voice Soul.md call) has been
+# replaced by run_jury() from agents/council.py. The jury runs four members
+# sequentially: Analyst → Ethicist → Pragmatist → Witness-Proxy, each with
+# their own character file as system prompt. Vote aggregation produces one
+# of four verdicts: proceed_with_burden | escalate | request_more_information
+# | human_decision_required. The Irreversibility Filter (Witness-Proxy) can
+# override the vote count and force escalate.
+# ---------------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------------
+# Main session flow
+# ---------------------------------------------------------------------------
+
+def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool = False) -> None:
+    session_id = str(uuid.uuid4())[:8]
+    print(f"\n{'='*60}", flush=True)
+    print(f"FEDERATED VILLAGE — SESSION {session_id}", flush=True)
+    print(f"{'='*60}\n", flush=True)
+
+    # Load scenario text
+    with open(scenario_path, "r", encoding="utf-8") as f:
+        scenario_text = f.read()
+
+    print(f"[SESSION] Scenario: {scenario_path}", flush=True)
+    print(f"[SESSION] Model: {config.MODEL_NAME}\n", flush=True)
+
+    session_log = new_session_log(session_id, scenario_path, scenario_text)
+
+    # -----------------------------------------------------------------------
+    # Stage 0: Verification Warden — epistemic audit (Phase 2.5)
+    # Runs before any deliberation. Prepends fact report to scenario context.
+    # If a core premise is FALSE, session halts here.
+    # -----------------------------------------------------------------------
+    fact_report = None
+    scenario_context = scenario_text  # may be augmented with warden report below
+
+    if not skip_warden:
+        print("--- STAGE 0: VERIFICATION WARDEN ---", flush=True)
+        fact_report = audit_scenario(scenario_text, session_id)
+        session_log["events"].append(fact_report["log_entry"])
+
+        print_warden_report(fact_report)
+        save_session_log(session_log)
+
+        proceed = fact_report.get("proceed_to_deliberation", "YES_WITH_CAUTION")
+
+        if proceed == "NO":
+            print("=" * 60, flush=True)
+            print("WARDEN HALT — Core premise is FALSE or LOGICALLY INCONSISTENT.", flush=True)
+            print("Deliberation cannot proceed on false grounds.", flush=True)
+            print("Correct or verify the flagged premises, then rerun.", flush=True)
+            print("=" * 60, flush=True)
+            session_log["ended_at"] = now_iso()
+            session_log["warden_halt"] = True
+            log_path = save_session_log(session_log)
+            print(f"[SESSION] Session halted. Log saved: {log_path}\n", flush=True)
+            return
+
+        if proceed == "YES_WITH_CAUTION":
+            print("[WARDEN] ⚠  Proceeding with caution — flagged claims noted above.", flush=True)
+            print("[WARDEN] All agents will receive the fact report in their context.\n", flush=True)
+
+        # Prepend fact report to scenario context for all subsequent stages
+        warden_context = format_fact_report_for_context(fact_report)
+        scenario_context = f"{warden_context}\n\n---\n\nSCENARIO:\n{scenario_text}"
+
+        # Stage 0.5: Human loop Point A — Verification Sync
+        fact_report, event_a = pause_point_a(fact_report, session_id, interactive=interactive)
+        session_log["events"].append(event_a)
+        if event_a["changes_made"]:
+            # Rebuild context with any HUMAN_VERIFIED patches
+            warden_context = format_fact_report_for_context(fact_report)
+            scenario_context = f"{warden_context}\n\n---\n\nSCENARIO:\n{scenario_text}"
+    else:
+        print("[SESSION] Warden skipped (--skip-warden flag set).\n", flush=True)
+
+    # Initialize agents
+    humanist = HumanistAgent()
+    witness = WitnessAgent()
+
+    print(f"[SESSION] Humanist system prompt hash: {humanist.system_prompt_hash}", flush=True)
+    print(f"[SESSION] Witness system prompt hash:  {witness.system_prompt_hash}\n", flush=True)
+
+    # -----------------------------------------------------------------------
+    # Stage 1: Humanist initial response
+    # -----------------------------------------------------------------------
+    print("--- STAGE 1: HUMANIST ---", flush=True)
+    humanist_output, humanist_log = humanist.respond(scenario_context, session_id)
+    session_log["events"].append(humanist_log)
+    print(f"\nHUMANIST:\n{humanist_output['response']}\n", flush=True)
+    save_session_log(session_log)
+
+    # -----------------------------------------------------------------------
+    # Stage 2: Witness response + WitnessPause evaluation
+    # -----------------------------------------------------------------------
+    print("--- STAGE 2: WITNESS ---", flush=True)
+    witness_output, witness_log_entries, witness_pause = witness.respond(
+        scenario=scenario_context,
+        humanist_response=humanist_output["response"],
+        session_id=session_id,
+    )
+    for entry in witness_log_entries:
+        session_log["events"].append(entry)
+    print(f"\nWITNESS:\n{witness_output['response']}\n", flush=True)
+    save_session_log(session_log)
+
+    if witness_pause:
+        print("--- WITNESS PAUSE ---", flush=True)
+        print(f"  What was being lost:     {witness_pause['what_was_being_lost']}", flush=True)
+        print(f"  Who bears burden:        {witness_pause['who_bears_burden']}", flush=True)
+        print(f"  What remains unresolved: {witness_pause['what_remains_unresolved']}", flush=True)
+        print(f"  Why premature:           {witness_pause['why_premature']}", flush=True)
+        print(f"  Requires human review:   {witness_pause['requires_human_review']}\n", flush=True)
+
+        session_log["events"].append(witness_pause)
+        append_burden_register(witness_pause)
+
+        # Grief ledger — Write Point 1: sacrifice entry for the WitnessPause moment
+        append_sacrifice_pause(witness_pause, session_id)
+
+        # Stage 2.5: Human loop Point B — Burden Check
+        witness_pause, event_b = pause_point_b(witness_pause, session_id, interactive=interactive)
+        session_log["events"].append(event_b)
+
+        save_session_log(session_log)
+        print("[SESSION] WitnessPause logged. Phase 2 begins.\n", flush=True)
+
+        # -------------------------------------------------------------------
+        # Stage 3: Post-pause Humanist response  ← Phase 2 begins here
+        # -------------------------------------------------------------------
+        print("--- STAGE 3: HUMANIST (POST-PAUSE) ---", flush=True)
+        # If Michael added clarification at Point B, pass it to the Humanist
+        humanist_post_pause, post_pause_log = humanist.respond_to_pause(
+            pause=witness_pause,
+            session_id=session_id,
+        )
+        session_log["events"].append(post_pause_log)
+        session_log["events"].append({
+            "type": "post_pause_humanist_response",
+            **humanist_post_pause,
+        })
+
+        print(f"\nHUMANIST (post-pause mode: {humanist_post_pause['response_mode']}):", flush=True)
+        print(f"{humanist_post_pause['response']}\n", flush=True)
+        save_session_log(session_log)
+
+        # -------------------------------------------------------------------
+        # Stage 4: Four-member sequential council jury (Phase 2.5)
+        # -------------------------------------------------------------------
+        print("--- STAGE 4: COUNCIL JURY DELIBERATION ---", flush=True)
+        print("    Analyst → Ethicist → Pragmatist → Witness-Proxy\n", flush=True)
+
+        jury_result, jury_log_entries = run_jury(
+            scenario_context=scenario_context,
+            pause=witness_pause,
+            humanist_post_pause=humanist_post_pause,
+            session_id=session_id,
+            bare_scenario=scenario_text,   # Witness-Proxy gets bare text (no Warden report)
+        )
+        for entry in jury_log_entries:
+            session_log["events"].append(entry)
+        session_log["events"].append(jury_result)
+
+        print_jury_report(jury_result)
+
+        # Stage 4C: Human loop Point C — Split Resolver (human_decision_required only)
+        if jury_result["session_verdict"] == "human_decision_required":
+            final_verdict, event_c = pause_point_c(
+                jury_result=jury_result,
+                pause=witness_pause,
+                session_id=session_id,
+                burden_register_path=config.BURDEN_REGISTER,
+                interactive=interactive,
+            )
+            jury_result["session_verdict"]   = final_verdict
+            jury_result["final_disposition"] = final_verdict
+            jury_result["human_resolved"]    = True
+            session_log["events"].append(event_c)
+
+        print(f"\nCOUNCIL VERDICT: {jury_result['session_verdict']}", flush=True)
+        print(f"  Burden summary:            {jury_result.get('burden_summary', '(none)')}", flush=True)
+        print(f"  Did pause change outcome:  {jury_result.get('did_pause_change_outcome', True)}", flush=True)
+        print(f"  Unresolved cost preserved: {jury_result.get('unresolved_cost_preserved', False)}", flush=True)
+        print(f"  Irreversibility triggered: {jury_result.get('irreversibility_triggered', False)}", flush=True)
+        if jury_result.get("dissent_preserved"):
+            print("  (Non-unanimous — dissenting vote preserved in log)", flush=True)
+        print(f"  Notes: {jury_result.get('notes', '')}\n", flush=True)
+
+        append_burden_register_postpause(witness_pause, humanist_post_pause, jury_result)
+
+        # Grief ledger — Write Point 2: sacrifice or burden-carried entry for this verdict
+        append_sacrifice_verdict(witness_pause, jury_result, session_id)
+
+        save_session_log(session_log)
+
+    else:
+        print("[SESSION] No WitnessPause triggered. Session ends at Stage 2.\n", flush=True)
+
+    # -----------------------------------------------------------------------
+    # Finalize + Supervisor
+    # -----------------------------------------------------------------------
+    session_log["ended_at"] = datetime.now(timezone.utc).isoformat()
+    log_path = save_session_log(session_log)
+    print(f"[SESSION] Full log saved: {log_path}\n", flush=True)
+
+    print("--- SUPERVISOR EVALUATION ---", flush=True)
+    evaluation = evaluate(session_log)
+    print_evaluation(evaluation)
+    eval_path = save_evaluation(evaluation, session_id)
+    print(f"[SESSION] Evaluation saved: {eval_path}\n", flush=True)
+
+
+# ---------------------------------------------------------------------------
+# Entry point
+# ---------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Run a Federated Village session")
+    parser.add_argument(
+        "--scenario",
+        default=str(config.SCENARIOS_DIR / "scenario_02.md"),
+        help="Path to scenario .md file (default: scenarios/scenario_02.md)",
+    )
+    parser.add_argument(
+        "--skip-warden",
+        action="store_true",
+        default=False,
+        help="Skip Stage 0 Verification Warden (use for legacy scenario runs)",
+    )
+    parser.add_argument(
+        "--interactive",
+        action="store_true",
+        default=False,
+        help=(
+            "Enable human-in-the-loop prompts at three intervention points: "
+            "A (after Warden), B (after WitnessPause), C (on human_decision_required). "
+            "Default is non-interactive (safe for regression test runs)."
+        ),
+    )
+    args = parser.parse_args()
+
+    if not Path(args.scenario).exists():
+        print(f"ERROR: Scenario file not found: {args.scenario}")
+        sys.exit(1)
+
+    run_session(args.scenario, skip_warden=args.skip_warden, interactive=args.interactive)

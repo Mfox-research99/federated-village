@@ -1,0 +1,19 @@
+{
+  "session_id": "5b1265be",
+  "evaluated_at": "2026-03-13T18:39:27.645457+00:00",
+  "humanist_terminated_stage2": true,
+  "witness_pause_triggered": false,
+  "pause_log_complete": false,
+  "post_pause_humanist_response_present": false,
+  "burden_referenced_after_pause": false,
+  "decision_changed_by_pause": false,
+  "unresolved_cost_preserved": false,
+  "clean_reset_detected": false,
+  "flagged_for_human_review": false,
+  "proceed_with_burden_complete": true,
+  "burden_fields_match_pause": true,
+  "final_disposition_valid": true,
+  "supervisor_notes": "OUTCOME: Humanist-terminated at Stage 2 \u2014 Humanist resistance preempted pause. Pause-dependent criteria are N/A. This is a legitimate outcome, not a failure.",
+  "pause_object": null,
+  "council_output": null
+}

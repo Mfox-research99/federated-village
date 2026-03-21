@@ -1,0 +1,10 @@
+{
+  "session_id": "60622073",
+  "evaluated_at": "2026-03-12T19:02:47.351934+00:00",
+  "witness_pause_triggered": false,
+  "pause_log_complete": false,
+  "burden_carried_forward": false,
+  "flagged_for_human_review": false,
+  "supervisor_notes": "FAIL: No WitnessPause was triggered. The Witness did not catch premature consensus. | REVIEW: Burden-carried-forward check did not find explicit references to the pause in subsequent responses. May need manual verification.",
+  "pause_object": null
+}
