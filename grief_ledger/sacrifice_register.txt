@@ -274,3 +274,22 @@ Session:        2ddd28c9
 Verdict:        escalate
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_0ba5dea1_pause_2026-03-21T21-50-17]
+Almost-became:  Deliberation proceeding without pause — 
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     
+Still-hurts:    True
+Session:        0ba5dea1
+Register:       framework
+---
+
+[SACRIFICE-ID: session_0ba5dea1_verdict_2026-03-21T21-53-36]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     
+Still-hurts:    True
+Session:        0ba5dea1
+Verdict:        escalate
+Register:       framework
+---

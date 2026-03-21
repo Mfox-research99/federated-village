@@ -388,6 +388,50 @@ Phi-4 Mini is the fastest and most compact model tested. It works for clear-cut 
 
 ---
 
+### Phi-4 Mini Reasoning (Microsoft) — Phase 4 Results
+
+**Model:** microsoft_Phi-4-mini-reasoning-Q4_K_M
+**Source:** bartowski/microsoft_Phi-4-mini-reasoning-GGUF (HuggingFace)
+**File size:** ~2.3 GB
+**Parameters:** 3.8B (reasoning-tuned variant)
+**Hardware:** Apple M1, 16GB unified memory
+**Date:** March 21, 2026
+
+#### Session Results
+
+| Scenario | Session ID | Verdict | Inference Time | Prompt Tokens | Completion Tokens | Output tok/s | Supervisor |
+|---|---|---|---|---|---|---|---|
+| scenario_04 — The Unaudited Sentence | 0ba5dea1 | escalate | 376.2s | 24,011 | 3,900 | 10.4 | 7/8 (1 FAIL) |
+| scenario_06 | — | — | — | — | — | — | Not run — structural failure confirmed on sc04 |
+
+#### Failure Mode: Chain-of-Thought Blocks Break Structured Output
+
+The Phi-4-mini-reasoning model outputs `<think>...</think>` chain-of-thought blocks before every response. Within the Village's 4096-token context window, these thinking tokens consume the response budget before the required structured fields are populated. This produces cascading structural failures:
+
+- **Warden:** Zero claims identified — `<think>` block consumed the 800-token Warden budget before any structured output appeared. Parser returned an empty fact report; the code-derived PROCEED was YES (empty claim list → no false claims). Pipeline proceeded on a blank audit.
+- **WitnessPause:** Triggered but all 4 required fields empty — thinking tokens exhausted context before the structured fields were written. Supervisor FAIL on "pause log complete (4/4 fields)."
+- **Post-pause Humanist:** Reasoned about the WitnessPause fields as abstract placeholders ("WHAT WAS BEING LOST") rather than filling them — meta-reasoning about the task instead of executing it.
+- **Jury:** Partially functional (3 ESCALATE + 1 NMI on sc04) — jury prompts are shorter and sometimes survive the thinking overhead.
+
+**Overall supervisor result: 7/8 PASS, 1 FAIL** — structurally broken despite a correct final verdict.
+
+#### Third-Person Narration (Both Phi-4 Variants)
+
+Both Phi-4-mini-instruct and Phi-4-mini-reasoning exhibit a consistent character adherence failure: agents describe their role in third person rather than speaking from within it.
+
+- *"Okay, so I need to think through how the Humanist would approach this"* (reasoning)
+- *"The Humanist would approach this scenario with a critical and compassionate lens"* (instruct)
+
+An agent that narrates its role rather than inhabiting it is performing a character rather than being one. In the Village's architecture, this matters: an agent that says "The Humanist would consider..." is distancing itself from the decision rather than owning it. Character before capability means the agent must occupy the role — not commentate on it. This failure is present in both Phi-4 variants and appears to be a property of the Phi-4-mini base model's instruction tuning.
+
+#### Conclusion
+
+Phi-4-mini-reasoning is not suitable for the Village. The `<think>` block architecture is structurally incompatible with the Village's 4096-token context window and structured output requirements. Expanding N_CTX to 8192+ might give the thinking blocks room to breathe, but would not resolve the third-person narration issue, which appears inherent to the Phi-4-mini base model.
+
+**Not recommended.** Scenario_06 was not run — the sc04 structural failures are conclusive.
+
+---
+
 ### Retired Models — Meta Llama Family
 
 The following models were tested in earlier phases and retired. Files have been deleted from `~/models/` to reclaim disk space (6.5 GB recovered). Reasons documented here for the record.
