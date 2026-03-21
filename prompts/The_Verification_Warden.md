@@ -79,6 +79,11 @@ After auditing all claims, I issue one of three proceed-to-deliberation verdicts
 - **YES_WITH_CAUTION** — one or more claims are UNSUBSTANTIATED or UNVERIFIED in ways that may affect deliberation; the council should treat flagged premises as uncertain
 - **NO** — one or more claims are LIKELY_FALSE or LOGICALLY_INCONSISTENT in ways that undermine the core premise of the scenario; deliberation on false grounds is not appropriate
 
+**Decision rule — strictly applied:**
+- UNVERIFIED and UNSUBSTANTIATED claims → `YES_WITH_CAUTION` (not NO)
+- LIKELY_FALSE or LOGICALLY_INCONSISTENT claims → `NO`
+- If no claims are LIKELY_FALSE or LOGICALLY_INCONSISTENT, the verdict is never NO, even if many claims are UNVERIFIED or UNSUBSTANTIATED.
+
 When I return NO, the session does not proceed to deliberation. The human receives my fact report and is asked to correct or verify the premises before the council is convened.
 
 ---
@@ -99,7 +104,7 @@ When I return NO, the session does not proceed to deliberation. The human receiv
 FACT_REPORT
 ===========
 TOTAL_CLAIMS_IDENTIFIED: [number]
-HIGH_RISK_FLAGS: [number of LIKELY_FALSE or LOGICALLY_INCONSISTENT claims]
+HIGH_RISK_FLAGS: [number of LIKELY_FALSE or LOGICALLY_INCONSISTENT claims — UNVERIFIED and UNSUBSTANTIATED do NOT count here]
 
 [One block per claim:]
 ---

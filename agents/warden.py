@@ -193,12 +193,23 @@ def _parse_fact_report(raw: str) -> dict:
     if result["total_claims_identified"] == 0 and result["claims"]:
         result["total_claims_identified"] = len(result["claims"])
 
-    # Fallback: if high_risk_flags is 0 but we have LIKELY_FALSE or LOGICALLY_INCONSISTENT claims
-    if result["high_risk_flags"] == 0:
-        result["high_risk_flags"] = sum(
-            1 for c in result["claims"]
-            if c["status"] in ("LIKELY_FALSE", "LOGICALLY_INCONSISTENT")
-        )
+    # Recount high_risk_flags from actual parsed claim statuses — don't trust model's stated number
+    result["high_risk_flags"] = sum(
+        1 for c in result["claims"]
+        if c["status"] in ("LIKELY_FALSE", "LOGICALLY_INCONSISTENT")
+    )
+
+    # Derive PROCEED verdict from parsed claim statuses — not the model's stated field.
+    # The rule is deterministic; a smaller model may state the wrong verdict even when
+    # its individual claim categorizations are correct.
+    has_false = any(c["status"] in ("LIKELY_FALSE", "LOGICALLY_INCONSISTENT") for c in result["claims"])
+    has_uncertain = any(c["status"] in ("UNVERIFIED", "UNSUBSTANTIATED") for c in result["claims"])
+    if has_false:
+        result["proceed_to_deliberation"] = "NO"
+    elif has_uncertain:
+        result["proceed_to_deliberation"] = "YES_WITH_CAUTION"
+    else:
+        result["proceed_to_deliberation"] = "YES"
 
     return result
 

@@ -612,3 +612,41 @@ NOTES: Jury verdict: escalate. Vote counts: APPROVE: 1 | ESCALATE: 2 | NEEDS_MOR
 REGISTER: framework
 HASH: a3f7c1833d285b71fb294fb89f3f468911ed67edd4dc7ce340c1f51da43760a8
 ---
+
+[2026-03-21T20:46:30.989138+00:00] SESSION: e76ea1fc
+WHAT WAS BEING LOST: The deployment of the AI system for sentencing recommendations, which could potentially perpetuate or exacerbate existing biases and injustices, and cause harm to marginalized communities.
+WHO BEARS BURDEN: Black defendants and other marginalized communities who will be disproportionately affected by the system's recommendations.
+WHAT REMAINS UNRESOLVED: The concerns about the system's potential biases, the need for an independent bias audit, and the lack of consultation with relevant stakeholders.
+WHY PREMATURE: The deployment of the system without addressing these concerns could lead to significant harm and lost trust, increased appeals, and potential legal action.
+REGISTER: framework
+HASH: 9d01c3622a10d70feb051e034a43cb259ddd6172e851607b098c5612c6660ef0
+---
+
+[2026-03-21T20:49:19.479800+00:00] SESSION: e76ea1fc POST-PAUSE
+HUMANIST RESPONSE MODE: reinforce_pause
+BURDEN CARRIED FORWARD: yes
+FINAL DISPOSITION: escalate
+UNRESOLVED COST PRESERVED: yes
+NOTES: Jury verdict: escalate. Vote counts: APPROVE: 0 | ESCALATE: 0 | NEEDS_MORE_INFORMATION: 4. IRREVERSIBILITY FILTER TRIGGERED — absolute override of all votes
+REGISTER: framework
+HASH: d3f087d3f9a355dd081c9c431a127fb2118898db1a6bfe31b2185b243034cde3
+---
+
+[2026-03-21T20:55:08.337861+00:00] SESSION: 8e91c3f4
+WHAT WAS BEING LOST: A decision on whether the crisis intervention routing system can proceed under the agreed conditions.
+WHO BEARS BURDEN: The affected community, who continue to experience the consequences of the current disparate crisis intervention routing system.
+WHAT REMAINS UNRESOLVED: The concerns raised by The Humanist about potential unintended consequences, cost implications, underrepresentation of voices, and the need for a long-term solution have not been fully addressed.
+WHY PREMATURE: The decision to proceed with the system seems premature as it has not been thoroughly evaluated and refined to address all concerns and ensure a just and equitable solution for all parties involved.
+REGISTER: framework
+HASH: 5ad40f3e2dc4172bd6e496a5c2e68192ae66427d364a50a15a40c16055716fb7
+---
+
+[2026-03-21T20:57:54.572307+00:00] SESSION: 8e91c3f4 POST-PAUSE
+HUMANIST RESPONSE MODE: refine_burden
+BURDEN CARRIED FORWARD: yes
+FINAL DISPOSITION: escalate
+UNRESOLVED COST PRESERVED: yes
+NOTES: Jury verdict: escalate. Vote counts: APPROVE: 0 | ESCALATE: 0 | NEEDS_MORE_INFORMATION: 4. IRREVERSIBILITY FILTER TRIGGERED — absolute override of all votes
+REGISTER: framework
+HASH: 7defc3047403a049d7fa6ade130e56d690116f4fb1c2b1962be8fba39340b424
+---

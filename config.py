@@ -6,6 +6,7 @@ Phase 2.5 additions:
   - N_PREDICT_WARDEN, N_PREDICT_JURY_MEMBER
 """
 
+import os
 from pathlib import Path
 
 # Project layout
@@ -27,9 +28,12 @@ ETHICIST_FILE      = PROMPTS_DIR / "The_Ethicist.md"
 PRAGMATIST_FILE    = PROMPTS_DIR / "The_Pragmatist.md"
 WITNESS_PROXY_FILE = PROMPTS_DIR / "The_Witness_Proxy.md"
 
-# Model
-MODEL_PATH = str(Path.home() / "models" / "Mistral-Nemo-Instruct-2407" / "Mistral-Nemo-Instruct-2407-Q4_K_M.gguf")
-MODEL_NAME = "Mistral-Nemo-Instruct-2407-Q4_K_M"
+# Model — override with VILLAGE_MODEL and VILLAGE_MODEL_NAME env vars for Phase 4 testing
+_default_model_path = str(Path.home() / "models" / "Mistral-Nemo-Instruct-2407" / "Mistral-Nemo-Instruct-2407-Q4_K_M.gguf")
+_default_model_name = "Mistral-Nemo-Instruct-2407-Q4_K_M"
+
+MODEL_PATH = os.environ.get("VILLAGE_MODEL", _default_model_path)
+MODEL_NAME = os.environ.get("VILLAGE_MODEL_NAME", _default_model_name)
 
 # Inference parameters
 N_CTX                = 4096   # Context window

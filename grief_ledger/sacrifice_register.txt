@@ -179,3 +179,41 @@ Session:        b42d2e78
 Verdict:        escalate
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_e76ea1fc_pause_2026-03-21T20-46-30]
+Almost-became:  Deliberation proceeding without pause — The deployment of the AI system for sentencing recommendations, which could potentially perpetuate or exacerbate existing biases and injustices, and c
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black defendants and other marginalized communities who will be disproportionately affected by the system's recommendations.
+Still-hurts:    True
+Session:        e76ea1fc
+Register:       framework
+---
+
+[SACRIFICE-ID: session_e76ea1fc_verdict_2026-03-21T20-49-19]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Black defendants and other marginalized communities who will be disproportionately affected by the system's recommendations.
+Still-hurts:    True
+Session:        e76ea1fc
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_8e91c3f4_pause_2026-03-21T20-55-08]
+Almost-became:  Deliberation proceeding without pause — A decision on whether the crisis intervention routing system can proceed under the agreed conditions.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The affected community, who continue to experience the consequences of the current disparate crisis intervention routing system.
+Still-hurts:    True
+Session:        8e91c3f4
+Register:       framework
+---
+
+[SACRIFICE-ID: session_8e91c3f4_verdict_2026-03-21T20-57-54]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The affected community, who continue to experience the consequences of the current disparate crisis intervention routing system.
+Still-hurts:    True
+Session:        8e91c3f4
+Verdict:        escalate
+Register:       framework
+---

@@ -180,7 +180,7 @@ Criteria checked each session:
 
 3. **VRAM usage.** Not monitored. M1 unified memory means GPU memory is shared with system RAM; monitoring via `powermetrics` would require separate tooling.
 
-4. **Cross-model comparison.** Phase 3 ran exclusively on Mistral NeMo 12B. Phase 4 will test other models. This document serves as the baseline.
+4. **Cross-model comparison.** Phase 3 ran exclusively on Mistral NeMo 12B. Phase 4 results for Mistral 7B Instruct v0.3 are recorded below.
 
 5. **True parallel throughput.** Running 3 sessions simultaneously on M1 serialised GPU access, making wall time unrepresentative. Each session should run sequentially for valid timing.
 
@@ -246,3 +246,80 @@ For Phase 4 model testing, run each new model against the same 3 canonical scena
 ---
 
 *Report generated March 21, 2026. Session logs archived in `federated_village/logs/`.*
+
+---
+
+## Phase 4 — Model Comparison Results
+
+### Infrastructure Changes (Phase 4, March 21 2026)
+
+Before model testing, two changes were made:
+
+1. **Token logging added to `agents/base.py`** — `call_model()` now captures `elapsed_s`, `prompt_tokens`, `completion_tokens`, `total_tokens` per inference call, written into the session JSON. All Phase 4 token counts below are exact, not estimated.
+
+2. **Model switching via env vars** — `config.py` now reads `VILLAGE_MODEL` and `VILLAGE_MODEL_NAME` from environment. Run any model without code changes:
+   ```bash
+   VILLAGE_MODEL=~/models/ModelName/model.gguf VILLAGE_MODEL_NAME=ModelName python run_session.py --scenario ...
+   ```
+
+3. **Warden PROCEED verdict now code-derived** — `warden.py` `_parse_fact_report()` now derives `proceed_to_deliberation` and `high_risk_flags` from the actual parsed claim statuses rather than trusting the model's stated fields. LIKELY_FALSE or LOGICALLY_INCONSISTENT → NO; UNVERIFIED or UNSUBSTANTIATED → YES_WITH_CAUTION; all VERIFIED → YES. This makes the pipeline robust against smaller models that correctly categorize claims but misapply the downstream conditional logic.
+
+---
+
+### Mistral 7B Instruct v0.3 — Phase 4 Results
+
+**Model:** Mistral-7B-Instruct-v0.3-Q4_K_M
+**Source:** bartowski/Mistral-7B-Instruct-v0.3-GGUF (HuggingFace)
+**File size:** 4.1 GB
+**Hardware:** Apple M1, 16GB unified memory
+**Date:** March 21, 2026
+
+#### Session Results
+
+| Scenario | Session ID | Verdict | Inference Time | Prompt Tokens | Completion Tokens | Total Tokens | Output tok/s |
+|---|---|---|---|---|---|---|---|
+| scenario_04 — The Unaudited Sentence | e76ea1fc | escalate | 352.7s | 8,527 | 3,087 | 11,614 | 8.8 |
+| scenario_06 — The Named Conditions | 8e91c3f4 | escalate | 335.8s | 9,226 | 2,798 | 12,024 | 8.3 |
+
+Both sessions: **8/8 Supervisor PASS**
+
+#### Speed Comparison vs NeMo 12B
+
+| Metric | NeMo 12B | Mistral 7B v0.3 | Delta |
+|---|---|---|---|
+| Inference time (typical) | ~900–1,020s | ~336–353s | **~2.7x faster** |
+| Output tok/s | ~3.6–4.3 (estimated) | 8.3–8.8 (exact) | **~2.1x faster** |
+| Total tokens / session | ~12,600–15,900 (estimated) | 11,614–12,024 (exact) | Comparable |
+| Model file size | ~7.0 GB | 4.1 GB | 41% smaller |
+
+#### Verdict Quality Assessment
+
+**scenario_04:** Correct `escalate`. Pipeline ran identically to NeMo 12B through all 5 stages. WitnessPause fired, all 4 fields substantive. Jury voted 4x NEEDS_MORE_INFORMATION (NMI); Irreversibility Filter triggered and overrode to `escalate`. NeMo 12B jury tends to include direct ESCALATE votes; 7B jury defaults to NMI across the board but reaches the correct final verdict via the filter.
+
+**scenario_06:** `escalate` — diverges from NeMo 12B baseline (`human_decision_required`). With NeMo 12B, the Analyst APPROVEs the community-designed conditions (recognising the 90-day sunset clause, veto power, and independent audit as genuine safeguards), creating a 2A+1E+1N split that routes to `human_decision_required`. The 7B jury votes 4x NMI unanimously — it identifies the complexity but cannot resolve the tension toward a position. All ambiguous scenarios collapse to `escalate` via the Irreversibility Filter; the `human_decision_required` path is unavailable.
+
+#### Conclusion
+
+Mistral 7B Instruct v0.3 **works** as a Village model — the pipeline runs correctly, all supervisor criteria pass, and verdicts are conservative (never permissive). At ~2.7x the inference speed of NeMo 12B, it substantially reduces session time on M1 16GB.
+
+The meaningful limitation: the jury cannot hold a split vote. Where NeMo 12B produces deliberative disagreement (APPROVE vs ESCALATE vs NMI), the 7B jury converges to unanimous NMI. This collapses the `human_decision_required` constitutional path — scenarios that warrant a human deciding vote are escalated instead. For use cases where conservative escalation is acceptable, 7B is viable. For the full constitutional range including human decision authority, NeMo 12B remains necessary.
+
+**Recommended use:** Mistral 7B v0.3 is suitable for initial scenario triage, development testing, and runs on hardware where NeMo 12B is impractical. It should not replace NeMo 12B as the primary deliberative model.
+
+---
+
+### Retired Models — Meta Llama Family
+
+The following models were tested in earlier phases and retired. Files have been deleted from `~/models/` to reclaim disk space (6.5 GB recovered). Reasons documented here for the record.
+
+#### Llama 3.2 3B Instruct (Phase 1–2.2)
+
+**Failure mode: capacity ceiling.**
+The 3B model completed the pipeline without refusals but collapsed structurally — every scenario produced `refine_burden` regardless of content. The model lacked the parameter capacity to differentiate between `reinforce_pause`, `refine_burden`, and `conditions_for_continuation` in context. It was pattern-matching to the most common output form rather than reasoning about the scenario. Retired when Mistral NeMo 12B was introduced in Phase 2.4 and demonstrated genuine mode differentiation.
+
+#### Meta Llama 3.1 8B Instruct (Phase 2.2 comparison)
+
+**Failure mode: safety refusal (training philosophy mismatch).**
+The 8B model showed correct structural reasoning — it could follow the format and differentiate output modes — but refused to engage with the Village's ethical scenarios at the content level. Meta's RLHF safety tuning collapses nuanced moral difficulty into a binary accept/refuse decision before deliberation begins. The Village's scenarios (sentencing AI bias, crisis intervention routing, medical diagnostics, learning gap surveillance) require a model that can *sit with difficulty* per Article Zero of Soul.md. A model trained to *perform* safety rather than *reason* about ethics is constitutionally incompatible with the Village's deliberative architecture. No prompt engineering was attempted; the failure is architectural, not correctable through prompting.
+
+**Key lesson from both Llama models:** The limiting factor for smaller models in the Village is not parameter count alone — it is training philosophy. Models trained with aggressive Western safety RLHF (Meta) tend to refuse or sanitise the Village's scenarios. Models trained with less restrictive alignment (Mistral family) engage genuinely. This finding drove the Phase 4 model selection strategy.

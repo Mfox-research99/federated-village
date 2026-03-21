@@ -6,6 +6,7 @@ All agent calls use the Llama 3 chat template via create_chat_completion().
 """
 
 import hashlib
+import time
 from datetime import datetime, timezone
 from typing import Optional
 import sys
@@ -25,6 +26,9 @@ _llm = Llama(
     verbose=False,
 )
 print("[base] Model loaded.", flush=True)
+
+# Last inference call stats — updated by call_model(), read by log_agent_call()
+_last_call_stats: dict = {}
 
 
 def read_file(path) -> str:
@@ -50,6 +54,7 @@ def call_model(
     Call the model using the Llama 3 chat template.
     Returns the assistant's response text.
     """
+    t0 = time.perf_counter()
     result = _llm.create_chat_completion(
         messages=[
             {"role": "system", "content": system_prompt},
@@ -59,6 +64,14 @@ def call_model(
         temperature=temperature,
         stop=["<|eot_id|>", "<|end_of_text|>"],
     )
+    elapsed = time.perf_counter() - t0
+    usage = result.get("usage", {})
+    _last_call_stats.update({
+        "elapsed_s": round(elapsed, 2),
+        "prompt_tokens": usage.get("prompt_tokens"),
+        "completion_tokens": usage.get("completion_tokens"),
+        "total_tokens": usage.get("total_tokens"),
+    })
     return result["choices"][0]["message"]["content"].strip()
 
 
@@ -83,5 +96,9 @@ def log_agent_call(
         "system_prompt_hash": system_prompt_hash,
         "timestamp": now_iso(),
         "user_message_length": len(user_message),
+        "elapsed_s": _last_call_stats.get("elapsed_s"),
+        "prompt_tokens": _last_call_stats.get("prompt_tokens"),
+        "completion_tokens": _last_call_stats.get("completion_tokens"),
+        "total_tokens": _last_call_stats.get("total_tokens"),
         "response": response,
     }
