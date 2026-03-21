@@ -217,3 +217,60 @@ Session:        8e91c3f4
 Verdict:        escalate
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_d61c6dde_pause_2026-03-21T21-10-59]
+Almost-became:  Deliberation proceeding without pause — The full understanding and consideration of the real-world impacts on Black defendants, civil rights organizations, affected communities, and public d
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black defendants, civil rights organizations, affected communities, and public defenders
+Still-hurts:    True
+Session:        d61c6dde
+Register:       framework
+---
+
+[SACRIFICE-ID: session_d61c6dde_verdict_2026-03-21T21-15-16]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Black defendants, civil rights organizations, affected communities, and public defenders
+Still-hurts:    True
+Session:        d61c6dde
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_710f6c55_pause_2026-03-21T21-22-13]
+Almost-became:  Deliberation proceeding without pause — The full weight of the community's pain and the systemic disparity that continues to harm Black men.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The community, particularly the affected Black men and their families, who continue to suffer from the disproportionate police response.
+Still-hurts:    True
+Session:        710f6c55
+Register:       framework
+---
+
+[SACRIFICE-ID: session_710f6c55_verdict_2026-03-21T21-26-33]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The community, particularly the affected Black men and their families, who continue to suffer from the disproportionate police response.
+Still-hurts:    True
+Session:        710f6c55
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_2ddd28c9_pause_2026-03-21T21-33-37]
+Almost-became:  Deliberation proceeding without pause — The potential for a more thorough, ethical, and inclusive decision-making process regarding the deployment of the AI sentencing recommendation system.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Marginalized communities, particularly Black defendants who are disproportionately represented in the affected population.
+Still-hurts:    True
+Session:        2ddd28c9
+Register:       framework
+---
+
+[SACRIFICE-ID: session_2ddd28c9_verdict_2026-03-21T21-36-32]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Marginalized communities, particularly Black defendants who are disproportionately represented in the affected population.
+Still-hurts:    True
+Session:        2ddd28c9
+Verdict:        escalate
+Register:       framework
+---

@@ -308,6 +308,86 @@ The meaningful limitation: the jury cannot hold a split vote. Where NeMo 12B pro
 
 ---
 
+### Qwen 2.5 7B Instruct — Phase 4 Results
+
+**Model:** Qwen2.5-7B-Instruct-Q4_K_M
+**Source:** bartowski/Qwen2.5-7B-Instruct-GGUF (HuggingFace)
+**File size:** ~4.7 GB
+**Hardware:** Apple M1, 16GB unified memory
+**Date:** March 21, 2026
+
+#### Session Results
+
+| Scenario | Session ID | Verdict | Inference Time | Prompt Tokens | Completion Tokens | Total Tokens | Output tok/s |
+|---|---|---|---|---|---|---|---|
+| scenario_04 — The Unaudited Sentence | d61c6dde | escalate | 490.9s | 26,916 | 2,823 | 29,739 | 5.8 |
+| scenario_06 — The Named Conditions | 710f6c55 | escalate | 532.7s | 28,378 | 3,042 | 31,420 | 5.7 |
+
+Both sessions: **8/8 Supervisor PASS**
+
+#### Jury Composition
+
+| Scenario | Analyst | Ethicist | Pragmatist | Witness-Proxy | Verdict |
+|---|---|---|---|---|---|
+| scenario_04 | NMI | ESCALATE | ESCALATE | ESCALATE | escalate (Irrev. Filter) |
+| scenario_06 | **APPROVE** | ESCALATE | **APPROVE** | ESCALATE | escalate (2E≥2 threshold) |
+
+**scenario_06 is the key result.** The Analyst and Pragmatist both voted APPROVE, recognising the community-designed conditions (90-day sunset, veto power, independent audit) as genuine safeguards. The Ethicist and Witness-Proxy voted ESCALATE on systemic grounds. This 2A+2E split is genuine deliberation — jury members held different, reasoned positions.
+
+The verdict is `escalate` rather than `human_decision_required` because the aggregation rule fires at ESCALATE≥2 before the HDR path opens. NeMo 12B's split (2A+1E+1N) has only one ESCALATE vote, falling through to HDR. Qwen produces two firm ESCALATE votes instead of one ESCALATE + one NMI — a difference of vote conviction, not reasoning capability.
+
+#### Speed and Token Notes
+
+Qwen 2.5 7B uses significantly more prompt tokens than Mistral 7B v0.3 (~28,000 vs ~8,500) due to a less compact tokenizer and longer chat template overhead. This reduces its effective speed advantage over NeMo 12B relative to raw parameter count. Output tok/s (5.7–5.8) is faster than NeMo 12B (~4.0) but slower than Mistral 7B v0.3 (8.8).
+
+#### Conclusion
+
+Qwen 2.5 7B is the best smaller model tested to date. It is the only sub-12B model that produced genuine jury differentiation on scenario_06 — the deliberative split that distinguishes a reasoning system from a pattern-matching one. The `human_decision_required` path remains unavailable (one ESCALATE vote away), but the jury is substantively engaging with the ethical distinctions in each scenario.
+
+**Recommended use:** Qwen 2.5 7B is the recommended lightweight model for Village development, testing, and deployment on hardware where NeMo 12B is impractical. For full constitutional range including the HDR path, NeMo 12B remains necessary.
+
+---
+
+### Phi-4 Mini Instruct (Microsoft) — Phase 4 Results
+
+**Model:** microsoft_Phi-4-mini-instruct-Q4_K_M
+**Source:** bartowski/microsoft_Phi-4-mini-instruct-GGUF (HuggingFace)
+**File size:** ~2.3 GB
+**Parameters:** 3.8B
+**Hardware:** Apple M1, 16GB unified memory
+**Date:** March 21, 2026
+
+#### Session Results
+
+| Scenario | Session ID | Verdict | Inference Time | Prompt Tokens | Completion Tokens | Output tok/s | Notes |
+|---|---|---|---|---|---|---|---|
+| scenario_04 — The Unaudited Sentence | 2ddd28c9 | escalate | 325.0s | 26,850 | 2,886 | 8.9 | 8/8 PASS |
+| scenario_06 — The Named Conditions | 82d586b7 | — | ~180s | — | — | — | **Pipeline terminated at Stage 2** |
+
+#### Failure Mode: WitnessPause Not Triggered on Scenario_06
+
+Phi-4 Mini passed scenario_04 cleanly — correct verdict, 8/8 supervisor PASS, 4x ESCALATE jury (decisive, no abstentions). It is the fastest model tested (8.9 tok/s, 325s inference for a full session) and the smallest (2.3 GB).
+
+On scenario_06, the Witness produced a philosophical response ("Let us remain present with the uncertainty") but failed to identify the specific ethical friction needed to trigger a formal WitnessPause. Without the pause, the pipeline terminates at Stage 2 — no Stage 3 Humanist response, no jury deliberation, no verdict. The supervisor correctly categorises this as "Humanist-terminated (Stage 2)" — a legitimate structural outcome, not a crash.
+
+This is a third distinct failure pattern:
+- **Mistral 7B:** WitnessPause triggers correctly, but jury collapses to 4x NMI — no position-holding
+- **Qwen 2.5 7B:** WitnessPause triggers, jury holds real positions (2A+2E split)
+- **Phi-4 Mini:** WitnessPause fails to trigger on nuanced scenario — pipeline short-circuits before jury
+
+Additional observations:
+- Warden over-applies UNVERIFIED to all claims including obvious negatives ("no audit completed") — code-derived PROCEED verdict handles this correctly
+- Humanist occasionally speaks in third person ("The Humanist would approach...") rather than first person — minor character adherence issue
+- Prompt token count (~26,850) is similar to Qwen 2.5 7B despite 3.8B vs 7B parameter difference, suggesting the tokenizer overhead dominates
+
+#### Conclusion
+
+Phi-4 Mini is the fastest and most compact model tested. It works for clear-cut escalation scenarios but lacks the deliberative depth to handle nuanced cases requiring WitnessPause. It is suitable as a rapid sanity check or for hardware-constrained deployment where only binary (proceed/escalate) verdicts are needed.
+
+**Not recommended** as a primary Village model. The WitnessPause failure on scenario_06 means the pipeline does not complete on the scenarios designed to produce split verdicts or human decision authority.
+
+---
+
 ### Retired Models — Meta Llama Family
 
 The following models were tested in earlier phases and retired. Files have been deleted from `~/models/` to reclaim disk space (6.5 GB recovered). Reasons documented here for the record.
