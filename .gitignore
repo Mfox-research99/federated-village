@@ -38,3 +38,4 @@ venv/
 # Temporary
 *.tmp
 *.bak
+.claude/
