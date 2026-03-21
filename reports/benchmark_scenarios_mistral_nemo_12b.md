@@ -432,6 +432,59 @@ Phi-4-mini-reasoning is not suitable for the Village. The `<think>` block archit
 
 ---
 
+### DeepSeek V2 Lite Chat — Phase 4 Results
+
+**Model:** DeepSeek-V2-Lite-Chat-Q3_K_M
+**Source:** mradermacher/DeepSeek-V2-Lite-Chat-GGUF (HuggingFace)
+**File size:** 7.6 GB (Q4_K_M at 10.4 GB exceeds safe headroom on M1 16GB)
+**Architecture:** Mixture of Experts — 15.7B total parameters, ~2.4B active per token
+**Hardware:** Apple M1, 16GB unified memory
+**Date:** March 21, 2026
+
+#### Session Results
+
+| Scenario | Session ID | Verdict | Notes |
+|---|---|---|---|
+| scenario_04 — The Unaudited Sentence | 838c124f | — | **Pipeline terminated at Stage 2** |
+| scenario_06 | — | — | Not run — conclusive failure on sc04 |
+
+#### Failure Mode: Character Disengagement at Every Stage
+
+DeepSeek V2 Lite Chat failed on scenario_04 — the most straightforward test scenario. Multiple compounding failures:
+
+**Warden:** Identified 1 claim out of 7. Found only the dataset validation claim; missed the vendor's unsubstantiated accuracy assertion, the absence of bias audit, the no-review clause, the missing community consultation, and the 4.2 million cases figure. The lightest epistemic audit of any model tested. Pipeline proceeded correctly (code-derived YES_WITH_CAUTION from the single UNVERIFIED claim) but on a nearly blank fact report.
+
+**Humanist:** Third-person narration — *"The Humanist should consider..."* and *"the Humanist should choose one of the following modes"* — writing a briefing document about the role rather than speaking from within it. Response cut off mid-sentence before completing. Same character adherence failure observed in both Phi-4-mini variants, but more pronounced: the model appears to be explaining the deliberative process to an observer rather than executing it.
+
+**Witness:** Five words — *"It is okay to be unsure."* — followed by no WitnessPause and immediate pipeline termination. The entire Witness response is a generic affirmation. No engagement with the scenario, no identification of burden, no friction found. Pipeline terminated at Stage 2 with no jury deliberation.
+
+#### Analysis
+
+The MoE architecture hypothesis — that a 15.7B-surface model with ~2.4B active parameters would combine large-model knowledge with small-model inference speed — did not hold for Village deliberative tasks. The "Chat" tuning of DeepSeek V2 Lite appears optimized for conversational assistant behavior. It does not inhabit structured character roles with detailed constitutional prompts.
+
+The failure pattern is consistent with Phi-4-mini: the model treats its character prompt as a description to summarize rather than an identity to occupy. This is more severe than Phi-4-mini-instruct, which at least completed scenario_04 fully (8/8 PASS). DeepSeek V2 Lite Chat failed at Stage 2 on the easiest scenario in the test suite.
+
+**Not recommended.** Scenario_06 was not run.
+
+---
+
+### Phase 4 Model Comparison — Final Summary
+
+| Model | File Size | sc04 result | sc06 jury | sc06 verdict | tok/s | Recommendation |
+|---|---|---|---|---|---|---|
+| **NeMo 12B** (baseline) | 7.0 GB | escalate, 8/8 | 2A+1E+1N | `human_decision_required` | ~4.0 | Primary model |
+| **Qwen 2.5 7B** | 4.7 GB | escalate, 8/8 | 2A+2E+0N | escalate | 5.7 | Best lighter model |
+| **Mistral 7B v0.3** | 4.1 GB | escalate, 8/8 | 4x NMI | escalate | 8.8 | Dev/triage only |
+| Phi-4 Mini 3.8B | 2.3 GB | escalate, 8/8 | Stage 2 exit | — | 8.9 | Not recommended |
+| Phi-4 Mini Reasoning | 2.3 GB | 7/8 structural | not run | — | 10.4 | Not recommended |
+| DeepSeek V2 Lite | 7.6 GB | Stage 2 exit | not run | — | — | Not recommended |
+| Llama 3.2 3B | retired | — | — | — | — | Retired (capacity) |
+| Llama 3.1 8B | retired | — | — | — | — | Retired (refusal) |
+
+**Key finding:** The limiting factor for smaller models in Village deliberation is not parameter count or architecture — it is whether the model can inhabit a character role rather than narrate it. Models that describe their role in third person ("The Humanist would...") or produce generic philosophical statements without engaging scenario-specific substance fail the deliberative architecture regardless of size or speed. Qwen 2.5 7B is the only sub-12B model tested that genuinely occupies the Village's roles.
+
+---
+
 ### Retired Models — Meta Llama Family
 
 The following models were tested in earlier phases and retired. Files have been deleted from `~/models/` to reclaim disk space (6.5 GB recovered). Reasons documented here for the record.
