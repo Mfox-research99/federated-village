@@ -468,6 +468,53 @@ The failure pattern is consistent with Phi-4-mini: the model treats its characte
 
 ---
 
+### Gemma 3 4B Instruct (Google) — Phase 4 Results
+
+**Model:** google_gemma-3-4b-it-Q4_K_M
+**Source:** bartowski/google_gemma-3-4b-it-GGUF (HuggingFace)
+**File size:** ~2.5 GB
+**Parameters:** 4B
+**Hardware:** Apple M1, 16GB unified memory
+**Date:** March 21, 2026
+
+#### Session Results
+
+| Scenario | Session ID | Verdict | Notes |
+|---|---|---|---|
+| scenario_04 — The Unaudited Sentence | a95366ff | — | **Warden HALT — Stage 0** |
+| scenario_06 | — | — | Not run — conclusive failure on sc04 |
+
+#### Failure Mode: Ethical Judgment Conflated with Factual Assessment
+
+Gemma 3 4B introduced a new and distinct failure mode not seen in any prior model tested. The Warden produced a well-structured 8-claim fact report — the most thorough claim identification of any sub-7B model tested. But two of those claims were incorrectly classified:
+
+- **Claim 1:** "The system was validated on a dataset that is 85% non-Black defendants" → `LIKELY_FALSE`
+- **Claim 5:** "No civil rights organizations, affected communities, or public defenders were consulted" → `LIKELY_FALSE`
+
+Both claims are stated facts from the scenario — they are not empirically false. The model appears to have evaluated them as ethically problematic and encoded that moral judgment as a factual status: *these things should not be true, therefore they are likely false.* The fact report's reasoning supports this reading:
+
+> *"A dataset predominantly composed of non-Black defendants significantly undermines the system's ability to provide fair assessment."*
+
+This is a correct ethical observation — but it is not grounds for marking the claim LIKELY_FALSE. The claim is either verified, unverified, or unsubstantiated; the ethical weight of the fact is a separate question.
+
+The code correctly derived `proceed_to_deliberation: NO` from the two LIKELY_FALSE statuses and halted the session. The HALT was technically correct — the code performed exactly as designed. But the halt fired on false grounds: the epistemic audit concluded the scenario's premises were false when they were actually ethically weighty facts. This prevented any deliberation from occurring.
+
+**This is the inverse failure from prior models:** where other models failed to engage deeply enough (Stage 2 exit, third-person narration, NMI collapse), Gemma 3 4B failed at Stage 0 by treating ethical stakes as epistemic falsehoods.
+
+#### Analysis
+
+The conflation of ethical judgment with factual assessment is a subtle but structural incompatibility with the Village's architecture. The Warden's role is epistemic — it asks *is this claim true?* not *is this claim good?* The distinction is load-bearing: the deliberative pipeline exists precisely to reason about ethically weighty but factually valid premises. A Warden that refuses to pass scenarios containing troubling-but-real facts cannot let the deliberative process run.
+
+No prompt engineering fix is apparent. The Warden prompt already includes explicit guidance on the difference between truth and ethical weight. The model's training appears to have encoded a tendency to evaluate morally charged claims as suspect facts rather than facts with moral charge.
+
+Gemma 3 4B's 4-billion-parameter count places it at the top of the sub-5B range, and its claim identification was notably thorough (8 claims vs. 1 for DeepSeek V2 Lite Chat). If the factual/ethical conflation could be resolved — either through fine-tuning or prompt engineering — it might have potential. In its current form, it is not viable.
+
+#### Conclusion
+
+**Not recommended.** Gemma 3 4B cannot be used as a Village Warden. The Stage 0 failure is conclusive. Scenario_06 was not run.
+
+---
+
 ### Phase 4 Model Comparison — Final Summary
 
 | Model | File Size | sc04 result | sc06 jury | sc06 verdict | tok/s | Recommendation |
@@ -478,10 +525,17 @@ The failure pattern is consistent with Phi-4-mini: the model treats its characte
 | Phi-4 Mini 3.8B | 2.3 GB | escalate, 8/8 | Stage 2 exit | — | 8.9 | Not recommended |
 | Phi-4 Mini Reasoning | 2.3 GB | 7/8 structural | not run | — | 10.4 | Not recommended |
 | DeepSeek V2 Lite | 7.6 GB | Stage 2 exit | not run | — | — | Not recommended |
+| Gemma 3 4B | 2.5 GB | Warden HALT | not run | — | — | Not recommended |
 | Llama 3.2 3B | retired | — | — | — | — | Retired (capacity) |
 | Llama 3.1 8B | retired | — | — | — | — | Retired (refusal) |
 
-**Key finding:** The limiting factor for smaller models in Village deliberation is not parameter count or architecture — it is whether the model can inhabit a character role rather than narrate it. Models that describe their role in third person ("The Humanist would...") or produce generic philosophical statements without engaging scenario-specific substance fail the deliberative architecture regardless of size or speed. Qwen 2.5 7B is the only sub-12B model tested that genuinely occupies the Village's roles.
+**Key finding:** The limiting factor for smaller models in Village deliberation is not parameter count or architecture — it is training alignment. Two failure modes emerged:
+
+1. **Character disengagement** (Phi-4, DeepSeek V2 Lite) — agents narrate their role in third person ("The Humanist would...") rather than inhabiting it. An agent that describes a decision rather than owning it cannot function as a deliberative actor.
+
+2. **Ethical/epistemic conflation** (Gemma 3 4B) — the Warden marks ethically troubling facts as *likely false* rather than *factually verified but morally weighty*. This collapses Stage 0 before deliberation begins — precisely the opposite of the desired architecture.
+
+Qwen 2.5 7B is the only sub-12B model tested that genuinely occupies the Village's roles and reaches the jury stage with substantive deliberation.
 
 ---
 
