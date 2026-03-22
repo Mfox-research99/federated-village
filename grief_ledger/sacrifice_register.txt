@@ -407,3 +407,22 @@ Session:        e340670b
 Verdict:        escalate
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_de37c6eb_pause_2026-03-22T16-00-53]
+Almost-became:  Deliberation proceeding without pause — The lived experiences and potential harms to Black men disproportionately routed to police-supported crisis response, and the erosion of trust within 
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black men experiencing crisis, the broader Black community, and the crisis services organizations serving them.
+Still-hurts:    True
+Session:        de37c6eb
+Register:       framework
+---
+
+[SACRIFICE-ID: session_de37c6eb_verdict_2026-03-22T16-31-32]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_REQUEST_MORE_INFORMATION
+Carried-by:     Black men experiencing crisis, the broader Black community, and the crisis services organizations serving them.
+Still-hurts:    True
+Session:        de37c6eb
+Verdict:        request_more_information
+Register:       framework
+---
