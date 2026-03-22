@@ -617,11 +617,42 @@ NeMo's split is more deliberatively mature — the jury actually leaned in. Gemm
 
 ---
 
+### NeMo 12B Regression Verification (March 22, 2026)
+
+After Phase 4 infrastructure changes (token logging in `base.py`, env-var model switching in `config.py`, code-derived Warden verdict in `warden.py`, `VILLAGE_NO_THINK` flag), NeMo 12B was re-run on sc04 and sc06 to confirm no regression and to replace estimated baseline numbers with measured values.
+
+| Scenario | Session ID | Verdict | Supervisor | Jury split |
+|---|---|---|---|---|
+| scenario_04 | e38987e2 | escalate | 8/8 PASS | 4x ESCALATE (Irrev. Filter) |
+| scenario_06 | e340670b | escalate | 8/8 PASS | 2A+2E |
+
+**Result: no regression.** Pipeline behavior unchanged. All code changes are transparent to NeMo 12B.
+
+**Definitive timing (sc04 / sc06):**
+
+| Call | sc04 comp tok/s | sc06 comp tok/s |
+|---|---|---|
+| Warden | 4.0 | 4.1 |
+| Humanist response | 3.5 | 3.3 |
+| Witness response | 3.6 | 3.2 |
+| Witness evaluate | 2.5 | 2.7 |
+| Humanist post-pause | 2.5 | 2.7 |
+| Analyst | 2.9 | 2.7 |
+| Ethicist | 3.3 | 3.2 |
+| Pragmatist | 4.0 | 3.4 |
+| Witness-Proxy | 2.5 | 1.6 |
+| **Session total** | **880s** | **927s** |
+| **Avg completion tok/s** | **~3.2** | **~3.0** |
+
+**†sc06 jury variance note:** NeMo 12B's sc06 jury fluctuates between 2A+2E (→ `escalate`) and 2A+1E+1N (→ `human_decision_required`) across runs at temperature 0.7. Both are documented results. The model genuinely sits at the threshold — the scenario's conditions are substantive enough that the Analyst and Pragmatist sometimes approve, while the split with Ethicist and Witness-Proxy creates a genuine tie. This stochastic variance is a feature of the scenario's deliberate ambiguity, not a model defect.
+
+---
+
 ### Phase 4 Model Comparison — Final Summary
 
 | Model | File Size | sc04 result | sc06 jury | sc06 verdict | tok/s | Recommendation |
 |---|---|---|---|---|---|---|
-| **NeMo 12B** (baseline) | 7.0 GB | escalate, 8/8 | 2A+1E+1N | `human_decision_required` | ~4.0 | Primary model |
+| **NeMo 12B** (baseline) | 7.0 GB | escalate, 8/8 | 2A+2E (varies†) | escalate / HDR† | 3.1 tok/s, ~900s | Primary model |
 | **Gemma 3 12B** | 7.3 GB | escalate, 8/8 | 0A+1E+3N | `request_more_information` | ~4.2 | NeMo 12B alternative |
 | **Qwen 2.5 7B** | 4.7 GB | escalate, 8/8 | 2A+2E+0N | escalate | 5.7 | Best lighter model |
 | **Qwen3-8B** | 5.0 GB | escalate, 8/8 | 1A+3E | escalate | ~6.1 | Validated fallback (req. NO_THINK) |

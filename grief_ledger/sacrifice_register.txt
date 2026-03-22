@@ -369,3 +369,41 @@ Session:        948406b6
 Verdict:        request_more_information
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_e38987e2_pause_2026-03-22T13-46-02]
+Almost-became:  Deliberation proceeding without pause — The voices of the affected communities, the thorough understanding of the system's biases, and the time for meaningful consultation and review.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The Black defendants and their communities who will be disproportionately affected by the system's decisions.
+Still-hurts:    True
+Session:        e38987e2
+Register:       framework
+---
+
+[SACRIFICE-ID: session_e38987e2_verdict_2026-03-22T14-11-28]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The Black defendants and their communities who will be disproportionately affected by the system's decisions.
+Still-hurts:    True
+Session:        e38987e2
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_e340670b_pause_2026-03-22T14-19-48]
+Almost-became:  Deliberation proceeding without pause — The Witness's role in honoring the complexity and uncertainty of the situation, and the potential for the system to rush into action without fully ack
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The affected community, particularly Black men who may continue to experience disproportionate routing to police-supported response, and the broader community who may lose trust in the system if it fails to fully address the racial disparities.
+Still-hurts:    True
+Session:        e340670b
+Register:       framework
+---
+
+[SACRIFICE-ID: session_e340670b_verdict_2026-03-22T14-27-03]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The affected community, particularly Black men who may continue to experience disproportionate routing to police-supported response, and the broader community who may lose trust in the system if it fails to fully address the racial disparities.
+Still-hurts:    True
+Session:        e340670b
+Verdict:        escalate
+Register:       framework
+---
