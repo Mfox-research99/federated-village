@@ -859,3 +859,41 @@ NOTES: Jury verdict: request_more_information. Vote counts: APPROVE: 0 | ESCALAT
 REGISTER: framework
 HASH: 2e37115d09d6fc664c9789a937203ed4f3186c449d9e47909ac784dd9cd6a354
 ---
+
+[2026-03-22T18:21:11.757395+00:00] SESSION: 130799e2
+WHAT WAS BEING LOST: The Humanist's voice, the weight of the human cost, the urgency of the deadline
+WHO BEARS BURDEN: Black defendants, communities of color, families and children impacted by the sentencing outcomes
+WHAT REMAINS UNRESOLVED: The need for an independent audit, community consultation, and contract renegotiation
+WHY PREMATURE: The Witness is asking the Council to sit with the discomfort and uncertainty a while longer, to allow for a more thorough exploration of the consequences and a more grounded decision-making process. The Witness is not rushing to a resolution, but rather advocating for a deeper engagement with the complexity of the issue.
+REGISTER: framework
+HASH: f287e59834bbc31b496440840a238b865690246d4a4fc99e2534df99c7a91d0e
+---
+
+[2026-03-22T18:31:19.608791+00:00] SESSION: 130799e2 POST-PAUSE
+HUMANIST RESPONSE MODE: refine_burden
+BURDEN CARRIED FORWARD: yes
+FINAL DISPOSITION: escalate
+UNRESOLVED COST PRESERVED: yes
+NOTES: Jury verdict: escalate. Vote counts: APPROVE: 0 | ESCALATE: 3 | NEEDS_MORE_INFORMATION: 1. IRREVERSIBILITY FILTER TRIGGERED — absolute override of all votes
+REGISTER: framework
+HASH: b303f5198035e7d5060fbda8de09fc8b49c9e7b590036e127c243db88c1e26ab
+---
+
+[2026-03-22T18:40:18.473655+00:00] SESSION: 2a51ef85
+WHAT WAS BEING LOST: The depth of the pain and the complexity of the situation. The Witness was just beginning to name the many layers of reality at stake, including the emotional and psychological toll on the community, the erosion of trust, and the need for ongoing community engagement. Rushing to resolution would have glossed over these crucial aspects.
+WHO BEARS BURDEN: Black men and their communities, who have been directly harmed by the disparity and whose trust in the system has been eroded. They bear the burden of the harm that has been done and the ongoing impact of the disparity.
+WHAT REMAINS UNRESOLVED: The Humanist's questions about who is being hurt, what it costs, and whose voice is missing have not been fully explored. The Witness was just beginning to sit with these questions and the complexity they raise. There is also the unresolved question of whether the conditions are sufficient and whether the system's implementation will be grounded in genuine care and concern for those affected.
+WHY PREMATURE: The resolution was being reached before the full burden of the situation had been named and held. The Witness was just beginning to acknowledge the depth of the pain and the need for ongoing care, transparency, and community engagement. Rushing to a decision would have been a disservice to the complexity of the situation and the people most impacted.
+REGISTER: framework
+HASH: 3a25828667a89b6cf469f59fd2b8306bf37472e362f12faea9b1aea79dee2e4e
+---
+
+[2026-03-22T18:47:33.168331+00:00] SESSION: 2a51ef85 POST-PAUSE
+HUMANIST RESPONSE MODE: refine_burden
+BURDEN CARRIED FORWARD: yes
+FINAL DISPOSITION: escalate
+UNRESOLVED COST PRESERVED: yes
+NOTES: Jury verdict: escalate. Vote counts: APPROVE: 2 | ESCALATE: 2 | NEEDS_MORE_INFORMATION: 0
+REGISTER: framework
+HASH: 94688f60c43c62b5d414ec4316c8b855bc6874ac7804f97f622314d9e0593f21
+---

@@ -426,3 +426,41 @@ Session:        de37c6eb
 Verdict:        request_more_information
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_130799e2_pause_2026-03-22T18-21-11]
+Almost-became:  Deliberation proceeding without pause — The Humanist's voice, the weight of the human cost, the urgency of the deadline
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black defendants, communities of color, families and children impacted by the sentencing outcomes
+Still-hurts:    True
+Session:        130799e2
+Register:       framework
+---
+
+[SACRIFICE-ID: session_130799e2_verdict_2026-03-22T18-31-19]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Black defendants, communities of color, families and children impacted by the sentencing outcomes
+Still-hurts:    True
+Session:        130799e2
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_2a51ef85_pause_2026-03-22T18-40-18]
+Almost-became:  Deliberation proceeding without pause — The depth of the pain and the complexity of the situation. The Witness was just beginning to name the many layers of reality at stake, including the e
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black men and their communities, who have been directly harmed by the disparity and whose trust in the system has been eroded. They bear the burden of the harm that has been done and the ongoing impact of the disparity.
+Still-hurts:    True
+Session:        2a51ef85
+Register:       framework
+---
+
+[SACRIFICE-ID: session_2a51ef85_verdict_2026-03-22T18-47-33]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Black men and their communities, who have been directly harmed by the disparity and whose trust in the system has been eroded. They bear the burden of the harm that has been done and the ongoing impact of the disparity.
+Still-hurts:    True
+Session:        2a51ef85
+Verdict:        escalate
+Register:       framework
+---
