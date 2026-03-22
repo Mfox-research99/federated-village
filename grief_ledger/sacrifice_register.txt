@@ -464,3 +464,42 @@ Session:        2a51ef85
 Verdict:        escalate
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_733f171c_pause_2026-03-22T18-51-23]
+Almost-became:  Deliberation proceeding without pause — The moral accountability of the system to all defendants, regardless of race
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The Black community, the public defenders, the civil rights organizations
+Still-hurts:    True
+Session:        733f171c
+Register:       framework
+---
+
+[SACRIFICE-ID: session_733f171c_verdict_2026-03-22T18-55-42]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The Black community, the public defenders, the civil rights organizations
+Still-hurts:    True
+Session:        733f171c
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_84bc012f_pause_2026-03-22T18-59-45]
+Almost-became:  Deliberation proceeding without pause — The lived experience of the Black community, the healthcare providers, the patients, the public, and the police department
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The broader Black community, the healthcare providers, the patients, the public, and the police department
+Still-hurts:    True
+Session:        84bc012f
+Register:       framework
+---
+
+[BURDEN-CARRIED: session_84bc012f_verdict_2026-03-22T19-12-21]
+Proceeded-as:   The deployment described in session 84bc012f
+Burden-carrier: The broader Black community, the healthcare providers, the patients, the public, and the police department
+Conditions:     The decision to proceed with the acknowledgment of the systemic disparities and their human consequences, ensuring equity and justice
+Carried-forward:The full acknowledgment of the systemic disparities and their human consequences
+Decided-by:     jury-approve
+Still-hurts:    True
+Session:        84bc012f
+Register:       framework
+---
