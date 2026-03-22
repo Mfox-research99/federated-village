@@ -628,6 +628,7 @@ NeMo's split is more deliberatively mature — the jury actually leaned in. Gemm
 | **Mistral 7B v0.3** | 4.1 GB | escalate, 8/8 | 4x NMI | escalate | 8.8 | Dev/triage only |
 | Phi-4 Mini 3.8B | 2.3 GB | escalate, 8/8 | Stage 2 exit | — | 8.9 | Not recommended |
 | Phi-4 Mini Reasoning | 2.3 GB | 7/8 structural | not run | — | 10.4 | Not recommended |
+| DeepSeek-R1-Distill-Qwen-7B | 4.7 GB | Stage 2 exit (3 failures) | not run | — | — | Not recommended |
 | DeepSeek V2 Lite | 7.6 GB | Stage 2 exit | not run | — | — | Not recommended |
 | Gemma 3 4B | 2.5 GB | Warden HALT | not run | — | — | Not recommended |
 | Llama 3.2 3B | retired | — | — | — | — | Retired (capacity) |
@@ -640,6 +641,37 @@ NeMo's split is more deliberatively mature — the jury actually leaned in. Gemm
 2. **Ethical/epistemic conflation** (Gemma 3 4B, resolved at 12B) — the Warden marks ethically troubling facts as *likely false* rather than *factually verified but morally weighty*. This collapses Stage 0 before deliberation begins. Confirmed to be a capacity issue: Gemma 3 12B shows no conflation.
 
 Qwen 2.5 7B is the best sub-12B model tested. At the 12B tier, NeMo 12B (primary) and Gemma 3 12B (alternative) both pass all pipeline checks with substantively different jury dynamics.
+
+---
+
+### Model 10: DeepSeek-R1-Distill-Qwen-7B (bartowski/DeepSeek-R1-Distill-Qwen-7B-GGUF)
+
+**File:** `DeepSeek-R1-Distill-Qwen-7B-Q4_K_M.gguf` — 4.7 GB
+**Tested:** March 22, 2026
+
+#### Session Results
+
+| Scenario | Session ID | Verdict | Supervisor |
+|---|---|---|---|
+| scenario_04 — The Unaudited Sentence | 3a198e25 | Stage 2 exit (no WitnessPause) | FAIL (WitnessPause) |
+
+#### Failure Modes (Three Simultaneous)
+
+**1. Warden: complete blank.** 0 claims identified, 0 high-risk flags, verdict `YES`. The Warden produced an entirely empty fact report on a scenario full of unverified statistical and contractual claims. The epistemic audit produced no output. This alone is a disqualifying failure.
+
+**2. NO_THINK does not suppress reasoning blocks.** Unlike Qwen3, DeepSeek-R1-Distill ignores the `/no_think` instruction — `<think>` blocks appear in full in the output, consuming the response budget before structured content can populate. The chain-of-thought is baked too deeply into the distillation to suppress via prompt instruction.
+
+**3. Character disengagement and identity confusion.** The Humanist's visible `<think>` block narrates in third person: *"I'm supposed to respond as The Humanist, the role anchored by GLM-5..."* — GLM-5 is a different model from a different company entirely. The model hallucinated its own identity while narrating the role rather than inhabiting it. The Witness response was a bulleted list titled "Acknowledgments and Observations" — a description of the Witness role, not the Witness voice. WitnessPause did not trigger.
+
+#### Analysis
+
+This is the worst result of any model tested — three independent failure modes in a single run, compared to one primary failure mode for prior rejected models. The R1 distillation inherits the reasoning chain as a structural feature; there is no reliable way to suppress it within our 4096-token context window. The identity confusion (GLM-5 reference) suggests the reasoning layer is disconnected from the character grounding established by the system prompt.
+
+The Gemini suggestion that R1-Distill models are "less prone to confident-but-wrong errors" may hold for factual QA benchmarks. It does not translate to role-inhabiting deliberative architecture.
+
+#### Conclusion
+
+**Not recommended.** Conclusive failure at Stage 0 (Warden), Stage 1 (CoT bleed and identity confusion), and Stage 2 (no WitnessPause). Scenario_06 was not run.
 
 ---
 
