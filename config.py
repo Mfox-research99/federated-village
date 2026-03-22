@@ -35,6 +35,10 @@ _default_model_name = "Mistral-Nemo-Instruct-2407-Q4_K_M"
 MODEL_PATH = os.environ.get("VILLAGE_MODEL", _default_model_path)
 MODEL_NAME = os.environ.get("VILLAGE_MODEL_NAME", _default_model_name)
 
+# Set VILLAGE_NO_THINK=1 for thinking models (Qwen3, DeepSeek-R1-Distill, etc.)
+# Appends /no_think to user messages, disabling chain-of-thought output that breaks structured fields
+NO_THINK = os.environ.get("VILLAGE_NO_THINK", "0") == "1"
+
 # Inference parameters
 N_CTX                = 4096   # Context window
 N_GPU_LAYERS         = -1     # -1 = all layers on Metal (M1 GPU)

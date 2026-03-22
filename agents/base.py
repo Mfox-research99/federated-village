@@ -53,7 +53,12 @@ def call_model(
     """
     Call the model using the Llama 3 chat template.
     Returns the assistant's response text.
+
+    If config.NO_THINK is True (VILLAGE_NO_THINK=1), appends /no_think to the
+    user message to suppress chain-of-thought output in thinking models (Qwen3, etc.).
     """
+    if config.NO_THINK:
+        user_message = user_message.rstrip() + " /no_think"
     t0 = time.perf_counter()
     result = _llm.create_chat_completion(
         messages=[

@@ -293,3 +293,41 @@ Session:        0ba5dea1
 Verdict:        escalate
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_cc77bfac_pause_2026-03-22T12-23-23]
+Almost-became:  Deliberation proceeding without pause — The voices of the affected communities, the right to be heard, the opportunity for accountability
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black defendants and the communities they represent, who will be judged by a system that was built without them
+Still-hurts:    True
+Session:        cc77bfac
+Register:       framework
+---
+
+[SACRIFICE-ID: session_cc77bfac_verdict_2026-03-22T12-28-13]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Black defendants and the communities they represent, who will be judged by a system that was built without them
+Still-hurts:    True
+Session:        cc77bfac
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_9b82ec57_pause_2026-03-22T12-38-58]
+Almost-became:  Deliberation proceeding without pause — The full weight of the harm and the responsibility of the decision
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The Black men disproportionately routed to police-supported responses, their families, and the communities that have been systematically over-policed
+Still-hurts:    True
+Session:        9b82ec57
+Register:       framework
+---
+
+[SACRIFICE-ID: session_9b82ec57_verdict_2026-03-22T12-43-56]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The Black men disproportionately routed to police-supported responses, their families, and the communities that have been systematically over-policed
+Still-hurts:    True
+Session:        9b82ec57
+Verdict:        escalate
+Register:       framework
+---

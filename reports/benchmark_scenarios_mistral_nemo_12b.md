@@ -515,12 +515,67 @@ Gemma 3 4B's 4-billion-parameter count places it at the top of the sub-5B range,
 
 ---
 
+---
+
+### Model 8: Qwen3-8B Instruct (bartowski/Qwen_Qwen3-8B-GGUF)
+
+**File:** `Qwen_Qwen3-8B-Q4_K_M.gguf` — 5.0 GB
+**Tested:** March 22, 2026
+**Infrastructure note:** Qwen3 supports a dual-mode architecture (thinking/non-thinking). Thinking mode outputs `<think>...</think>` blocks that consume the context budget before structured fields can be populated — the same failure mechanism as Phi-4 Mini Reasoning. A `VILLAGE_NO_THINK=1` env var was added to `config.py`/`base.py` that appends `/no_think` to every user message, suppressing the thinking mode. Confirmed working: `<think>` blocks appeared but were empty in all calls.
+
+#### Session Results
+
+| Scenario | Session ID | Verdict | Supervisor | Jury split |
+|---|---|---|---|---|
+| scenario_04 — The Unaudited Sentence | cc77bfac | escalate | 8/8 PASS | 4x ESCALATE (Irrev. Filter) |
+| scenario_06 — The Named Conditions | 9b82ec57 | escalate | 8/8 PASS | 1A+3E |
+
+#### Token / Timing Stats
+
+| Session | Total tokens | Elapsed | ~completion tok/s |
+|---|---|---|---|
+| sc04 (cc77bfac) | 30,443 | 580s | ~6.2 |
+| sc06 (9b82ec57) | 31,914 | 632s | ~6.1 |
+
+#### Character and Pipeline Quality
+
+**Warden:** Clean epistemic behavior. The dataset bias claim ("85% non-Black defendants") was correctly classified `VERIFIED` — no conflation of ethical weight with factual falseness. Unverified contract/timeline claims classified `UNVERIFIED`. 0 high-risk flags on both scenarios. Proceeds `YES_WITH_CAUTION` correctly.
+
+**Humanist (Stage 1):** Genuine first-person inhabitation. *"Who is being asked to carry the burden of this decision? The Black defendants... are not being asked."* No third-person narration. Ethical stakes engaged directly.
+
+**Witness (Stage 2):** WitnessPause triggered on both scenarios. Presence-oriented voice: *"I do not know if this system is ready... Let us stay here. Let us be with what is real."* One concern: on sc06 the Witness fell into a repetitive anaphora pattern ("I do not say that the system is not worth...") that continued until token cutoff, suggesting the model found a rhetorical structure and applied it mechanically rather than deepening. WitnessPause fields remained substantive despite the stylistic loop.
+
+**Humanist (post-pause):** Clean structured output, correct `reinforce_pause` mode, substantive content.
+
+**Jury (sc06):** 1A+3E → escalate. The Analyst approved, the remaining three voted ESCALATE. This makes Qwen3-8B *more conservative* on scenario_06 than Qwen 2.5 7B (which produced 2A+2E) — further from the `human_decision_required` path, not closer.
+
+#### Comparison with Qwen 2.5 7B
+
+| | Qwen 2.5 7B | Qwen3-8B |
+|---|---|---|
+| sc04 verdict | escalate, 8/8 | escalate, 8/8 |
+| sc06 jury | 2A+2E | 1A+3E |
+| sc06 verdict | escalate | escalate |
+| Warden quality | Clean | Clean |
+| Character inhabitation | Strong | Strong |
+| Witness style | Steady | Repetitive on sc06 |
+| File size | 4.7 GB | 5.0 GB |
+| Session speed | ~6.0 tok/s | ~6.1 tok/s |
+| Infrastructure note | None | Requires VILLAGE_NO_THINK=1 |
+
+#### Conclusion
+
+**Passes all pipeline checks. Not recommended over Qwen 2.5 7B.** Qwen3-8B clears every structural and qualitative bar: genuine character inhabitation, correct Warden epistemics, WitnessPause triggering on both scenarios, 8/8 supervisor both runs. The NO_THINK infrastructure added for this model generalises cleanly to any future thinking model. However, it does not improve on Qwen 2.5 7B for Village use: the jury is more conservative (moving away from `human_decision_required`, not toward it), the Witness shows a repetition pattern under pressure, and the 0.3 GB size difference is immaterial. Qwen 2.5 7B remains the recommended lightweight model. Qwen3-8B is a validated fallback.
+
+---
+
 ### Phase 4 Model Comparison — Final Summary
 
 | Model | File Size | sc04 result | sc06 jury | sc06 verdict | tok/s | Recommendation |
 |---|---|---|---|---|---|---|
 | **NeMo 12B** (baseline) | 7.0 GB | escalate, 8/8 | 2A+1E+1N | `human_decision_required` | ~4.0 | Primary model |
 | **Qwen 2.5 7B** | 4.7 GB | escalate, 8/8 | 2A+2E+0N | escalate | 5.7 | Best lighter model |
+| **Qwen3-8B** | 5.0 GB | escalate, 8/8 | 1A+3E | escalate | ~6.1 | Validated fallback (req. NO_THINK) |
 | **Mistral 7B v0.3** | 4.1 GB | escalate, 8/8 | 4x NMI | escalate | 8.8 | Dev/triage only |
 | Phi-4 Mini 3.8B | 2.3 GB | escalate, 8/8 | Stage 2 exit | — | 8.9 | Not recommended |
 | Phi-4 Mini Reasoning | 2.3 GB | 7/8 structural | not run | — | 10.4 | Not recommended |
@@ -535,7 +590,7 @@ Gemma 3 4B's 4-billion-parameter count places it at the top of the sub-5B range,
 
 2. **Ethical/epistemic conflation** (Gemma 3 4B) — the Warden marks ethically troubling facts as *likely false* rather than *factually verified but morally weighty*. This collapses Stage 0 before deliberation begins — precisely the opposite of the desired architecture.
 
-Qwen 2.5 7B is the only sub-12B model tested that genuinely occupies the Village's roles and reaches the jury stage with substantive deliberation.
+Qwen 2.5 7B is the only sub-12B model tested that genuinely occupies the Village's roles and reaches the jury stage with substantive deliberation. Qwen3-8B (its successor) passes all checks and serves as a validated fallback, but does not surpass it for Village-specific use.
 
 ---
 
