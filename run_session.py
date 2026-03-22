@@ -50,6 +50,7 @@ from supervisor.evaluate import evaluate, print_evaluation, save_evaluation
 from utils.human_loop import pause_point_a, pause_point_b, pause_point_c
 from utils.grief_ledger import append_sacrifice_pause, append_sacrifice_verdict
 from utils.hash_chain import append_entry_hash, compute_session_hash, get_session_content_hash
+from utils.retrieval import retrieve_context, index_session
 
 
 # ---------------------------------------------------------------------------
@@ -282,6 +283,21 @@ def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool
     else:
         print("[SESSION] Warden skipped (--skip-warden flag set).\n", flush=True)
 
+    # -----------------------------------------------------------------------
+    # Retrieval augmentation (Phase 4) — VILLAGE_RETRIEVAL=1
+    # Retrieves the most relevant prior deliberations via BM25 over the
+    # session index and prepends them to scenario_context for all agents.
+    # -----------------------------------------------------------------------
+    if config.RETRIEVAL:
+        print("[RETRIEVAL] Querying session index for relevant prior deliberations...", flush=True)
+        prior_context = retrieve_context(scenario_text, exclude_session=session_id)
+        if prior_context:
+            scenario_context = prior_context + "\n\n" + scenario_context
+            n_sessions = prior_context.count("\n[")  # rough count of retrieved sessions
+            print(f"[RETRIEVAL] Prior context injected ({n_sessions} session(s)).\n", flush=True)
+        else:
+            print("[RETRIEVAL] No relevant prior sessions found — proceeding without retrieval context.\n", flush=True)
+
     # Initialize agents
     humanist = HumanistAgent()
     witness = WitnessAgent()
@@ -410,6 +426,14 @@ def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool
     session_log["ended_at"] = datetime.now(timezone.utc).isoformat()
     log_path = save_session_log(session_log)
     print(f"[SESSION] Full log saved: {log_path}\n", flush=True)
+
+    # Index this session for future retrieval
+    try:
+        indexed = index_session(session_log)
+        if indexed:
+            print(f"[RETRIEVAL] Session indexed for future retrieval.", flush=True)
+    except Exception as e:
+        print(f"[RETRIEVAL] Indexing skipped: {e}", flush=True)
 
     print("--- SUPERVISOR EVALUATION ---", flush=True)
     evaluation = evaluate(session_log)

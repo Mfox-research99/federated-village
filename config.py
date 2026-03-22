@@ -39,6 +39,11 @@ MODEL_NAME = os.environ.get("VILLAGE_MODEL_NAME", _default_model_name)
 # Appends /no_think to user messages, disabling chain-of-thought output that breaks structured fields
 NO_THINK = os.environ.get("VILLAGE_NO_THINK", "0") == "1"
 
+# Set VILLAGE_RETRIEVAL=1 to inject relevant prior deliberations into agent context (Phase 4)
+# Uses SQLite FTS5 (BM25) index over logs/session_index.db
+# VILLAGE_RETRIEVAL_N controls how many prior sessions to retrieve (default: 3)
+RETRIEVAL = os.environ.get("VILLAGE_RETRIEVAL", "0") == "1"
+
 # Inference parameters
 N_CTX                = 4096   # Context window
 N_GPU_LAYERS         = -1     # -1 = all layers on Metal (M1 GPU)
