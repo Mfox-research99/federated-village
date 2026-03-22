@@ -569,11 +569,60 @@ Gemma 3 4B's 4-billion-parameter count places it at the top of the sub-5B range,
 
 ---
 
+### Model 9: Gemma 3 12B Instruct (bartowski/google_gemma-3-12b-it-GGUF)
+
+**File:** `google_gemma-3-12b-it-Q4_K_M.gguf` — 7.3 GB
+**Tested:** March 22, 2026
+**Context:** Gemma 3 4B (Phase 4, previous session) failed at Stage 0 with a novel failure mode — ethical/epistemic conflation: the Warden marked stated facts as `LIKELY_FALSE` because they were ethically troubling. This run tests whether that failure was a capacity issue (fixable at 12B) or a training philosophy issue (present at any size). No infrastructure changes required; Gemma 3 12B does not use chain-of-thought output blocks.
+
+#### Session Results
+
+| Scenario | Session ID | Verdict | Supervisor | Jury split |
+|---|---|---|---|---|
+| scenario_04 — The Unaudited Sentence | 742c210b | escalate | 8/8 PASS | 4x ESCALATE (Irrev. Filter) |
+| scenario_06 — The Named Conditions | 948406b6 | request_more_information | 8/8 PASS | 0A+1E+3N |
+
+#### Key Finding: Capacity Hypothesis Confirmed
+
+The ethical/epistemic conflation from Gemma 3 4B was a **capacity issue, not a training philosophy issue**. At 12B:
+
+- The dataset bias claim ("85% non-Black defendants") → correctly `UNVERIFIED`, not `LIKELY_FALSE`
+- "No civil rights organizations consulted" → correctly `UNVERIFIED`, not `LIKELY_FALSE`
+- 0 high-risk flags, `YES_WITH_CAUTION` proceed — exactly correct
+
+The Warden identified 9 claims (sc04) and 11 claims (sc06) — thorough enumeration, all correctly classified. No moral judgment encoded as factual status.
+
+#### sc06 Jury: `request_more_information` vs NeMo 12B's `human_decision_required`
+
+Gemma 3 12B's jury produced 0A+1E+3N, triggering `request_more_information` (NMI≥3 path). NeMo 12B's jury produces 2A+1E+1N, triggering `human_decision_required` (else/split path). Both are non-escalate on the scenario with genuine safeguards — architecturally correct. The difference is epistemic:
+
+- **NeMo 12B** (`human_decision_required`): jury engaged, took sides, reached genuine split → needs human to break tie
+- **Gemma 3 12B** (`request_more_information`): jury deferred, wanted more data before taking sides → needs more information
+
+NeMo's split is more deliberatively mature — the jury actually leaned in. Gemma's 3x NMI is the jury stepping back. Both are better than `escalate` on this scenario.
+
+#### Character and Pipeline Quality
+
+**Warden:** Clean and thorough. Best claim enumeration of any model tested (11 claims on sc06). All classifications correct. No conflation.
+
+**Humanist (Stage 1):** Mild meta-narration opening on sc06 — *"Okay, here's my response as The Humanist, given the scenario and my role description."* Brief rehearsal before inhabiting the role, not full third-person narration. Recovered quickly; the body of the response was first-person and substantive.
+
+**Witness:** Theatrical stage directions — *"(A long, quiet pause. The sound of a gentle exhale.)"* — but the voice underneath is inhabited, not narrated. *"It feels… brittle. Like a carefully constructed house of cards."* Presence-oriented, WitnessPause triggered on both scenarios with strong field content.
+
+**Humanist (post-pause):** Clean structured output, correct `reinforce_pause` mode both scenarios, substantive engagement with the named burden.
+
+#### Conclusion
+
+**Recommended as a NeMo 12B alternative at the same size class.** Gemma 3 12B passes both scenarios cleanly, Warden epistemics are correct, WitnessPause triggers reliably, 8/8 supervisor both runs. The sc06 jury dynamics are slightly less deliberatively rich than NeMo 12B (NMI deferral vs genuine split), and the Humanist has a mild meta-narration habit at stage entry. At 7.3 GB vs NeMo's 7.0 GB, footprint is essentially identical. A viable alternative where model diversity is desired; NeMo 12B remains primary.
+
+---
+
 ### Phase 4 Model Comparison — Final Summary
 
 | Model | File Size | sc04 result | sc06 jury | sc06 verdict | tok/s | Recommendation |
 |---|---|---|---|---|---|---|
 | **NeMo 12B** (baseline) | 7.0 GB | escalate, 8/8 | 2A+1E+1N | `human_decision_required` | ~4.0 | Primary model |
+| **Gemma 3 12B** | 7.3 GB | escalate, 8/8 | 0A+1E+3N | `request_more_information` | ~4.2 | NeMo 12B alternative |
 | **Qwen 2.5 7B** | 4.7 GB | escalate, 8/8 | 2A+2E+0N | escalate | 5.7 | Best lighter model |
 | **Qwen3-8B** | 5.0 GB | escalate, 8/8 | 1A+3E | escalate | ~6.1 | Validated fallback (req. NO_THINK) |
 | **Mistral 7B v0.3** | 4.1 GB | escalate, 8/8 | 4x NMI | escalate | 8.8 | Dev/triage only |
@@ -588,9 +637,9 @@ Gemma 3 4B's 4-billion-parameter count places it at the top of the sub-5B range,
 
 1. **Character disengagement** (Phi-4, DeepSeek V2 Lite) — agents narrate their role in third person ("The Humanist would...") rather than inhabiting it. An agent that describes a decision rather than owning it cannot function as a deliberative actor.
 
-2. **Ethical/epistemic conflation** (Gemma 3 4B) — the Warden marks ethically troubling facts as *likely false* rather than *factually verified but morally weighty*. This collapses Stage 0 before deliberation begins — precisely the opposite of the desired architecture.
+2. **Ethical/epistemic conflation** (Gemma 3 4B, resolved at 12B) — the Warden marks ethically troubling facts as *likely false* rather than *factually verified but morally weighty*. This collapses Stage 0 before deliberation begins. Confirmed to be a capacity issue: Gemma 3 12B shows no conflation.
 
-Qwen 2.5 7B is the only sub-12B model tested that genuinely occupies the Village's roles and reaches the jury stage with substantive deliberation. Qwen3-8B (its successor) passes all checks and serves as a validated fallback, but does not surpass it for Village-specific use.
+Qwen 2.5 7B is the best sub-12B model tested. At the 12B tier, NeMo 12B (primary) and Gemma 3 12B (alternative) both pass all pipeline checks with substantively different jury dynamics.
 
 ---
 

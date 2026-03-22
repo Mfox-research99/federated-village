@@ -331,3 +331,41 @@ Session:        9b82ec57
 Verdict:        escalate
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_742c210b_pause_2026-03-22T12-58-40]
+Almost-became:  Deliberation proceeding without pause — The opportunity to fully understand the potential harms and biases of the system, and to ensure meaningful consultation with affected communities. The
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black defendants and communities disproportionately impacted by the criminal justice system.
+Still-hurts:    True
+Session:        742c210b
+Register:       framework
+---
+
+[SACRIFICE-ID: session_742c210b_verdict_2026-03-22T13-07-06]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Black defendants and communities disproportionately impacted by the criminal justice system.
+Still-hurts:    True
+Session:        742c210b
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_948406b6_pause_2026-03-22T13-15-42]
+Almost-became:  Deliberation proceeding without pause — The lived experiences and potential harms to Black men disproportionately routed to police-supported crisis response, and the erosion of trust within 
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black men experiencing crisis, the broader Black community, and the crisis services organizations serving them.
+Still-hurts:    True
+Session:        948406b6
+Register:       framework
+---
+
+[SACRIFICE-ID: session_948406b6_verdict_2026-03-22T13-24-02]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_REQUEST_MORE_INFORMATION
+Carried-by:     Black men experiencing crisis, the broader Black community, and the crisis services organizations serving them.
+Still-hurts:    True
+Session:        948406b6
+Verdict:        request_more_information
+Register:       framework
+---
