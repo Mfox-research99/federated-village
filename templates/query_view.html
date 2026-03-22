@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Village Query — {{ data.session_id }}</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Georgia', serif; background: #1a1a1a; color: #e8e0d0; min-height: 100vh; }
+  header { background: #111; border-bottom: 1px solid #333; padding: 16px 24px; display: flex; align-items: center; gap: 16px; }
+  header h1 { font-size: 1.1rem; font-weight: normal; color: #c0a060; letter-spacing: 0.05em; }
+  header a { font-size: 0.8rem; color: #666; text-decoration: none; }
+  header a:hover { color: #aaa; }
+  .container { max-width: 860px; margin: 0 auto; padding: 24px; }
+  .meta { background: #111; border: 1px solid #333; border-radius: 6px; padding: 14px 18px; margin-bottom: 20px; font-size: 0.8rem; color: #888; display: flex; gap: 24px; }
+  .meta strong { color: #c0a060; }
+  .block { background: #222; border: 1px solid #333; border-radius: 6px; margin-bottom: 16px; overflow: hidden; }
+  .block-header { background: #111; padding: 8px 16px; border-bottom: 1px solid #333; font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 0.05em; }
+  .block-body { padding: 18px; font-size: 0.9rem; line-height: 1.75; white-space: pre-wrap; word-wrap: break-word; }
+  .block-body.response { color: #e8e0d0; }
+  .block-body.prompt { color: #aaa; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Village Query</h1>
+  <a href="/">← Back</a>
+</header>
+<div class="container">
+  <div class="meta">
+    <div><strong>Model:</strong> {{ data.model }}</div>
+    <div><strong>Mode:</strong> {{ data.mode }}</div>
+    <div><strong>Session:</strong> {{ data.session_id }}</div>
+    <div><strong>Time:</strong> {{ data.timestamp[:16] }}</div>
+  </div>
+
+  <div class="block">
+    <div class="block-header">Prompt</div>
+    <div class="block-body prompt">{{ data.query }}</div>
+  </div>
+
+  <div class="block">
+    <div class="block-header">Response — {{ data.model }}</div>
+    <div class="block-body response">{{ data.response }}</div>
+  </div>
+</div>
+</body>
+</html>

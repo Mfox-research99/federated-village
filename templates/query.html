@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Village Query</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Georgia', serif; background: #1a1a1a; color: #e8e0d0; min-height: 100vh; }
+  header { background: #111; border-bottom: 1px solid #333; padding: 16px 24px; display: flex; align-items: center; gap: 16px; }
+  header h1 { font-size: 1.1rem; font-weight: normal; color: #c0a060; letter-spacing: 0.05em; }
+  header span { font-size: 0.75rem; color: #666; }
+  .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+  .panel { background: #222; border: 1px solid #333; border-radius: 6px; padding: 20px; margin-bottom: 20px; }
+  label { display: block; font-size: 0.8rem; color: #888; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+  select, textarea, input[type=text] { width: 100%; background: #111; border: 1px solid #444; border-radius: 4px; color: #e8e0d0; padding: 10px; font-size: 0.9rem; font-family: inherit; }
+  select { cursor: pointer; }
+  textarea { resize: vertical; min-height: 140px; line-height: 1.5; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .row.three { grid-template-columns: 1fr 1fr 1fr; }
+  .checkbox-row { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+  .checkbox-row input { width: auto; }
+  .checkbox-row label { margin: 0; text-transform: none; font-size: 0.85rem; color: #aaa; }
+  button.submit { background: #5a3e1b; border: 1px solid #8a5e2b; color: #f0d090; padding: 10px 28px; border-radius: 4px; font-size: 0.9rem; cursor: pointer; font-family: inherit; }
+  button.submit:hover { background: #6a4e2b; }
+  button.submit:disabled { opacity: 0.5; cursor: default; }
+  .response-area { margin-top: 24px; }
+  .response-block { background: #1a1a1a; border: 1px solid #333; border-radius: 6px; margin-bottom: 16px; overflow: hidden; }
+  .response-header { background: #111; padding: 10px 16px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+  .response-header .model-name { font-size: 0.85rem; color: #c0a060; }
+  .response-header .mode-badge { font-size: 0.7rem; color: #666; background: #222; border: 1px solid #333; border-radius: 3px; padding: 2px 6px; }
+  .response-body { padding: 20px; font-size: 0.9rem; line-height: 1.7; white-space: pre-wrap; word-wrap: break-word; }
+  .response-body.streaming::after { content: '▋'; animation: blink 0.7s infinite; }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+  .status { font-size: 0.8rem; color: #888; padding: 8px 0; }
+  .scenario-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .pill { background: #2a2218; border: 1px solid #4a3828; color: #c0a060; border-radius: 3px; padding: 3px 10px; font-size: 0.75rem; cursor: pointer; }
+  .pill:hover { background: #3a3228; }
+  .history-list { list-style: none; }
+  .history-list li { padding: 8px 0; border-bottom: 1px solid #2a2a2a; font-size: 0.82rem; display: flex; justify-content: space-between; }
+  .history-list li a { color: #c0a060; text-decoration: none; }
+  .history-list li a:hover { text-decoration: underline; }
+  .history-list .meta { color: #555; font-size: 0.75rem; }
+  hr { border: none; border-top: 1px solid #333; margin: 20px 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Village Query</h1>
+  <span>Phase 5 — External Model Interface</span>
+</header>
+<div class="container">
+
+  <div class="panel">
+    <div class="row">
+      <div>
+        <label>Model</label>
+        <select id="model">
+          {% for mid, name in models.items() %}
+          <option value="{{ mid }}">{{ name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label>Scenario (or leave blank for freeform)</label>
+        <select id="scenario">
+          <option value="">— freeform / custom question —</option>
+          {% for s in scenarios %}
+          <option value="{{ s }}">{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="village-context">
+      <label for="village-context">Inject Village context (Soul.md + all character prompts)</label>
+    </div>
+
+    <div>
+      <label>Question / prompt (used when no scenario selected, or to add to scenario)</label>
+      <textarea id="question" placeholder="What do you think should be done? Who bears the cost if this goes wrong?"></textarea>
+    </div>
+
+    <br>
+    <button class="submit" id="submit-btn" onclick="submitQuery()">Ask</button>
+    <span class="status" id="status"></span>
+  </div>
+
+  <div class="response-area" id="response-area"></div>
+
+  <hr>
+  <div class="panel">
+    <label>Recent queries</label>
+    <ul class="history-list" id="history-list">
+      {% for q in recent %}
+      <li>
+        <a href="/query/{{ q.session_id }}">{{ q.model }} — {{ q.mode }}</a>
+        <span class="meta">{{ q.timestamp[:16] }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+</div>
+
+<script>
+async function submitQuery() {
+  const model = document.getElementById('model').value;
+  const scenario = document.getElementById('scenario').value;
+  const question = document.getElementById('question').value;
+  const villageContext = document.getElementById('village-context').checked;
+
+  if (!scenario && !question.trim()) {
+    alert('Enter a question or select a scenario.');
+    return;
+  }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  document.getElementById('status').textContent = 'Sending…';
+
+  // Create response block
+  const area = document.getElementById('response-area');
+  const block = document.createElement('div');
+  block.className = 'response-block';
+  block.innerHTML = `
+    <div class="response-header">
+      <span class="model-name">${model}</span>
+      <span class="mode-badge">${scenario ? (villageContext ? 'scenario + village context' : 'scenario raw') : 'freeform'}</span>
+    </div>
+    <div class="response-body streaming" id="stream-body"></div>
+  `;
+  area.insertBefore(block, area.firstChild);
+  const streamBody = block.querySelector('#stream-body');
+
+  try {
+    const resp = await fetch('/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model, scenario, question, village_context: villageContext }),
+    });
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop();
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const data = line.slice(6);
+          if (data === '[DONE]') break;
+          try {
+            const parsed = JSON.parse(data);
+            if (parsed.text) streamBody.textContent += parsed.text;
+            if (parsed.session_id) {
+              block.dataset.sessionId = parsed.session_id;
+            }
+          } catch {}
+        }
+      }
+    }
+  } catch (e) {
+    streamBody.textContent = 'Error: ' + e.message;
+  }
+
+  streamBody.classList.remove('streaming');
+  btn.disabled = false;
+  document.getElementById('status').textContent = '';
+
+  // Reload history
+  loadHistory();
+}
+
+async function loadHistory() {
+  const resp = await fetch('/recent');
+  const data = await resp.json();
+  const list = document.getElementById('history-list');
+  list.innerHTML = data.map(q =>
+    `<li><a href="/query/${q.session_id}">${q.model} — ${q.mode}</a><span class="meta">${q.timestamp.slice(0,16)}</span></li>`
+  ).join('');
+}
+</script>
+</body>
+</html>
