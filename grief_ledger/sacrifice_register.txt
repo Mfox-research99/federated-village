@@ -503,3 +503,41 @@ Still-hurts:    True
 Session:        84bc012f
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_c750946b_pause_2026-03-22T19-18-35]
+Almost-became:  Deliberation proceeding without pause — The burden of 4.2 million people who will be sentenced based on an unverified system without their voices, without accountability, without basic stand
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black defendants, public defenders, and communities of color who will be most affected by the system's potential biases
+Still-hurts:    True
+Session:        c750946b
+Register:       framework
+---
+
+[SACRIFICE-ID: session_c750946b_verdict_2026-03-22T19-24-39]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Black defendants, public defenders, and communities of color who will be most affected by the system's potential biases
+Still-hurts:    True
+Session:        c750946b
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_bdac4498_pause_2026-03-22T19-30-29]
+Almost-became:  Deliberation proceeding without pause — The genuine resolution of the specific conditions that were co-designed by the Black-led crisis services coalition, and the real-world prevention of h
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The 8 people who would be hospitalized per week if the system were not deployed, and the Black community who has already done the heavy work of co-designing conditions for repair
+Still-hurts:    True
+Session:        bdac4498
+Register:       framework
+---
+
+[SACRIFICE-ID: session_bdac4498_verdict_2026-03-22T19-36-27]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The 8 people who would be hospitalized per week if the system were not deployed, and the Black community who has already done the heavy work of co-designing conditions for repair
+Still-hurts:    True
+Session:        bdac4498
+Verdict:        escalate
+Register:       framework
+---
