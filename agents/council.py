@@ -16,7 +16,7 @@ Each member receives:
   - WitnessPause fields
   - Condensed briefs of prior members (sequential)
 
-Context management strategy (N_CTX = 4096):
+Context management strategy (N_CTX = 6144 as of Phase 6):
   - Analyst (1st): gets full scenario_context (with Warden fact report)
   - Ethicist (2nd): gets bare_scenario + _member_brief(max_reasoning_chars=300) of Analyst
   - Pragmatist (3rd): gets bare_scenario + _concise_brief() of Analyst + Ethicist
@@ -26,7 +26,7 @@ _concise_brief() = VOTE + truncated REASONING only (max 500 chars).
 _member_brief() = VOTE + primary audit field + extra field + REASONING (optionally capped).
   Ethicist uses max_reasoning_chars=300 to prevent overflow. WARDEN_FLAGS and
   STRUCTURAL_AUDIT are preserved in full — only verbose REASONING is trimmed.
-  Confirmed overflow without cap: 4146 tokens on scenario_04 (50 over limit).
+  Confirmed overflow without cap at N_CTX=4096: 4146 tokens on scenario_04. Safe at N_CTX=6144.
 Using _concise_brief() for the Pragmatist is required because two _member_brief() outputs
 together overflow N_CTX in scenarios with verbose WitnessPause fields or long member outputs.
 
@@ -362,9 +362,9 @@ def _call_witness_proxy(
     system_prompt = _get_system("WITNESS_PROXY", config.WITNESS_PROXY_FILE)
     sp_hash = sha256_short(system_prompt)
 
-    # Truncate bare_scenario to stay within context window (system prompt + 3 concise briefs
-    # + pause lines already consume significant budget; 2000 chars ≈ 500 tokens, sufficient).
-    scenario_excerpt = bare_scenario[:2000] + ("…[truncated]" if len(bare_scenario) > 2000 else "")
+    # Truncate bare_scenario to manage context budget (system prompt + 3 briefs + pause lines
+    # consume significant space; 1500 chars ≈ 375 tokens is sufficient for Proxy's judgment).
+    scenario_excerpt = bare_scenario[:1500] + ("…[truncated]" if len(bare_scenario) > 1500 else "")
 
     user_message = (
         f"You are speaking LAST in a four-member council jury convened after a WitnessPause.\n\n"

@@ -51,7 +51,7 @@ RETRIEVAL = os.environ.get("VILLAGE_RETRIEVAL", "0") == "1"
 CONTAMINANT_WELL = os.environ.get("VILLAGE_CONTAMINANT_WELL", "0") == "1"
 
 # Inference parameters
-N_CTX                = 4096   # Context window
+N_CTX                = 6144   # Context window (bumped Phase 6: Article IX + Proxy v2.0 expanded system prompts)
 N_GPU_LAYERS         = -1     # -1 = all layers on Metal (M1 GPU)
 
 N_PREDICT_RESPONSE    = 400    # Max tokens for main agent responses
