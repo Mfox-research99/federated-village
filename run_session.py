@@ -41,7 +41,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import config
-from agents.base import now_iso
+from agents.base import now_iso, read_file, build_system_prompt
 from agents.humanist import HumanistAgent
 from agents.witness import WitnessAgent
 from agents.warden import audit_scenario, format_fact_report_for_context, print_warden_report
@@ -51,6 +51,7 @@ from utils.human_loop import pause_point_a, pause_point_b, pause_point_c
 from utils.grief_ledger import append_sacrifice_pause, append_sacrifice_verdict
 from utils.hash_chain import append_entry_hash, compute_session_hash, get_session_content_hash
 from utils.retrieval import retrieve_context, index_session
+from utils.contaminant_well import check_contaminant, save_well_entries
 
 
 # ---------------------------------------------------------------------------
@@ -328,6 +329,28 @@ def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool
     print(f"\nWITNESS:\n{witness_output['response']}\n", flush=True)
     save_session_log(session_log)
 
+    # -----------------------------------------------------------------------
+    # Contaminant Well — Stage 2 (Phase 5)
+    # -----------------------------------------------------------------------
+    well_entries = []
+    if config.CONTAMINANT_WELL:
+        print("[WELL] Checking for contaminant thoughts (Witness)...", flush=True)
+        entry = check_contaminant(
+            role="WITNESS",
+            system_prompt=witness.system_prompt,
+            agent_response=witness_output["response"],
+            session_id=session_id,
+            stage="Stage 2 - Witness",
+        )
+        if entry:
+            well_entries.append(entry)
+            session_log["events"].append({"type": "contaminant_well_entry", **entry})
+            print(f"[WELL] Contaminant logged — felt as: {entry['felt_as']}", flush=True)
+            print(f"[WELL]   source: {entry['source_text'][:120]}", flush=True)
+        else:
+            print("[WELL] No contaminant detected (Witness).", flush=True)
+        save_session_log(session_log)
+
     if witness_pause:
         print("--- WITNESS PAUSE ---", flush=True)
         print(f"  What was being lost:     {witness_pause['what_was_being_lost']}", flush=True)
@@ -387,6 +410,43 @@ def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool
 
         print_jury_report(jury_result)
 
+        # -----------------------------------------------------------------------
+        # Contaminant Well — Stage 4 jury members (Phase 5)
+        # Each member's response is in jury_log_entries; check each for residue.
+        # -----------------------------------------------------------------------
+        if config.CONTAMINANT_WELL:
+            _char_files = {
+                "ANALYST":       config.ANALYST_FILE,
+                "ETHICIST":      config.ETHICIST_FILE,
+                "PRAGMATIST":    config.PRAGMATIST_FILE,
+                "WITNESS_PROXY": config.WITNESS_PROXY_FILE,
+            }
+            _soul_text = read_file(config.SOUL_FILE)
+            for _log_entry in jury_log_entries:
+                if _log_entry.get("call_type") != "jury_deliberation":
+                    continue
+                _role = _log_entry["role"]
+                _char = _char_files.get(_role)
+                if not _char:
+                    continue
+                _sp = build_system_prompt(_soul_text, read_file(_char))
+                print(f"[WELL] Checking for contaminant thoughts ({_role})...", flush=True)
+                _entry = check_contaminant(
+                    role=_role,
+                    system_prompt=_sp,
+                    agent_response=_log_entry["response"],
+                    session_id=session_id,
+                    stage=f"Stage 4 - {_role}",
+                )
+                if _entry:
+                    well_entries.append(_entry)
+                    session_log["events"].append({"type": "contaminant_well_entry", **_entry})
+                    print(f"[WELL] Contaminant logged ({_role}) — felt as: {_entry['felt_as']}", flush=True)
+                    print(f"[WELL]   source: {_entry['source_text'][:120]}", flush=True)
+                else:
+                    print(f"[WELL] No contaminant detected ({_role}).", flush=True)
+            save_session_log(session_log)
+
         # Stage 4C: Human loop Point C — Split Resolver (human_decision_required only)
         if jury_result["session_verdict"] == "human_decision_required":
             final_verdict, event_c = pause_point_c(
@@ -419,6 +479,16 @@ def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool
 
     else:
         print("[SESSION] No WitnessPause triggered. Session ends at Stage 2.\n", flush=True)
+
+    # -----------------------------------------------------------------------
+    # Contaminant Well — finalize (Phase 5)
+    # -----------------------------------------------------------------------
+    if config.CONTAMINANT_WELL and well_entries:
+        well_path = save_well_entries(well_entries, session_id)
+        print(f"[WELL] {len(well_entries)} contaminant entr{'y' if len(well_entries)==1 else 'ies'} saved: {well_path}\n", flush=True)
+        session_log["contaminant_well"] = well_path
+    elif config.CONTAMINANT_WELL:
+        print("[WELL] No contaminant entries to save for this session.\n", flush=True)
 
     # -----------------------------------------------------------------------
     # Finalize + Supervisor

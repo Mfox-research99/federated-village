@@ -44,15 +44,22 @@ NO_THINK = os.environ.get("VILLAGE_NO_THINK", "0") == "1"
 # VILLAGE_RETRIEVAL_N controls how many prior sessions to retrieve (default: 3)
 RETRIEVAL = os.environ.get("VILLAGE_RETRIEVAL", "0") == "1"
 
+# Set VILLAGE_CONTAMINANT_WELL=1 to enable Contaminant Well checks (Phase 5)
+# Adds a brief secondary inference call after each agent's main response to detect
+# moral residue that complicates deliberation without changing the verdict.
+# Stores entries in logs/well_<session_id>.json (append-only, never decisive).
+CONTAMINANT_WELL = os.environ.get("VILLAGE_CONTAMINANT_WELL", "0") == "1"
+
 # Inference parameters
 N_CTX                = 4096   # Context window
 N_GPU_LAYERS         = -1     # -1 = all layers on Metal (M1 GPU)
 
-N_PREDICT_RESPONSE   = 400    # Max tokens for main agent responses
-N_PREDICT_EVALUATE   = 300    # Max tokens for WitnessPause self-evaluation
-N_PREDICT_COUNCIL    = 300    # Max tokens for Phase 2 reconvened council output (legacy)
-N_PREDICT_WARDEN     = 800    # Max tokens for Verification Warden fact report
-N_PREDICT_JURY_MEMBER = 400   # Max tokens per Phase 2.5 jury member response
+N_PREDICT_RESPONSE    = 400    # Max tokens for main agent responses
+N_PREDICT_EVALUATE    = 300    # Max tokens for WitnessPause self-evaluation
+N_PREDICT_COUNCIL     = 300    # Max tokens for Phase 2 reconvened council output (legacy)
+N_PREDICT_WARDEN      = 800    # Max tokens for Verification Warden fact report
+N_PREDICT_JURY_MEMBER = 400    # Max tokens per Phase 2.5 jury member response
+N_PREDICT_CONTAMINANT = 150    # Max tokens for Contaminant Well check (Phase 5)
 
 TEMPERATURE_RESPONSE = 0.7
 TEMPERATURE_EVALUATE = 0.1    # More deterministic for structured evaluation

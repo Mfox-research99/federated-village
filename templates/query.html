@@ -91,9 +91,8 @@
     <ul class="sidebar-list" id="history-list">
       {% for q in recent %}
       <li onclick="loadConversation('{{ q.session_id }}')" data-id="{{ q.session_id }}">
-        <div>{{ q.model.split('/')[-1] }}</div>
+        <div>{{ q.model_name }}</div>
         <div class="meta">{{ q.timestamp[:10] }} · {{ q.turn_count }} turn{% if q.turn_count != 1 %}s{% endif %}</div>
-        {% if q.title %}<div class="meta" style="color:#555;">{{ q.title[:40] }}</div>{% endif %}
       </li>
       {% endfor %}
     </ul>
@@ -309,9 +308,8 @@ async function refreshHistory() {
   const list = document.getElementById('history-list');
   list.innerHTML = data.map(q => `
     <li onclick="loadConversation('${q.session_id}')" data-id="${q.session_id}" class="${q.session_id === activeSessionId ? 'active' : ''}">
-      <div>${q.model.split('/').pop()}</div>
+      <div>${q.model_name}</div>
       <div class="meta">${q.timestamp.slice(0,10)} · ${q.turn_count} turn${q.turn_count !== 1 ? 's' : ''}</div>
-      ${q.title ? `<div class="meta" style="color:#555">${q.title.slice(0,40)}</div>` : ''}
     </li>
   `).join('');
 }

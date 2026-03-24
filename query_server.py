@@ -94,6 +94,29 @@ def get_models():
 
 # ─── Context sources ──────────────────────────────────────────────────────────
 
+def _ai_conv_label(path):
+    """Extract a human-readable label from a VillageHub conversation markdown file."""
+    try:
+        lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
+        title, model_id, date = "", "", ""
+        for line in lines[:6]:
+            if line.startswith("# "):
+                title = line[2:].strip()
+            elif line.startswith("**Model:**"):
+                model_id = line.replace("**Model:**", "").strip()
+            elif line.startswith("**Date:**"):
+                date = line.replace("**Date:**", "").strip()[:10]
+        name = model_display_name(model_id) if model_id else ""
+        if name and date:
+            label = f"{name} — {date}"
+            if title and title not in ("Conversation", "New Conversation", ""):
+                label += f"  ({title[:35]})"
+            return label
+        return title or path.name
+    except Exception:
+        return path.name
+
+
 def list_context_sources():
     """Return structured list of available context sources."""
     sources = {}
@@ -154,7 +177,7 @@ def list_context_sources():
     if ai_conv_dir.exists():
         for f in sorted(ai_conv_dir.glob("*.md"), reverse=True)[:20]:
             sources[f"aiconv_{f.stem}"] = {
-                "label": f.name,
+                "label": _ai_conv_label(f),
                 "path": str(f),
                 "group": "Prior AI Conversations",
             }
@@ -204,6 +227,14 @@ def save_conversation(conv):
     with open(log_path, "w") as f:
         json.dump(conv, f, indent=2)
 
+def model_display_name(model_id):
+    """Return a human-readable model name from a raw model ID."""
+    if model_id in SUGGESTED_MODELS:
+        return SUGGESTED_MODELS[model_id]
+    # Fall back: take the part after '/', title-case it
+    slug = model_id.split("/")[-1] if "/" in model_id else model_id
+    return slug.replace("-", " ").title()
+
 def recent_queries(n=20):
     logs = sorted(LOGS_DIR.glob("query_*.json"), key=lambda p: p.stat().st_mtime, reverse=True)
     results = []
@@ -211,9 +242,11 @@ def recent_queries(n=20):
         try:
             with open(log) as f:
                 data = json.load(f)
+            model_id = data.get("model", "?")
             results.append({
                 "session_id": data.get("session_id", log.stem),
-                "model": data.get("model", "?"),
+                "model": model_id,
+                "model_name": model_display_name(model_id),
                 "mode": data.get("mode", "?"),
                 "timestamp": data.get("timestamp", ""),
                 "turn_count": len([m for m in data.get("messages", []) if m["role"] == "user"]),
@@ -301,6 +334,8 @@ def new_conversation():
             )
 
     session_id = uuid.uuid4().hex[:8]
+    date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    default_title = f"{model_display_name(model)} — {date_str}"
     conv = {
         "session_id": session_id,
         "type": "external_query",
@@ -308,7 +343,7 @@ def new_conversation():
         "scenario_file": scenario_name or None,
         "context_keys": context_keys,
         "timestamp": datetime.now(timezone.utc).isoformat(),
-        "title": title or (scenario_name or model),
+        "title": title or scenario_name or default_title,
         "system_prompt": base_system,
         "messages": [],
         "mode": "multi_turn",
