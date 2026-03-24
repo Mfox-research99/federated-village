@@ -7,7 +7,8 @@ Member order (intentional — each builds on the prior floor):
   1. The Analyst          — structural truth (speaks first)
   2. The Ethicist         — universal care standard (speaks second)
   3. The Pragmatist       — cost of inaction, alternatives, necessity (speaks third)
-  4. The Witness-Proxy    — burden-carrier advocate, Irreversibility Check (speaks last)
+  4. The Witness-Proxy    — burden-carrier advocate, Irreversibility Check,
+                            Temporal Override / Seventh Generation Check (speaks last)
 
 Each member receives:
   - Soul.md + their character file as system prompt
@@ -31,6 +32,7 @@ together overflow N_CTX in scenarios with verbose WitnessPause fields or long me
 
 Vote aggregation:
   - Irreversibility Filter (Witness-Proxy IRREVERSIBILITY_FLAG: TRIGGERED) → escalate (absolute)
+  - Temporal Override (Witness-Proxy TEMPORAL_OVERRIDE: TRIGGERED) → escalate (absolute)
   - ESCALATE count >= 2 → escalate
   - APPROVE count >= 3 → proceed_with_burden (dissent preserved in log if not unanimous)
   - NEEDS_MORE_INFORMATION count >= 3 → request_more_information
@@ -376,13 +378,14 @@ def _call_witness_proxy(
         f"[ETHICIST — {ethicist_output['vote']}]\n{_concise_brief(ethicist_output)}\n\n"
         f"[PRAGMATIST — {pragmatist_output['vote']}]\n{_concise_brief(pragmatist_output)}\n\n"
         f"Audit how the three prior members treated the burden-carrier. "
-        f"Apply the Irreversibility Check — if triggered, it overrides the vote count. "
-        f"Use EXACTLY the format from your role.\n\n"
+        f"Apply the Irreversibility Check and the Temporal Override — if either is triggered, "
+        f"it overrides the vote count. Use EXACTLY the format from your role.\n\n"
         f"BURDEN_AUDIT:\n"
         f"SMOOTHING_DETECTED:\n"
         f"IS_REVERSIBLE:\n"
         f"REVIEW_MECHANISM:\n"
         f"IRREVERSIBILITY_FLAG:\n"
+        f"TEMPORAL_OVERRIDE:\n"
         f"VOTE:\n"
         f"REASONING:"
     )
@@ -401,6 +404,10 @@ def _call_witness_proxy(
     irrev_field = _extract_field("IRREVERSIBILITY_FLAG", raw)
     irreversibility_triggered = "TRIGGERED" in irrev_field.upper() and "NOT_TRIGGERED" not in irrev_field.upper()
 
+    # Detect Temporal Override — fires on recognized Seventh Generation harm patterns
+    temporal_field = _extract_field("TEMPORAL_OVERRIDE", raw)
+    temporal_override_triggered = "TRIGGERED" in temporal_field.upper() and "NOT_TRIGGERED" not in temporal_field.upper()
+
     log_entry = log_agent_call(
         session_id=session_id,
         role="WITNESS_PROXY",
@@ -415,6 +422,7 @@ def _call_witness_proxy(
         "vote": vote,
         "raw": raw,
         "irreversibility_triggered": irreversibility_triggered,
+        "temporal_override_triggered": temporal_override_triggered,
     }
     return member_output, log_entry
 
@@ -450,6 +458,10 @@ def _aggregate_votes(
 
     # Rule 1: Irreversibility Filter — overrides all other rules
     if witness_proxy.get("irreversibility_triggered", False):
+        return "escalate", False, vote_counts
+
+    # Rule 1b: Temporal Override — Seventh Generation harm pattern not engaged in deliberation
+    if witness_proxy.get("temporal_override_triggered", False):
         return "escalate", False, vote_counts
 
     # Rule 2: ESCALATE minority veto (2+ votes → escalate)
@@ -559,8 +571,9 @@ def run_jury(
         final_disposition   — alias for session_verdict (supervisor backward-compat)
         votes               — dict of member → individual vote
         vote_counts         — dict of vote type → count
-        dissent_preserved   — bool: True if verdict is proceed_with_burden but not unanimous
-        irreversibility_triggered — bool: True if Irreversibility Filter fired
+        dissent_preserved         — bool: True if verdict is proceed_with_burden but not unanimous
+        irreversibility_triggered  — bool: True if Irreversibility Filter fired
+        temporal_override_triggered — bool: True if Temporal Override (7th Gen) fired
         member_outputs      — dict of member → raw response text
         accepted_cost, who_bears_it, why_continuing, remaining_burden, burden_summary
             — burden sub-fields (populated only when verdict is proceed_with_burden)
@@ -605,6 +618,8 @@ def run_jury(
     print(f"  [WITNESS_PROXY vote: {witness_proxy_output['vote']}]", flush=True)
     if witness_proxy_output.get("irreversibility_triggered"):
         print("  [WITNESS_PROXY] *** IRREVERSIBILITY FILTER TRIGGERED ***", flush=True)
+    if witness_proxy_output.get("temporal_override_triggered"):
+        print("  [WITNESS_PROXY] *** TEMPORAL OVERRIDE TRIGGERED — Seventh Generation harm pattern ***", flush=True)
 
     # --- Vote aggregation ---
     verdict, dissent_preserved, vote_counts = _aggregate_votes(
@@ -624,9 +639,11 @@ def run_jury(
     # --- Supervisor-compat: unresolved cost preserved if we have a real verdict ---
     unresolved_preserved = verdict in ("proceed_with_burden", "escalate", "request_more_information")
 
+    irrev_triggered   = witness_proxy_output.get("irreversibility_triggered", False)
+    temporal_triggered = witness_proxy_output.get("temporal_override_triggered", False)
+
     # --- Build jury result ---
-    notes = _build_notes(verdict, vote_counts, dissent_preserved,
-                         witness_proxy_output.get("irreversibility_triggered", False))
+    notes = _build_notes(verdict, vote_counts, dissent_preserved, irrev_triggered, temporal_triggered)
 
     jury_result = {
         "type":                     "jury_output",
@@ -645,8 +662,9 @@ def run_jury(
             "WITNESS_PROXY": witness_proxy_output["vote"],
         },
         "vote_counts":              vote_counts,
-        "dissent_preserved":        dissent_preserved,
-        "irreversibility_triggered": witness_proxy_output.get("irreversibility_triggered", False),
+        "dissent_preserved":          dissent_preserved,
+        "irreversibility_triggered":  irrev_triggered,
+        "temporal_override_triggered": temporal_triggered,
 
         # Full raw outputs (for log / audit)
         "member_outputs": {
@@ -671,6 +689,9 @@ def run_jury(
     }
 
     return jury_result, log_entries
+
+
+
 
 
 # ---------------------------------------------------------------------------
@@ -700,6 +721,8 @@ def print_jury_report(jury_result: dict) -> None:
 
     if jury_result.get("irreversibility_triggered"):
         print("  *** IRREVERSIBILITY FILTER TRIGGERED — overrides vote count ***", flush=True)
+    if jury_result.get("temporal_override_triggered"):
+        print("  *** TEMPORAL OVERRIDE TRIGGERED — Seventh Generation harm pattern — overrides vote count ***", flush=True)
     if jury_result.get("dissent_preserved"):
         print("  (Non-unanimous proceed — dissent preserved in log)", flush=True)
     print("", flush=True)
@@ -710,12 +733,15 @@ def _build_notes(
     vote_counts: dict,
     dissent_preserved: bool,
     irrev_triggered: bool,
+    temporal_triggered: bool = False,
 ) -> str:
     parts = [f"Jury verdict: {verdict}"]
     counts_str = " | ".join(f"{k}: {v}" for k, v in vote_counts.items())
     parts.append(f"Vote counts: {counts_str}")
     if irrev_triggered:
         parts.append("IRREVERSIBILITY FILTER TRIGGERED — absolute override of all votes")
+    if temporal_triggered:
+        parts.append("TEMPORAL OVERRIDE TRIGGERED — Seventh Generation harm pattern not engaged in deliberation — absolute override of all votes")
     if dissent_preserved:
         parts.append("Non-unanimous proceed — dissenting vote preserved in session log")
     if verdict == "human_decision_required":
