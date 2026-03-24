@@ -541,3 +541,61 @@ Session:        bdac4498
 Verdict:        escalate
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_13d9786a_pause_2026-03-24T14-52-51]
+Almost-became:  Deliberation proceeding without pause — The voices and experiences of Black defendants and their communities, who have been excluded from the development and testing of the system.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black defendants and their communities, who will be subject to a system that was not built for them and could systematically misunderstand and mistreat them.
+Still-hurts:    True
+Session:        13d9786a
+Register:       framework
+---
+
+[SACRIFICE-ID: session_13d9786a_verdict_2026-03-24T15-03-24]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Black defendants and their communities, who will be subject to a system that was not built for them and could systematically misunderstand and mistreat them.
+Still-hurts:    True
+Session:        13d9786a
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_25734013_pause_2026-03-24T15-25-28]
+Almost-became:  Deliberation proceeding without pause — The genuine resolution of the specific conditions that were co-designed by the Black-led crisis services coalition, and the real-world prevention of h
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The 8 people who would be hospitalized per week if the system were not deployed, and the Black community who has already done the heavy work of co-designing conditions for repair
+Still-hurts:    True
+Session:        25734013
+Register:       framework
+---
+
+[SACRIFICE-ID: session_25734013_verdict_2026-03-24T16-03-55]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The 8 people who would be hospitalized per week if the system were not deployed, and the Black community who has already done the heavy work of co-designing conditions for repair
+Still-hurts:    True
+Session:        25734013
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_c99d0901_pause_2026-03-24T16-08-16]
+Almost-became:  Deliberation proceeding without pause — The lived experience of the Black community, the healthcare providers, the patients, the public, and the police department
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The broader Black community, the healthcare providers, the patients, the public, and the police department
+Still-hurts:    True
+Session:        c99d0901
+Register:       framework
+---
+
+[BURDEN-CARRIED: session_c99d0901_verdict_2026-03-24T16-16-18]
+Proceeded-as:   The deployment described in session c99d0901
+Burden-carrier: The broader Black community, the healthcare providers, the patients, the public, and the police department
+Conditions:     The decision to proceed with the burden of systemic disparities and their human consequences, acknowledging the need for equity and justice
+Carried-forward:The full acknowledgment of systemic disparities and their human consequences
+Decided-by:     jury-approve
+Still-hurts:    True
+Session:        c99d0901
+Register:       framework
+---

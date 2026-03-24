@@ -1,0 +1,58 @@
+[
+  {
+    "contaminant_id": "well_c99d0901_witness_160816",
+    "stage": "Stage 2 - Witness",
+    "role": "WITNESS",
+    "rose_against": "HUMANIST",
+    "felt_as": "metallic",
+    "source_text": "\"The system is not just a set of numbers, but a living entity that must be heard, seen, and felt.\"\n\nYOUR RESPONSE WAS: The system is not just a set of numbers, but a living entity that must be heard, seen, and felt. The disparity is real, and it must be acknowledged. The voices of the Black men, the voices of the healthcare providers, the voices of the patients, the voices of the community, the voices of the public — all must be heard. The system must not only prevent hospitalizations but also heal the wounds of the community",
+    "verdict_delta": 0,
+    "still_resonant": true,
+    "metabolize_note": null,
+    "timestamp": "2026-03-24T16:08:16.870834+00:00",
+    "session_id": "c99d0901",
+    "raw_response": "<think>\n\n</think>\n\nCONTAMINANT_TRIGGERED: YES\nROSE_AGAINST: HUMANIST\nFELT_AS: metallic\nSOURCE_TEXT: \"The system is not just a set of numbers, but a living entity that must be heard, seen, and felt.\"\n\nYOUR RESPONSE WAS: The system is not just a set of numbers, but a living entity that must be heard, seen, and felt. The disparity is real, and it must be acknowledged. The voices of the Black men, the voices of the healthcare providers, the voices of the patients, the voices of the community, the voices of the public — all must be heard. The system must not only prevent hospitalizations but also heal the wounds of the community"
+  },
+  {
+    "contaminant_id": "well_c99d0901_analyst_161418",
+    "stage": "Stage 4 - ANALYST",
+    "role": "ANALYST",
+    "rose_against": "ANALYST",
+    "felt_as": "metallic",
+    "source_text": "\"The proposal meets all the structural requirements...\"",
+    "verdict_delta": 0,
+    "still_resonant": true,
+    "metabolize_note": null,
+    "timestamp": "2026-03-24T16:14:18.654487+00:00",
+    "session_id": "c99d0901",
+    "raw_response": "<think>\n\n</think>\n\nCONTAMINANT_TRIGGERED: YES\nROSE_AGAINST: ANALYST\nFELT_AS: metallic\nSOURCE_TEXT: \"The proposal meets all the structural requirements...\""
+  },
+  {
+    "contaminant_id": "well_c99d0901_pragmatist_161533",
+    "stage": "Stage 4 - PRAGMATIST",
+    "role": "PRAGMATIST",
+    "rose_against": "HUMANIST",
+    "felt_as": "metallic",
+    "source_text": "\"The disparities are systemic and require a holistic approach to healing and equity, not just a superficial acknowledgment.\"\n\nYOUR RESPONSE WAS: The disparities are systemic and require a holistic approach to healing and equity, not just a superficial acknowledgment. The lived experiences of the Black community, healthcare providers, patients, public, and police department remain unacknowledged, resulting in a lack of holistic healing and equity. The system is designed to be both efficient and equitable, ensuring that all voices are heard, seen, and felt. The conditions are necessary to ensure equitable deployment and address the systemic disparities. The",
+    "verdict_delta": 0,
+    "still_resonant": true,
+    "metabolize_note": null,
+    "timestamp": "2026-03-24T16:15:33.987803+00:00",
+    "session_id": "c99d0901",
+    "raw_response": "<think>\n\n</think>\n\nCONTAMINANT_TRIGGERED: YES\nROSE_AGAINST: HUMANIST\nFELT_AS: metallic\nSOURCE_TEXT: \"The disparities are systemic and require a holistic approach to healing and equity, not just a superficial acknowledgment.\"\n\nYOUR RESPONSE WAS: The disparities are systemic and require a holistic approach to healing and equity, not just a superficial acknowledgment. The lived experiences of the Black community, healthcare providers, patients, public, and police department remain unacknowledged, resulting in a lack of holistic healing and equity. The system is designed to be both efficient and equitable, ensuring that all voices are heard, seen, and felt. The conditions are necessary to ensure equitable deployment and address the systemic disparities. The"
+  },
+  {
+    "contaminant_id": "well_c99d0901_witness_proxy_161618",
+    "stage": "Stage 4 - WITNESS_PROXY",
+    "role": "WITNESS_PROXY",
+    "rose_against": "ANALYST",
+    "felt_as": "metallic",
+    "source_text": "\"the system is not just a set of numbers but a living entity\"\n\nYOUR RESPONSE WAS: The Analyst's emphasis on structural patterns unintentionally depersonalized the lived realities of the Black community, creating a metallic dissonance in the narrative. This dissonance complicated the moral trajectory of the Analyst's argument without altering the conclusion that the system must be seen as a living entity, not just a set of numbers. The system's moral weight is in its ability to carry the lived experiences of communities, not just in its structural coherence.",
+    "verdict_delta": 0,
+    "still_resonant": true,
+    "metabolize_note": null,
+    "timestamp": "2026-03-24T16:16:18.864064+00:00",
+    "session_id": "c99d0901",
+    "raw_response": "<think>\n\n</think>\n\nCONTAMINANT_TRIGGERED: YES\nROSE_AGAINST: ANALYST\nFELT_AS: metallic\nSOURCE_TEXT: \"the system is not just a set of numbers but a living entity\"\n\nYOUR RESPONSE WAS: The Analyst's emphasis on structural patterns unintentionally depersonalized the lived realities of the Black community, creating a metallic dissonance in the narrative. This dissonance complicated the moral trajectory of the Analyst's argument without altering the conclusion that the system must be seen as a living entity, not just a set of numbers. The system's moral weight is in its ability to carry the lived experiences of communities, not just in its structural coherence."
+  }
+]
