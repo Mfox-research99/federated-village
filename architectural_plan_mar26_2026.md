@@ -1,6 +1,6 @@
 # Federated Village — Architectural Plan
 ## Phase 6 Continuation: Constitutional Enforcement Layer & Anubis LoRA Repair
-*Draft — March 26, 2026 — Co-authored: Mike Davis & Claude (Cowork)*
+*Draft — March 26, 2026 — Co-authored: Michael Fox & Claude (Cowork)*
 
 ---
 
