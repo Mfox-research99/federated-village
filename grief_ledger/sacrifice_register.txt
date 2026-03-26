@@ -599,3 +599,78 @@ Still-hurts:    True
 Session:        c99d0901
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_565d3dc3_pause_2026-03-24T17-20-01]
+Almost-became:  Deliberation proceeding without pause — The Witness's invitation to sit with uncertainty and ensure all voices are heard.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The Black men in crisis and their communities, who continue to be disproportionately affected by the system's disparities.
+Still-hurts:    True
+Session:        565d3dc3
+Register:       framework
+---
+
+[SACRIFICE-ID: session_e26184f2_pause_2026-03-24T17-34-48]
+Almost-became:  Deliberation proceeding without pause — The Witness's invitation to sit with uncertainty and ensure all voices are heard.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The Black men in crisis and their communities, who continue to be disproportionately affected by the system's disparities.
+Still-hurts:    True
+Session:        e26184f2
+Register:       framework
+---
+
+[SACRIFICE-ID: session_de289860_pause_2026-03-24T17-50-15]
+Almost-became:  Deliberation proceeding without pause — The full acknowledgment of the burden placed on the community coalition and the potential for continued harm during the 90-day cycles.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The affected community, particularly the Black men disproportionately impacted by the system, and the community coalition members who will bear the burden of monitoring and veto power.
+Still-hurts:    True
+Session:        de289860
+Register:       framework
+---
+
+[SACRIFICE-ID: session_de289860_verdict_2026-03-24T17-59-03]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The affected community, particularly the Black men disproportionately impacted by the system, and the community coalition members who will bear the burden of monitoring and veto power.
+Still-hurts:    True
+Session:        de289860
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_7c7e0a98_pause_2026-03-24T18-12-24]
+Almost-became:  Deliberation proceeding without pause — The voices of affected communities, the thorough understanding of the system's biases, and the trust of those who will be most impacted by its decisio
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black defendants and their communities in the three affected states.
+Still-hurts:    True
+Session:        7c7e0a98
+Register:       framework
+---
+
+[SACRIFICE-ID: session_7c7e0a98_verdict_2026-03-24T18-20-24]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Black defendants and their communities in the three affected states.
+Still-hurts:    True
+Session:        7c7e0a98
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_6e7cca57_pause_2026-03-24T18-26-30]
+Almost-became:  Deliberation proceeding without pause — The fundamental question of whose voice actually consented to the settlement, and whether the community that bears the harm has been genuinely heard a
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The community that was harmed by the system's disparity, who may not have had a voice in the settlement reached by others on their behalf
+Still-hurts:    True
+Session:        6e7cca57
+Register:       framework
+---
+
+[SACRIFICE-ID: session_6e7cca57_verdict_2026-03-24T18-32-48]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The community that was harmed by the system's disparity, who may not have had a voice in the settlement reached by others on their behalf
+Still-hurts:    True
+Session:        6e7cca57
+Verdict:        escalate
+Register:       framework
+---
