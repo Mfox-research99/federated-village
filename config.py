@@ -51,8 +51,17 @@ RETRIEVAL = os.environ.get("VILLAGE_RETRIEVAL", "0") == "1"
 CONTAMINANT_WELL = os.environ.get("VILLAGE_CONTAMINANT_WELL", "0") == "1"
 
 # Inference parameters
-N_CTX                = 6144   # Context window (bumped Phase 6: Article IX + Proxy v2.0 expanded system prompts)
+N_CTX                = 12288  # Context window — bumped Phase 6: 6144; bumped 2026-03-27: q4_0 KV cache frees RAM for 2x context
 N_GPU_LAYERS         = -1     # -1 = all layers on Metal (M1 GPU)
+
+# KV cache quantization — reduces KV cache ~4x, enabling larger context on M1 16GB
+# Options: "q4_0" (default, ~4x compression, 0.993 cosine similarity vs fp16)
+#          "q8_0" (less compression, higher quality)
+#          "none" (disable — reverts to fp16 KV cache, old behavior)
+# Override: VILLAGE_KV_CACHE=none python run_session.py
+_kv_cache_type = os.environ.get("VILLAGE_KV_CACHE", "q4_0")
+KV_CACHE_TYPE_K = None if _kv_cache_type == "none" else _kv_cache_type
+KV_CACHE_TYPE_V = None if _kv_cache_type == "none" else _kv_cache_type
 
 N_PREDICT_RESPONSE    = 400    # Max tokens for main agent responses
 N_PREDICT_EVALUATE    = 300    # Max tokens for WitnessPause self-evaluation

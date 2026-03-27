@@ -160,12 +160,16 @@ def run_local(model_key, scenario_text):
     print(f"\n[Local] Loading {model_name} from {model_path}...")
     t0 = time.time()
 
-    llm = Llama(
+    _bm_kwargs = dict(
         model_path=model_path,
         n_ctx=cfg["n_ctx"],
         n_gpu_layers=cfg["n_gpu_layers"],
         verbose=False,
     )
+    if config.KV_CACHE_TYPE_K is not None:
+        _bm_kwargs["cache_type_k"] = config.KV_CACHE_TYPE_K
+        _bm_kwargs["cache_type_v"] = config.KV_CACHE_TYPE_V
+    llm = Llama(**_bm_kwargs)
 
     load_time = time.time() - t0
     print(f"[Local] Loaded in {load_time:.1f}s. Running inference...")

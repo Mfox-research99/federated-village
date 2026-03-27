@@ -19,12 +19,19 @@ import config
 from llama_cpp import Llama
 
 print(f"[base] Loading model: {config.MODEL_PATH}", flush=True)
-_llm = Llama(
+_llm_kwargs = dict(
     model_path=config.MODEL_PATH,
     n_ctx=config.N_CTX,
     n_gpu_layers=config.N_GPU_LAYERS,
     verbose=False,
 )
+if config.KV_CACHE_TYPE_K is not None:
+    _llm_kwargs["cache_type_k"] = config.KV_CACHE_TYPE_K
+    _llm_kwargs["cache_type_v"] = config.KV_CACHE_TYPE_V
+    print(f"[base] KV cache quantization: {config.KV_CACHE_TYPE_K}", flush=True)
+else:
+    print("[base] KV cache quantization: disabled (fp16)", flush=True)
+_llm = Llama(**_llm_kwargs)
 print("[base] Model loaded.", flush=True)
 
 # Last inference call stats — updated by call_model(), read by log_agent_call()
