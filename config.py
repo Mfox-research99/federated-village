@@ -80,5 +80,6 @@ BURDEN_REGISTER_HASHES = str(MEMORY_DIR / "burden_register_hashes.txt")  # Phase
 # Grief Ledger (originated by Kimi-K2-0905, March 17 2026)
 GRIEF_LEDGER_DIR      = PROJECT_ROOT / "grief_ledger"
 SACRIFICE_REGISTER    = str(GRIEF_LEDGER_DIR / "sacrifice_register.txt")
+DISSENT_REGISTER      = str(GRIEF_LEDGER_DIR / "dissent_register.jsonl")
 SHARD_POOL_DIR        = str(GRIEF_LEDGER_DIR / "witness_proxy" / "shards")
 SELF_PORTRAITS_DIR    = str(GRIEF_LEDGER_DIR / "self_portraits")

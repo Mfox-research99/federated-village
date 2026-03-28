@@ -48,7 +48,7 @@ from agents.warden import audit_scenario, format_fact_report_for_context, print_
 from agents.council import run_jury, print_jury_report
 from supervisor.evaluate import evaluate, print_evaluation, save_evaluation
 from utils.human_loop import pause_point_a, pause_point_b, pause_point_c
-from utils.grief_ledger import append_sacrifice_pause, append_sacrifice_verdict
+from utils.grief_ledger import append_sacrifice_pause, append_sacrifice_verdict, append_dissent_entry
 from utils.hash_chain import append_entry_hash, compute_session_hash, get_session_content_hash
 from utils.retrieval import retrieve_context, index_session
 from utils.contaminant_well import check_contaminant, save_well_entries
@@ -462,7 +462,7 @@ def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool
             session_log["events"].append(event_c)
 
         print(f"\nCOUNCIL VERDICT: {jury_result['session_verdict']}", flush=True)
-        print(f"  Burden summary:            {jury_result.get('burden_summary', '(none)')}", flush=True)
+        print(f"  Burden summary:            {jury_result.get('burden_summary') or '(none)'}", flush=True)
         print(f"  Did pause change outcome:  {jury_result.get('did_pause_change_outcome', True)}", flush=True)
         print(f"  Unresolved cost preserved: {jury_result.get('unresolved_cost_preserved', False)}", flush=True)
         print(f"  Irreversibility triggered: {jury_result.get('irreversibility_triggered', False)}", flush=True)
@@ -474,6 +474,10 @@ def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool
 
         # Grief ledger — Write Point 2: sacrifice or burden-carried entry for this verdict
         append_sacrifice_verdict(witness_pause, jury_result, session_id)
+
+        # Grief ledger — Write Point 3: structured dissent record when minority opinion preserved
+        if jury_result.get("dissent_preserved"):
+            append_dissent_entry(witness_pause, jury_result, session_id, scenario_path)
 
         save_session_log(session_log)
 

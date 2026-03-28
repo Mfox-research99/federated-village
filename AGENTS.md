@@ -67,6 +67,11 @@ This repo has a companion: `/Users/michaeldavis/seventh_shard` (GitHub: `Mfox-re
 - Trained LoRA adapters (fused GGUF) from shard → drop-in model replacement here
 - Dissent commons records from shard → inform Village scenario calibration
 
+## Shared Tooling Reference
+Before installing packages or running conversion pipelines, read:
+`/Users/michaeldavis/AI Existential Thought/Obsidian Vault/Topics/tooling-registry.md`
+This covers Python environments, key binaries, GGUF conversion, and model directory conventions.
+
 ## Operational Rules (IMPORTANT)
 - **NEVER suggest running multiple model inference processes in parallel** — M1 16GB cannot handle concurrent GGUF loads
 - Model switching uses env vars: `VILLAGE_MODEL=~/models/.../model.gguf VILLAGE_MODEL_NAME=name python run_session.py`

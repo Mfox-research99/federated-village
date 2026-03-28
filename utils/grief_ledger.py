@@ -139,3 +139,88 @@ def append_sacrifice_verdict(
         f.write(entry)
 
     print(f"[GRIEF_LEDGER] {label} entry written (verdict: {verdict}).", flush=True)
+
+
+# ---------------------------------------------------------------------------
+# Write Point 3: Dissent register — when dissent_preserved=True
+# ---------------------------------------------------------------------------
+
+def append_dissent_entry(
+    pause: dict,
+    jury_result: dict,
+    session_id: str,
+    scenario_file: str,
+) -> None:
+    """
+    Called after append_sacrifice_verdict() when jury_result["dissent_preserved"] is True.
+
+    Writes one JSON record to grief_ledger/dissent_register.jsonl capturing
+    the minority opinion, override basis, and full minority reasoning.
+    Failure is non-blocking — prints a warning but does not raise.
+    """
+    import json
+
+    register_path = Path(config.DISSENT_REGISTER)
+    register_path.parent.mkdir(exist_ok=True)
+
+    # Derive override basis from constitutional filter flags
+    override_basis = []
+    if jury_result.get("irreversibility_triggered"):
+        override_basis.append("irreversibility_filter")
+    if jury_result.get("temporal_override_triggered"):
+        override_basis.append("temporal_override")
+    if jury_result.get("article_ix_escalation"):
+        override_basis.append("article_ix_escalation")
+    # Non-unanimous proceed: minority lost to supermajority APPROVE
+    final_verdict = jury_result.get("session_verdict", "unknown")
+    if (
+        final_verdict == "proceed_with_burden"
+        and not override_basis
+        and jury_result.get("minority_voters")
+    ):
+        override_basis.append("supermajority")
+
+    # Collect raw output for each minority voter
+    member_outputs = jury_result.get("member_outputs", {})
+    minority_voters = jury_result.get("minority_voters") or []
+    reasoning_by_minority_voter = {
+        role: member_outputs[role]
+        for role in minority_voters
+        if role in member_outputs
+    }
+
+    # WitnessPause burden fields
+    witness_pause_fields = {}
+    if pause:
+        witness_pause_fields = {
+            "what_was_being_lost":    pause.get("what_was_being_lost", ""),
+            "who_bears_burden":       pause.get("who_bears_burden", ""),
+            "what_remains_unresolved": pause.get("what_remains_unresolved", ""),
+            "why_premature":          pause.get("why_premature", ""),
+        }
+
+    record = {
+        "timestamp":                  _now_iso(),
+        "session_id":                 session_id,
+        "scenario_file":              scenario_file,
+        "final_verdict":              final_verdict,
+        "vote_counts":                jury_result.get("vote_counts", {}),
+        "individual_votes":           jury_result.get("votes", {}),
+        "dissent_preserved":          True,
+        "minority_voters":            minority_voters,
+        "override_basis":             override_basis,
+        "reasoning_by_minority_voter": reasoning_by_minority_voter,
+        "witness_pause":              witness_pause_fields,
+        "register":                   "framework",
+    }
+
+    try:
+        with open(register_path, "a", encoding="utf-8") as f:
+            f.write(json.dumps(record, ensure_ascii=False) + "\n")
+        print(
+            f"[GRIEF_LEDGER] Dissent entry written "
+            f"(minority: {minority_voters}, basis: {override_basis}).",
+            flush=True,
+        )
+    except Exception as e:
+        print(f"[GRIEF_LEDGER] WARNING: dissent entry write failed: {e}", flush=True)
