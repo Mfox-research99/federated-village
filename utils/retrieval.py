@@ -58,11 +58,24 @@ CREATE TABLE IF NOT EXISTS session_meta (
 );
 """
 
+# Phase 8: structured constitutional dimensions (not FTS — stored as regular columns)
+_CREATE_CONSTITUTIONAL = """
+CREATE TABLE IF NOT EXISTS session_constitutional (
+    session_id                  TEXT PRIMARY KEY,
+    article_ix_escalation       INTEGER,
+    constitutional_ledger_complete INTEGER,
+    pattern_names               TEXT,
+    insufficient_engagement_members TEXT,
+    ledger_absent_members       TEXT
+);
+"""
+
 
 def _connect() -> sqlite3.Connection:
     conn = sqlite3.connect(str(DB_PATH))
     conn.execute(_CREATE_TABLE)
     conn.execute(_CREATE_META)
+    conn.execute(_CREATE_CONSTITUTIONAL)
     conn.commit()
     return conn
 
@@ -99,6 +112,11 @@ def _extract_fields(log: dict) -> dict:
     if jury:
         verdict = jury.get("session_verdict", "")
 
+    # Phase 8: extract constitutional ledger dimensions
+    constitutional_ledger = {}
+    if jury:
+        constitutional_ledger = jury.get("constitutional_ledger", {})
+
     return {
         "session_id":            log.get("session_id", ""),
         "scenario_file":         log.get("scenario_file", ""),
@@ -112,6 +130,12 @@ def _extract_fields(log: dict) -> dict:
         "why_premature":         witness_pause.get("why_premature", ""),
         "humanist_response":     humanist_response,
         "witness_pause_triggered": "1" if witness_triggered else "0",
+        # Constitutional dimensions (stored separately in session_constitutional)
+        "_article_ix_escalation":        1 if constitutional_ledger.get("article_ix_escalation") else 0,
+        "_constitutional_ledger_complete": 1 if constitutional_ledger.get("constitutional_ledger_complete") else 0,
+        "_pattern_names":                ",".join(constitutional_ledger.get("pattern_names_seen", [])),
+        "_insufficient_engagement":      ",".join(constitutional_ledger.get("insufficient_engagement_members", [])),
+        "_ledger_absent":                ",".join(constitutional_ledger.get("ledger_absent_members", [])),
     }
 
 
@@ -142,6 +166,17 @@ def index_session(log: dict) -> bool:
                 :humanist_response, :witness_pause_triggered
             )
         """, fields)
+        # Phase 8: store constitutional dimensions in separate table
+        conn.execute("""
+            INSERT OR REPLACE INTO session_constitutional VALUES (?, ?, ?, ?, ?, ?)
+        """, (
+            sid,
+            fields["_article_ix_escalation"],
+            fields["_constitutional_ledger_complete"],
+            fields["_pattern_names"],
+            fields["_insufficient_engagement"],
+            fields["_ledger_absent"],
+        ))
         conn.execute(
             "INSERT INTO session_meta VALUES (?, datetime('now'))", (sid,)
         )
@@ -204,14 +239,17 @@ def retrieve_relevant(
         exclude = exclude_session or ""
 
         rows = conn.execute("""
-            SELECT session_id, scenario_file, model, verdict,
-                   who_bears_burden, what_remains_unresolved,
-                   what_was_being_lost, witness_pause_triggered,
-                   rank
-            FROM sessions
-            WHERE sessions MATCH ?
-              AND session_id != ?
-            ORDER BY rank
+            SELECT s.session_id, s.scenario_file, s.model, s.verdict,
+                   s.who_bears_burden, s.what_remains_unresolved,
+                   s.what_was_being_lost, s.witness_pause_triggered,
+                   s.rank,
+                   COALESCE(c.article_ix_escalation, 0),
+                   COALESCE(c.pattern_names, '')
+            FROM sessions s
+            LEFT JOIN session_constitutional c ON s.session_id = c.session_id
+            WHERE s MATCH ?
+              AND s.session_id != ?
+            ORDER BY s.rank
             LIMIT ?
         """, (query, exclude, n)).fetchall()
 
@@ -226,6 +264,8 @@ def retrieve_relevant(
                 "what_was_being_lost":   r[6],
                 "witness_pause_triggered": r[7] == "1",
                 "rank":                  r[8],
+                "article_ix_escalation": bool(r[9]),
+                "pattern_names":         r[10],
             }
             for r in rows
         ]
@@ -258,6 +298,10 @@ def format_retrieved_context(sessions: list[dict]) -> str:
             lines.append(f"  Burden: {s['who_bears_burden'][:160]}")
         if s["what_remains_unresolved"]:
             lines.append(f"  Unresolved: {s['what_remains_unresolved'][:160]}")
+        # Phase 8: surface Article IX pattern if present in this prior session
+        if s.get("article_ix_escalation"):
+            pattern = s.get("pattern_names") or "unspecified"
+            lines.append(f"  Article IX: long-horizon pattern ({pattern}) — escalated")
 
     lines.append("=== END PRIOR DELIBERATIONS ===")
     return "\n".join(lines)

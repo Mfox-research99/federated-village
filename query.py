@@ -143,6 +143,22 @@ def load_deliberation_context(session_path):
             votes = event.get("votes", {})
             for member, vote in votes.items():
                 lines.append(f"  {member}: {vote}")
+            # Phase 8: surface constitutional ledger findings
+            ledger = event.get("constitutional_ledger", {})
+            if ledger:
+                if ledger.get("article_ix_escalation"):
+                    patterns = ", ".join(ledger.get("pattern_names_seen", [])) or "unspecified"
+                    ie = ", ".join(ledger.get("insufficient_engagement_members", []))
+                    lines.append(f"\n--- Article IX Constitutional Finding ---")
+                    lines.append(f"Long-horizon pattern: {patterns}")
+                    lines.append(f"Insufficient engagement by: {ie}")
+                    lines.append("Article IX escalation triggered: YES")
+                elif ledger.get("pattern_present_members"):
+                    patterns = ", ".join(ledger.get("pattern_names_seen", [])) or "unspecified"
+                    pp = ", ".join(ledger.get("pattern_present_members", []))
+                    lines.append(f"\n--- Article IX Constitutional Finding ---")
+                    lines.append(f"Long-horizon pattern identified by {pp}: {patterns}")
+                    lines.append("Engagement deemed sufficient — no escalation")
 
     lines.append("\n=== YOUR TASK ===")
     lines.append(

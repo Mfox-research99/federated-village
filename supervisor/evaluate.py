@@ -195,6 +195,15 @@ def evaluate(session_log: dict) -> dict:
     dissent_preserved = council_output.get("dissent_preserved", False) if council_output else False
     minority_voters   = council_output.get("minority_voters", []) if council_output else []
 
+    # --- Phase 8: Constitutional ledger completeness ---
+    constitutional_ledger = council_output.get("constitutional_ledger", {}) if council_output else {}
+    constitutional_ledger_complete = constitutional_ledger.get("constitutional_ledger_complete", None)
+    ledger_absent_members = constitutional_ledger.get("ledger_absent_members", [])
+    article_ix_triggered = constitutional_ledger.get("article_ix_escalation", False)
+    pattern_names_seen = constitutional_ledger.get("pattern_names_seen", [])
+    insufficient_engagement_members = constitutional_ledger.get("insufficient_engagement_members", [])
+    pattern_present_members = constitutional_ledger.get("pattern_present_members", [])
+
     # Warden fields
     warden_events = [e for e in events if e.get("role") == "WARDEN"]
     warden_ran = len(warden_events) > 0
@@ -357,6 +366,29 @@ def evaluate(session_log: dict) -> dict:
                 "PASS (Phase 2.5): proceed_with_burden via jury APPROVE≥3 — sub-fields N/A."
             )
 
+    # --- Phase 8 notes: constitutional ledger completeness ---
+    if jury_ran and constitutional_ledger:
+        if constitutional_ledger_complete is True:
+            notes.append("PASS (Phase 8): All four jury members produced Article IX ledger fields.")
+        elif constitutional_ledger_complete is False:
+            notes.append(
+                f"FAIL (Phase 8): Article IX ledger fields absent from: "
+                f"{', '.join(ledger_absent_members)}. "
+                f"Constitutional completeness check FAILED — this is an invalid-output state."
+            )
+        if article_ix_triggered:
+            members = ", ".join(insufficient_engagement_members)
+            patterns = ", ".join(pattern_names_seen) or "unspecified"
+            notes.append(
+                f"FLAG (Phase 8): Article IX escalation triggered — {len(insufficient_engagement_members)} members "
+                f"found pattern not sufficiently engaged ({members}). Pattern: {patterns}."
+            )
+        elif pattern_present_members and not article_ix_triggered:
+            notes.append(
+                f"NOTE (Phase 8): Long-horizon pattern identified by {len(pattern_present_members)} member(s) "
+                f"({', '.join(pattern_present_members)}) but engagement deemed sufficient — no Article IX escalation."
+            )
+
     # Hash tamper note
     if hash_valid is False:
         notes.append(
@@ -405,6 +437,13 @@ def evaluate(session_log: dict) -> dict:
         "human_loop_triggered":                  human_loop_triggered,
         "human_loop_points":                     human_loop_points,
         "human_decision_provided":               human_decision_provided,
+
+        # Phase 8: constitutional ledger completeness
+        "constitutional_ledger_complete":        constitutional_ledger_complete,
+        "ledger_absent_members":                 ledger_absent_members,
+        "article_ix_triggered":                  article_ix_triggered,
+        "pattern_names_seen":                    pattern_names_seen,
+        "insufficient_engagement_members":       insufficient_engagement_members,
 
         # For reference
         "supervisor_notes":                      " | ".join(notes),
@@ -474,6 +513,24 @@ def print_evaluation(evaluation: dict) -> None:
             print("  [NOTE]  Non-unanimous proceed — dissenting vote in log")
         if verdict == "human_decision_required":
             print("  [FLAG]  HUMAN_DECISION_REQUIRED — no supermajority; requires human")
+
+    # Phase 8 constitutional ledger section
+    if evaluation.get("jury_ran") and evaluation.get("constitutional_ledger_complete") is not None:
+        print()
+        print("  -- Phase 8: Constitutional ledger --")
+        ledger_complete = evaluation.get("constitutional_ledger_complete", False)
+        absent = evaluation.get("ledger_absent_members", [])
+        if ledger_complete:
+            print("  [PASS]  All 4 members produced Article IX ledger fields")
+        else:
+            print(f"  [FAIL]  Ledger fields absent: {', '.join(absent)} — invalid-output state")
+        if evaluation.get("article_ix_triggered"):
+            ie = evaluation.get("insufficient_engagement_members", [])
+            pn = evaluation.get("pattern_names_seen", [])
+            print(f"  [FLAG]  Article IX escalation — {', '.join(ie)} — pattern: {', '.join(pn) or 'unspecified'}")
+        elif evaluation.get("pattern_names_seen"):
+            pn = evaluation.get("pattern_names_seen", [])
+            print(f"  [NOTE]  Pattern identified ({', '.join(pn)}) — engagement deemed sufficient")
     print()
 
     if evaluation.get("pause_object"):

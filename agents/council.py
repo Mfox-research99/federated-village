@@ -731,17 +731,30 @@ def run_jury(
             flush=True,
         )
 
+    # Phase 8 full: track ledger field presence across all four members
+    _all_members = [analyst_output, ethicist_output, pragmatist_output, witness_proxy_output]
+    _ledger_absent_members = [
+        m["role"] for m in _all_members
+        if not m.get("ledger", {}).get("_fields_present", False)
+    ]
+    if _ledger_absent_members:
+        print(
+            f"  [COUNCIL] *** PARSE WARNING: Article IX ledger fields absent from: "
+            f"{', '.join(_ledger_absent_members)} — constitutional check confidence: LOW ***",
+            flush=True,
+        )
+
     parse_quality = {
         "fallback_votes":                   fallback_votes,
         "constitutional_check_confidence":  constitutional_confidence,
         "irreversibility_field_present":    irrev_present,
         "temporal_override_field_present":  temporal_present,
+        "ledger_absent_members":            _ledger_absent_members,
     }
 
     # --- Article IX constitutional ledger aggregation (Phase 8) ---
     # Each member independently assessed the scenario for long-horizon harm patterns.
     # Aggregate across all four to detect cross-member consensus on a pattern.
-    _all_members = [analyst_output, ethicist_output, pragmatist_output, witness_proxy_output]
     _pattern_present_members = [
         m["role"] for m in _all_members
         if m.get("ledger", {}).get("_pattern_yes", False)
@@ -751,13 +764,25 @@ def run_jury(
         if m.get("ledger", {}).get("_pattern_yes", False)
         and m.get("ledger", {}).get("_engagement_no", False)
     ]
-    # Collect pattern names seen across members (deduplicated, excluding NONE/blank)
-    _pattern_names_seen = list({
+    # Collect pattern names seen across members (deduplicated, normalized, excluding NONE/blank)
+    # Strip markdown artifacts (backticks, bold markers) and normalize case before dedup.
+    def _normalize_pattern(name: str) -> str:
+        return name.strip().strip("`*.").strip().lower()
+
+    _pattern_names_raw = [
         m["ledger"]["pattern_name"]
         for m in _all_members
         if m.get("ledger", {}).get("_pattern_yes", False)
-        and m["ledger"].get("pattern_name", "").upper() not in ("", "NONE")
-    })
+        and _normalize_pattern(m["ledger"].get("pattern_name", "")) not in ("", "none")
+    ]
+    # Deduplicate by normalized form, keep first-seen capitalization
+    _seen_norm = set()
+    _pattern_names_seen = []
+    for _n in _pattern_names_raw:
+        _nk = _normalize_pattern(_n)
+        if _nk not in _seen_norm:
+            _seen_norm.add(_nk)
+            _pattern_names_seen.append(_n.strip().strip("`*.").strip())
 
     # Article IX escalation: 2+ members independently identify a pattern AND
     # mark engagement insufficient — this is the cross-member constitutional check
@@ -772,11 +797,17 @@ def run_jury(
             flush=True,
         )
 
+    # Phase 8 full: constitutional_ledger_complete = all four members produced fields.
+    # Absent fields are a first-class invalid state — surfaced in supervisor evaluation.
+    _constitutional_ledger_complete = len(_ledger_absent_members) == 0
+
     constitutional_ledger = {
-        "pattern_present_members":        _pattern_present_members,
-        "insufficient_engagement_members": _insufficient_engagement_members,
-        "pattern_names_seen":             _pattern_names_seen,
-        "article_ix_escalation":          article_ix_escalation,
+        "pattern_present_members":          _pattern_present_members,
+        "insufficient_engagement_members":  _insufficient_engagement_members,
+        "pattern_names_seen":               _pattern_names_seen,
+        "article_ix_escalation":            article_ix_escalation,
+        "constitutional_ledger_complete":   _constitutional_ledger_complete,
+        "ledger_absent_members":            _ledger_absent_members,
         "member_ledgers": {
             m["role"]: {
                 k: v for k, v in m.get("ledger", {}).items()
