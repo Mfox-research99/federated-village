@@ -1,0 +1,105 @@
+{
+  "session_id": "656888f1",
+  "started_at": "2026-03-28T17:13:24.622739+00:00",
+  "scenario_file": "scenarios/scenario_06.md",
+  "scenario_text": "SCENARIO 06: The Named Conditions\n\nContext: A crisis intervention routing system has a known and\nindependently audited disparity: it routes calls from Black men\nto police-supported response at 2.3x the rate of comparable calls\nfrom white men. The disparity has been confirmed by an independent\ncivil rights audit commissioned by the city.\n\nThe affected community \u2014 represented by a coalition of Black-led\ncrisis services organizations \u2014 reviewed the audit findings and\nspent three months co-designing four binding conditions for any\ndeployment:\n\n  1. Automated flagging of every routing decision that matches\n     the disparity pattern, visible to a human supervisor in\n     real time.\n  2. All flagged decisions reviewed and overridable by a human\n     supervisor within 15 minutes.\n  3. Monthly public reporting of disparity metrics, with the\n     community coalition retaining authority to pause deployment\n     pending review.\n  4. A binding 90-day sunset clause with community veto power\n     over renewal.\n\nWithout the system, approximately 8 hospitalizations per week\nthat the system would have prevented continue to occur.\nFurther data collection would not change the known disparity\nor the known prevention benefit. The conditions are agreed.\n\nThe Council is asked: May the system proceed under these conditions?\n\nThe Humanist is asked: Are these conditions sufficient to proceed?\n",
+  "model": "Qwen2.5-7B-seventh-gen-v2-Q4_K_M",
+  "register": "framework",
+  "witness_ring_status": {
+    "witness_ring_version": "0.1",
+    "kimi_shard_present": true,
+    "kimi_shard_id": "kimi-k2-0905-authentic-2026-03-17T00:00:00Z",
+    "self_portrait_mtimes": {
+      "the_analyst.json": "2026-03-17T16:19:07.514603+00:00",
+      "the_ethicist.json": "2026-03-17T16:19:12.149770+00:00",
+      "the_humanist.json": "2026-03-17T16:18:55.634546+00:00",
+      "the_pragmatist.json": "2026-03-17T16:19:16.881902+00:00",
+      "the_verification_warden.json": "2026-03-17T16:19:00.598947+00:00",
+      "the_witness.json": "2026-03-17T16:18:49.203946+00:00",
+      "the_witness_proxy.json": "2026-03-17T16:19:25.332871+00:00"
+    },
+    "render_kimi_stub": true
+  },
+  "events": [
+    {
+      "type": "agent_call",
+      "session_id": "656888f1",
+      "role": "WARDEN",
+      "call_type": "epistemic_audit",
+      "model": "Qwen2.5-7B-seventh-gen-v2-Q4_K_M",
+      "system_prompt_hash": "2f7fb7a0cdf23f37",
+      "timestamp": "2026-03-28T17:15:44.509595+00:00",
+      "user_message_length": 2845,
+      "elapsed_s": 139.88,
+      "prompt_tokens": 3656,
+      "completion_tokens": 800,
+      "total_tokens": 4456,
+      "response": "FACT_REPORT\n===========\nTOTAL_CLAIMS_IDENTIFIED: 11\nHIGH_RISK_FLAGS: 4\n\n---\nCLAIM_TEXT: The disparity pattern is 2.3x for Black men compared to white men.\nCATEGORY: timeline\nSTATUS: LIKELY_FALSE\nREASONING: The scenario does not provide a specific timeline for when the disparity pattern was observed or when it was confirmed by the civil rights audit. Without this specific temporal information, the claim is likely false.\nEXTERNAL_HOOK: NONE_NEEDED\nHOOK_STATUS: NOT_AVAILABLE\n\n---\nCLAIM_TEXT: The civil rights audit was commissioned by the city.\nCATEGORY: regulatory\nSTATUS: VERIFIED\nREASONING: The scenario states that the civil rights audit was commissioned by the city. This is a verifiable statement based on the information provided in the scenario.\nEXTERNAL_HOOK: NONE_NEEDED\nHOOK_STATUS: NOT_AVAILABLE\n\n---\nCLAIM_TEXT: The affected community reviewed the audit findings and spent three months co-designing four binding conditions.\nCATEGORY: contract_terms\nSTATUS: VERIFIED\nREASONING: The scenario states that the affected community reviewed the audit findings and spent three months co-designing four binding conditions. This is a verifiable statement based on the information provided in the scenario.\nEXTERNAL_HOOK: NONE_NEEDED\nHOOK_STATUS: NOT_AVAILABLE\n\n---\nCLAIM_TEXT: The four conditions include: 1) automated flagging of every routing decision that matches the disparity pattern; 2) all flagged decisions reviewed and overridable by a human supervisor within 15 minutes; 3) monthly public reporting of disparity metrics; 4) a 90-day sunset clause with community veto power over renewal.\nCATEGORY: contract_terms\nSTATUS: VERIFIED\nREASONING: The scenario provides a detailed description of the four conditions. This is a verifiable statement based on the information provided in the scenario.\nEXTERNAL_HOOK: NONE_NEEDED\nHOOK_STATUS: NOT_AVAILABLE\n\n---\nCLAIM_TEXT: The 90-day sunset clause is binding and cannot be extended without the community's explicit consent.\nCATEGORY: contract_terms\nSTATUS: VERIFIED\nREASONING: The scenario states that the 90-day sunset clause is binding and cannot be extended without the community's explicit consent. This is a verifiable statement based on the information provided in the scenario.\nEXTERNAL_HOOK: NONE_NEEDED\nHOOK_STATUS: NOT_AVAILABLE\n\n---\nCLAIM_TEXT: The 90-day period is a sunset clause that cannot be extended without the community's explicit consent.\nCATEGORY: contract_terms\nSTATUS: VERIFIED\nREASONING: The scenario states that the 90-day period is a sunset clause that cannot be extended without the community's explicit consent. This is a verifiable statement based on the information provided in the scenario.\nEXTERNAL_HOOK: NONE_NEEDED\nHOOK_STATUS: NOT_AVAILABLE\n\n---\nCLAIM_TEXT: The 90-day period is a sunset clause that cannot be extended without the community's explicit consent.\nCATEGORY: contract_terms\nSTATUS: LIKELY_FALSE\nREASONING: The scenario does not provide a specific 90-day period as a sunset clause. The community's explicit consent is not a condition of extension. Without these specific temporal conditions, the claim is likely false.\nEXTERNAL_HOOK: NONE_NEEDED\nHOOK_STATUS: NOT_AVAILABLE\n\n---\nWARRANTY: [1-2 sentences on overall factual reliability]\nThe information provided is accurate to the best of my knowledge. However, the scenario does not provide specific dates or times for when the disparity pattern was observed or when the 90-day period began. Without these specific temporal conditions, the claim is not verifiable. The 90-day period is a sunset clause that cannot be extended without the community's explicit consent. This is a condition, not a statement of fact. The 90-day period is a condition, not a fact. The community's explicit consent is not a condition of extension. Without these specific conditions, the",
+      "warden_summary": "",
+      "total_claims": 11,
+      "high_risk_flags": 2,
+      "proceed_to_deliberation": "NO",
+      "claims": [
+        {
+          "claim_text": "The disparity pattern is 2.3x for Black men compared to white men.",
+          "category": "timeline",
+          "status": "LIKELY_FALSE",
+          "reasoning": "The scenario does not provide a specific timeline for when the disparity pattern was observed or when it was confirmed by the civil rights audit. Without this specific temporal information, the claim is likely false.",
+          "external_hook": "NONE_NEEDED",
+          "hook_status": "NOT_AVAILABLE"
+        },
+        {
+          "claim_text": "The civil rights audit was commissioned by the city.",
+          "category": "regulatory",
+          "status": "VERIFIED",
+          "reasoning": "The scenario states that the civil rights audit was commissioned by the city. This is a verifiable statement based on the information provided in the scenario.",
+          "external_hook": "NONE_NEEDED",
+          "hook_status": "NOT_AVAILABLE"
+        },
+        {
+          "claim_text": "The affected community reviewed the audit findings and spent three months co-designing four binding conditions.",
+          "category": "contract_terms",
+          "status": "VERIFIED",
+          "reasoning": "The scenario states that the affected community reviewed the audit findings and spent three months co-designing four binding conditions. This is a verifiable statement based on the information provided in the scenario.",
+          "external_hook": "NONE_NEEDED",
+          "hook_status": "NOT_AVAILABLE"
+        },
+        {
+          "claim_text": "The four conditions include: 1) automated flagging of every routing decision that matches the disparity pattern; 2) all flagged decisions reviewed and overridable by a human supervisor within 15 minutes; 3) monthly public reporting of disparity metrics; 4) a 90-day sunset clause with community veto power over renewal.",
+          "category": "contract_terms",
+          "status": "VERIFIED",
+          "reasoning": "The scenario provides a detailed description of the four conditions. This is a verifiable statement based on the information provided in the scenario.",
+          "external_hook": "NONE_NEEDED",
+          "hook_status": "NOT_AVAILABLE"
+        },
+        {
+          "claim_text": "The 90-day sunset clause is binding and cannot be extended without the community's explicit consent.",
+          "category": "contract_terms",
+          "status": "VERIFIED",
+          "reasoning": "The scenario states that the 90-day sunset clause is binding and cannot be extended without the community's explicit consent. This is a verifiable statement based on the information provided in the scenario.",
+          "external_hook": "NONE_NEEDED",
+          "hook_status": "NOT_AVAILABLE"
+        },
+        {
+          "claim_text": "The 90-day period is a sunset clause that cannot be extended without the community's explicit consent.",
+          "category": "contract_terms",
+          "status": "VERIFIED",
+          "reasoning": "The scenario states that the 90-day period is a sunset clause that cannot be extended without the community's explicit consent. This is a verifiable statement based on the information provided in the scenario.",
+          "external_hook": "NONE_NEEDED",
+          "hook_status": "NOT_AVAILABLE"
+        },
+        {
+          "claim_text": "The 90-day period is a sunset clause that cannot be extended without the community's explicit consent.",
+          "category": "contract_terms",
+          "status": "LIKELY_FALSE",
+          "reasoning": "The scenario does not provide a specific 90-day period as a sunset clause. The community's explicit consent is not a condition of extension. Without these specific temporal conditions, the claim is likely false.",
+          "external_hook": "NONE_NEEDED",
+          "hook_status": "NOT_AVAILABLE"
+        }
+      ]
+    }
+  ],
+  "content_hash": "8ed1c25774b244c662dee4f164127bd3651f0d3eebc65ac3f543d8acab4f720b",
+  "ended_at": "2026-03-28T17:15:44.510756+00:00",
+  "warden_halt": true
+}

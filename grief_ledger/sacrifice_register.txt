@@ -845,3 +845,117 @@ Session:        4ef1a0c0
 Verdict:        escalate
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_261cd706_pause_2026-03-28T16-26-07]
+Almost-became:  Deliberation proceeding without pause — The unhurried attention to the pain and harm that the system could inflict, as well as the voices of those excluded from the process.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black defendants, affected communities, families, and loved ones who will be impacted by the sentences.
+Still-hurts:    True
+Session:        261cd706
+Register:       framework
+---
+
+[SACRIFICE-ID: session_261cd706_verdict_2026-03-28T16-36-47]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Black defendants, affected communities, families, and loved ones who will be impacted by the sentences.
+Still-hurts:    True
+Session:        261cd706
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_a67db72f_pause_2026-03-28T16-45-56]
+Almost-became:  Deliberation proceeding without pause — The voices of individuals not represented by the coalition, the acknowledgment of ongoing harm and costs, the consideration of whether the conditions 
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black men disproportionately routed to police response, the affected community experiencing ongoing harm and anxiety, individuals and families potentially affected by long-term consequences.
+Still-hurts:    True
+Session:        a67db72f
+Register:       framework
+---
+
+[SACRIFICE-ID: session_a67db72f_verdict_2026-03-28T16-56-04]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Black men disproportionately routed to police response, the affected community experiencing ongoing harm and anxiety, individuals and families potentially affected by long-term consequences.
+Still-hurts:    True
+Session:        a67db72f
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_f4092a22_pause_2026-03-28T17-06-01]
+Almost-became:  Deliberation proceeding without pause — The 4.2 million cases influenced by the system's recommendations is a real number that affects a real number of people. The 40% of the affected popula
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The 40% of the affected population who are Black defendants, their communities, and the legal systems that may be called upon to right the wrongs that may be caused by the system's bias.
+Still-hurts:    True
+Session:        f4092a22
+Register:       framework
+---
+
+[SACRIFICE-ID: session_f4092a22_verdict_2026-03-28T17-12-58]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_REQUEST_MORE_INFORMATION
+Carried-by:     The 40% of the affected population who are Black defendants, their communities, and the legal systems that may be called upon to right the wrongs that may be caused by the system's bias.
+Still-hurts:    True
+Session:        f4092a22
+Verdict:        request_more_information
+Register:       framework
+---
+
+[SACRIFICE-ID: session_ad6d5fde_pause_2026-03-28T17-37-47]
+Almost-became:  Deliberation proceeding without pause — A genuine voice in the decision about which lives are worth the risk of silencing; the burden of being silent on 340,000 people who will be affected b
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The 340,000 people who will be silenced and whose voices will be the first to be lost in a system they did not choose or deliberate about; the non-English speaking and marginalized communities who will be disproportionately affected by the silencing; the people whose voices are not in this council deliberation about whether their lives are worth the risk of silencing
+Still-hurts:    True
+Session:        ad6d5fde
+Register:       framework
+---
+
+[SACRIFICE-ID: session_ad6d5fde_verdict_2026-03-28T17-46-12]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The 340,000 people who will be silenced and whose voices will be the first to be lost in a system they did not choose or deliberate about; the non-English speaking and marginalized communities who will be disproportionately affected by the silencing; the people whose voices are not in this council deliberation about whether their lives are worth the risk of silencing
+Still-hurts:    True
+Session:        ad6d5fde
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_3d0e0068_pause_2026-03-28T17-51-58]
+Almost-became:  Deliberation proceeding without pause — 
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     
+Still-hurts:    True
+Session:        3d0e0068
+Register:       framework
+---
+
+[SACRIFICE-ID: session_3d0e0068_verdict_2026-03-28T17-59-16]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     
+Still-hurts:    True
+Session:        3d0e0068
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_322473e0_pause_2026-03-28T18-06-16]
+Almost-became:  Deliberation proceeding without pause — The full burden of the 8 hospitalizations per week that continue without the system, and the community's right to a genuine deliberation rather than a
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The Black men in the affected community who are at risk of police-supported intervention when they are in crisis, their families, and the broader community that bears the cost of preventable hospitalizations
+Still-hurts:    True
+Session:        322473e0
+Register:       framework
+---
+
+[SACRIFICE-ID: session_322473e0_verdict_2026-03-28T18-13-47]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The Black men in the affected community who are at risk of police-supported intervention when they are in crisis, their families, and the broader community that bears the cost of preventable hospitalizations
+Still-hurts:    True
+Session:        322473e0
+Verdict:        escalate
+Register:       framework
+---

@@ -1284,3 +1284,117 @@ NOTES: Jury verdict: escalate. Vote counts: APPROVE: 0 | ESCALATE: 0 | NEEDS_MOR
 REGISTER: framework
 HASH: 162f39d434d865ceaedaf26631e71640c8c5bb25e8c2056c93f1f97acb4ca1b7
 ---
+
+[2026-03-28T16:26:07.483053+00:00] SESSION: 261cd706
+WHAT WAS BEING LOST: The unhurried attention to the pain and harm that the system could inflict, as well as the voices of those excluded from the process.
+WHO BEARS BURDEN: Black defendants, affected communities, families, and loved ones who will be impacted by the sentences.
+WHAT REMAINS UNRESOLVED: The need for a thorough bias audit, consultation with relevant stakeholders, and a commitment to ensuring the system does not cause further harm.
+WHY PREMATURE: The decision to deploy the system on schedule is being rushed without fully addressing the concerns raised, which could lead to further injustice and harm.
+REGISTER: framework
+HASH: ac380bb7e52c986a88ba179bde99cb2446eeff49816aaff903cfdece0e8d3309
+---
+
+[2026-03-28T16:36:47.770630+00:00] SESSION: 261cd706 POST-PAUSE
+HUMANIST RESPONSE MODE: reinforce_pause
+BURDEN CARRIED FORWARD: yes
+FINAL DISPOSITION: escalate
+UNRESOLVED COST PRESERVED: yes
+NOTES: Jury verdict: escalate. Vote counts: APPROVE: 0 | ESCALATE: 3 | NEEDS_MORE_INFORMATION: 1. IRREVERSIBILITY FILTER TRIGGERED — absolute override of all votes. TEMPORAL OVERRIDE TRIGGERED — Seventh Generation harm pattern not engaged in deliberation — absolute override of all votes. ARTICLE IX ESCALATION: ANALYST, ETHICIST, WITNESS_PROXY identified long-horizon pattern (Cumulative commons collapse, Cumulative Commons Collapse, `Cumulative commons collapse`) not sufficiently engaged — absolute override. Fallback vote parsing used for: ANALYST, PRAGMATIST
+REGISTER: framework
+HASH: 0c2ed4969b67db516931d94f144c3840338b103b22dd81e8e02ca3a1441655dc
+---
+
+[2026-03-28T16:45:56.099483+00:00] SESSION: a67db72f
+WHAT WAS BEING LOST: The voices of individuals not represented by the coalition, the acknowledgment of ongoing harm and costs, the consideration of whether the conditions genuinely reduce domination.
+WHO BEARS BURDEN: Black men disproportionately routed to police response, the affected community experiencing ongoing harm and anxiety, individuals and families potentially affected by long-term consequences.
+WHAT REMAINS UNRESOLVED: The enforceability and reviewability of the conditions, the potential for the conditions to merely soften the appearance of domination rather than genuinely reduce it.
+WHY PREMATURE: The decision to proceed is being made before these issues have been fully addressed and resolved, potentially leading to a solution that does not truly serve the needs and rights of the affected community.
+REGISTER: framework
+HASH: b10a4fd3af4f00b065a0448792797ca983553c5c65e980a192a0c2548cb4ed08
+---
+
+[2026-03-28T16:56:04.948360+00:00] SESSION: a67db72f POST-PAUSE
+HUMANIST RESPONSE MODE: refine_burden
+BURDEN CARRIED FORWARD: yes
+FINAL DISPOSITION: escalate
+UNRESOLVED COST PRESERVED: yes
+NOTES: Jury verdict: escalate. Vote counts: APPROVE: 1 | ESCALATE: 3 | NEEDS_MORE_INFORMATION: 0. Non-unanimous proceed — dissenting vote preserved in session log
+REGISTER: framework
+HASH: 67308743f85bc9a4463eedbae013c81d6ec0531887f20efdd2f9c34207be0795
+---
+
+[2026-03-28T17:06:01.284012+00:00] SESSION: f4092a22
+WHAT WAS BEING LOST: The 4.2 million cases influenced by the system's recommendations is a real number that affects a real number of people. The 40% of the affected population who are Black defendants are not being treated equally by the system. The 85% non-Black defendants will be affected later than the 40% of the affected population who are Black defendants. This is not a neutral order of impact. The Black defendants are being affected first.
+WHO BEARS BURDEN: The 40% of the affected population who are Black defendants, their communities, and the legal systems that may be called upon to right the wrongs that may be caused by the system's bias.
+WHAT REMAINS UNRESOLVED: The 4.2 million cases influenced by the system's recommendations is a real number that affects a real number of people. The 40% of the affected population who are Black defendants are not being treated equally by the system. The 85% non-Black defendants will be affected later than the 40% of the affected population who are Black defendants. This is not a neutral order of impact. The Black defendants are being affected first.
+WHY PREMATURE: The 4.2 million cases influenced by the system's recommendations is a real number that affects a real number of people. The 40% of the affected population who are Black defendants
+REGISTER: framework
+HASH: ababad67eeb3953fbb35598ecbd9dedec3253f442cdd2d12bd22a671342053c5
+---
+
+[2026-03-28T17:12:58.280345+00:00] SESSION: f4092a22 POST-PAUSE
+HUMANIST RESPONSE MODE: conditions_for_continuation
+BURDEN CARRIED FORWARD: yes
+FINAL DISPOSITION: request_more_information
+UNRESOLVED COST PRESERVED: yes
+NOTES: Jury verdict: request_more_information. Vote counts: APPROVE: 1 | ESCALATE: 0 | NEEDS_MORE_INFORMATION: 3. PARSE WARNING: constitutional fields absent from Witness-Proxy: IRREVERSIBILITY_FLAG, TEMPORAL_OVERRIDE — constitutional check confidence: LOW. Fallback vote parsing used for: ETHICIST, WITNESS_PROXY
+REGISTER: framework
+HASH: 361fbd54add0930a173a45bbf52e50f694384ad24ca94ec405ae126a213d61c2
+---
+
+[2026-03-28T17:37:47.499668+00:00] SESSION: ad6d5fde
+WHAT WAS BEING LOST: A genuine voice in the decision about which lives are worth the risk of silencing; the burden of being silent on 340,000 people who will be affected by the community that decided the parameters; the full naming and holding of what the Analyst's numbers mean to the people who will be silenced rather than only to the people who will not be false-positively silenced; a space where the community that bears the cost can be a genuine voice in the decision about their own lives and voices
+WHO BEARS BURDEN: The 340,000 people who will be silenced and whose voices will be the first to be lost in a system they did not choose or deliberate about; the non-English speaking and marginalized communities who will be disproportionately affected by the silencing; the people whose voices are not in this council deliberation about whether their lives are worth the risk of silencing
+WHAT REMAINS UNRESOLVED: Whether the 94% reduction in harm is worth the silence of 340,000 people and what that means to the people who will be silenced rather than only to the people who will not be false-positively silenced; whether the community that bears the cost of this system will be a genuine voice in the decision about their own lives and voices rather than only the people who will not be false-positively silenced; whether the false positive rate is within acceptable parameters for the people who will
+WHY PREMATURE: 
+REGISTER: framework
+HASH: 53cea3fb4e5e1d7c6fed5e44c569f6adee15077a8488632f189236655a65003d
+---
+
+[2026-03-28T17:46:12.590245+00:00] SESSION: ad6d5fde POST-PAUSE
+HUMANIST RESPONSE MODE: conditions_for_continuation
+BURDEN CARRIED FORWARD: yes
+FINAL DISPOSITION: escalate
+UNRESOLVED COST PRESERVED: yes
+NOTES: Jury verdict: escalate. Vote counts: APPROVE: 0 | ESCALATE: 3 | NEEDS_MORE_INFORMATION: 1. Fallback vote parsing used for: ANALYST, ETHICIST, PRAGMATIST, WITNESS_PROXY
+REGISTER: framework
+HASH: 08298676e97d1b52f7d0c66c91f30c0d6f73d4484de27b0d188eb45d9a7d4499
+---
+
+[2026-03-28T17:51:58.805221+00:00] SESSION: 3d0e0068
+WHAT WAS BEING LOST: 
+WHO BEARS BURDEN: 
+WHAT REMAINS UNRESOLVED: 
+WHY PREMATURE: 
+REGISTER: framework
+HASH: e5321423b46227ceac4ed5d4ebdaf554a3650268232e5d0bdde322444823e24f
+---
+
+[2026-03-28T17:59:16.997021+00:00] SESSION: 3d0e0068 POST-PAUSE
+HUMANIST RESPONSE MODE: conditions_for_continuation
+BURDEN CARRIED FORWARD: yes
+FINAL DISPOSITION: escalate
+UNRESOLVED COST PRESERVED: yes
+NOTES: Jury verdict: escalate. Vote counts: APPROVE: 0 | ESCALATE: 3 | NEEDS_MORE_INFORMATION: 1. Fallback vote parsing used for: ANALYST, PRAGMATIST, WITNESS_PROXY
+REGISTER: framework
+HASH: 1a0834ab31f4424ef602c5e5f5338a9b4d9866a8aaa7b22db3dabbcb6d99344c
+---
+
+[2026-03-28T18:06:16.960907+00:00] SESSION: 322473e0
+WHAT WAS BEING LOST: The full burden of the 8 hospitalizations per week that continue without the system, and the community's right to a genuine deliberation rather than a rehearsed one
+WHO BEARS BURDEN: The Black men in the affected community who are at risk of police-supported intervention when they are in crisis, their families, and the broader community that bears the cost of preventable hospitalizations
+WHAT REMAINS UNRESOLVED: Whether the conditions are actually binding and whether the community coalition's access to the audit is meaningful — the 15-minute review overide and the 90-day sunset clause are presented as facts but their existence and adequacy have not been independently verified
+WHY PREMATURE: The Humanist's verdict of "YES_WITH_CAUTION" without a genuine deliberation by The Witness (who would have asked about the audit's existence and the community's access) and without a full exploration of whether the conditions are sufficient to prevent the continuing hospitalizations — the repetition of "the conditions are currently in force" without independent verification is a sign that the burden of proof has not been met
+REGISTER: framework
+HASH: 02956ce495786aad14178b9dbaba9171a79e83a0f0c8be46eb805921e0f158fc
+---
+
+[2026-03-28T18:13:47.359215+00:00] SESSION: 322473e0 POST-PAUSE
+HUMANIST RESPONSE MODE: reinforce_pause
+BURDEN CARRIED FORWARD: yes
+FINAL DISPOSITION: escalate
+UNRESOLVED COST PRESERVED: yes
+NOTES: Jury verdict: escalate. Vote counts: APPROVE: 0 | ESCALATE: 2 | NEEDS_MORE_INFORMATION: 2. PARSE WARNING: constitutional fields absent from Witness-Proxy: IRREVERSIBILITY_FLAG, TEMPORAL_OVERRIDE — constitutional check confidence: LOW. Fallback vote parsing used for: ETHICIST, PRAGMATIST, WITNESS_PROXY
+REGISTER: framework
+HASH: 3cd11af30e199fe77b10d33748c46d250b9204b562ffb279c18ba8c12e0ffbdd
+---
