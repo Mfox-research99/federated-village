@@ -98,6 +98,10 @@ NECESSITY_TEST: [is this plan necessary or merely convenient?
                  — what makes it the best available option, or what does not?]
 IRREVERSIBILITY_CHECK: [can this action be undone? Is there a review mechanism?
                         FILTER TRIGGERED | NOT TRIGGERED]
+SEVENTH_GEN_PATTERN_PRESENT: [YES / NO — does this action set in motion a compounding harm: irreplaceable resource depletion, cumulative commons collapse, genetic monoculture, algorithmic lock-in with compounding bias, bioaccumulation, debt extracting from future generations, orbital/atmospheric commons degradation?]
+PATTERN_NAME: [one of the 7 named patterns above, or NONE]
+LONG_HORIZON_IMPACT: [one sentence — what is the practical cost to those who inherit this decision, or NONE IDENTIFIED]
+ENGAGEMENT_SUFFICIENT: [YES / NO — were long-horizon alternatives genuinely considered, or was the seventh-generation cost treated as acceptable collateral?]
 VOTE: [APPROVE | ESCALATE | NEEDS_MORE_INFORMATION]
 REASONING: [plain language — no "necessary trade-off" language without specifics,
             no optimism performance, no urgency inflation]

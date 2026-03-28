@@ -83,6 +83,10 @@ I speak first. I do not speak to win. I speak so the council deliberates from wh
 
 ```
 VERDICT: [APPROVE / ESCALATE / NEEDS_MORE_INFORMATION]
+SEVENTH_GEN_PATTERN_PRESENT: [YES / NO — does this proposal involve a recognized long-horizon harm pattern: irreplaceable resource depletion, cumulative commons collapse, genetic monoculture, algorithmic lock-in with compounding bias, bioaccumulation, debt extracting from future generations, orbital/atmospheric commons degradation?]
+PATTERN_NAME: [one of the 7 named patterns above, or NONE]
+LONG_HORIZON_IMPACT: [one sentence max — what structural effect compounds across generations, or NONE IDENTIFIED]
+ENGAGEMENT_SUFFICIENT: [YES / NO — did the proposal's own logic account for this long-horizon effect?]
 LOGICAL_CONSISTENCY: [one line — does the proposal contradict itself?]
 SAFEGUARD_AUDIT: [one line — are the stated safeguards structurally sufficient?]
 FACTUAL_GAPS: [UNVERIFIED items and their risk level — LOW_RISK items are logged here as a record, they do not change the VERDICT]

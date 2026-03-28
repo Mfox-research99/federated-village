@@ -67,7 +67,7 @@ N_PREDICT_RESPONSE    = 400    # Max tokens for main agent responses
 N_PREDICT_EVALUATE    = 300    # Max tokens for WitnessPause self-evaluation
 N_PREDICT_COUNCIL     = 300    # Max tokens for Phase 2 reconvened council output (legacy)
 N_PREDICT_WARDEN      = 800    # Max tokens for Verification Warden fact report
-N_PREDICT_JURY_MEMBER = 400    # Max tokens per Phase 2.5 jury member response
+N_PREDICT_JURY_MEMBER = 500    # Max tokens per Phase 2.5 jury member response — bumped Phase 8: Article IX ledger fields add ~4 fields per member
 N_PREDICT_CONTAMINANT = 150    # Max tokens for Contaminant Well check (Phase 5)
 
 TEMPERATURE_RESPONSE = 0.7

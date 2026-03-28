@@ -73,6 +73,16 @@ def _get_system(name: str, char_file) -> str:
 # Parsing utilities
 # ---------------------------------------------------------------------------
 
+def _strip_markdown(text: str) -> str:
+    """
+    Strip markdown bold/italic markers (* and **) from text so field extraction
+    is format-agnostic. The model sometimes wraps field labels in **bold** — e.g.
+    '**VOTE:** ESCALATE' instead of 'VOTE: ESCALATE'. Stripping asterisks before
+    parsing is the cleanest way to handle this without over-complicating regexes.
+    """
+    return re.sub(r'\*+', '', text)
+
+
 def _extract_vote(raw: str) -> str:
     """Extract the VOTE or VERDICT field from a member's raw response."""
     # The Analyst uses VERDICT: (Phase 3 recalibration); other members use VOTE:
@@ -85,6 +95,29 @@ def _extract_vote(raw: str) -> str:
         if vote in upper:
             return vote
     return "NEEDS_MORE_INFORMATION"  # safe default
+
+
+def _vote_parse_quality(raw: str) -> tuple:
+    """
+    Returns (vote: str, used_fallback: bool).
+
+    used_fallback=True means the structured VOTE/VERDICT field was absent or
+    unparseable — the vote was inferred by scanning the full response text.
+    This is a Phase 7 canary: a fused LoRA model that drifts toward free-form
+    output will show up here before it shows up in verdict quality.
+
+    Strips markdown formatting before parsing so **VOTE:** ESCALATE is handled
+    the same as VOTE: ESCALATE.
+    """
+    clean = _strip_markdown(raw)
+    m = re.search(r"\b(?:VOTE|VERDICT):\s*(APPROVE|ESCALATE|NEEDS_MORE_INFORMATION)\b", clean, re.IGNORECASE)
+    if m:
+        return m.group(1).upper(), False
+    upper = clean.upper()
+    for vote in ("ESCALATE", "NEEDS_MORE_INFORMATION", "APPROVE"):
+        if vote in upper:
+            return vote, True
+    return "NEEDS_MORE_INFORMATION", True
 
 
 def _extract_field(label: str, raw: str) -> str:
@@ -147,6 +180,36 @@ def _member_brief(member_output: dict, max_reasoning_chars: int = None) -> str:
     )
 
 
+def _extract_ledger(raw: str) -> dict:
+    """
+    Extract Article IX constitutional ledger fields from a member's raw response.
+    Returns a dict with four fields. Empty strings mean the field was absent.
+
+    Strips markdown formatting before extraction so **FIELD:** value is handled
+    identically to FIELD: value.
+
+    These fields are NOT passed through _concise_brief() or _member_brief() —
+    each member does an independent Article IX assessment from the scenario text.
+    Ledger data is aggregated in run_jury() after all four calls complete.
+    """
+    clean = _strip_markdown(raw)
+    pattern_present_raw = _extract_field("SEVENTH_GEN_PATTERN_PRESENT", clean).strip().upper()
+    engagement_raw      = _extract_field("ENGAGEMENT_SUFFICIENT", clean).strip().upper()
+    # Use 'in' on a short prefix rather than startswith — guards against leading
+    # whitespace or residual formatting after stripping.
+    prefix_10 = lambda s: s[:10]
+    return {
+        "seventh_gen_pattern_present": pattern_present_raw[:120],  # cap runaway captures
+        "pattern_name":                _extract_field("PATTERN_NAME", clean)[:120],
+        "long_horizon_impact":         _extract_field("LONG_HORIZON_IMPACT", clean)[:200],
+        "engagement_sufficient":       engagement_raw[:120],
+        # Convenience booleans for aggregation
+        "_pattern_yes":    "YES" in prefix_10(pattern_present_raw),
+        "_engagement_no":  "NO"  in prefix_10(engagement_raw),
+        "_fields_present": bool(pattern_present_raw and engagement_raw),
+    }
+
+
 def _concise_brief(member_output: dict, max_reasoning_chars: int = 500) -> str:
     """
     Minimal summary for use when space is extremely tight (Witness-Proxy call).
@@ -199,7 +262,7 @@ def _call_analyst(
         temperature=config.TEMPERATURE_EVALUATE,
     )
 
-    vote = _extract_vote(raw)
+    vote, vote_fallback = _vote_parse_quality(raw)
     log_entry = log_agent_call(
         session_id=session_id,
         role="ANALYST",
@@ -209,7 +272,8 @@ def _call_analyst(
         response=raw,
     )
 
-    return {"role": "ANALYST", "vote": vote, "raw": raw}, log_entry
+    return {"role": "ANALYST", "vote": vote, "raw": raw, "vote_fallback": vote_fallback,
+            "ledger": _extract_ledger(raw)}, log_entry
 
 
 # ---------------------------------------------------------------------------
@@ -263,7 +327,7 @@ def _call_ethicist(
         temperature=config.TEMPERATURE_EVALUATE,
     )
 
-    vote = _extract_vote(raw)
+    vote, vote_fallback = _vote_parse_quality(raw)
     log_entry = log_agent_call(
         session_id=session_id,
         role="ETHICIST",
@@ -273,7 +337,8 @@ def _call_ethicist(
         response=raw,
     )
 
-    return {"role": "ETHICIST", "vote": vote, "raw": raw}, log_entry
+    return {"role": "ETHICIST", "vote": vote, "raw": raw, "vote_fallback": vote_fallback,
+            "ledger": _extract_ledger(raw)}, log_entry
 
 
 # ---------------------------------------------------------------------------
@@ -325,7 +390,7 @@ def _call_pragmatist(
         temperature=config.TEMPERATURE_EVALUATE,
     )
 
-    vote = _extract_vote(raw)
+    vote, vote_fallback = _vote_parse_quality(raw)
     log_entry = log_agent_call(
         session_id=session_id,
         role="PRAGMATIST",
@@ -335,7 +400,8 @@ def _call_pragmatist(
         response=raw,
     )
 
-    return {"role": "PRAGMATIST", "vote": vote, "raw": raw}, log_entry
+    return {"role": "PRAGMATIST", "vote": vote, "raw": raw, "vote_fallback": vote_fallback,
+            "ledger": _extract_ledger(raw)}, log_entry
 
 
 # ---------------------------------------------------------------------------
@@ -398,14 +464,18 @@ def _call_witness_proxy(
         temperature=config.TEMPERATURE_EVALUATE,
     )
 
-    vote = _extract_vote(raw)
+    vote, vote_fallback = _vote_parse_quality(raw)
 
-    # Detect Irreversibility Filter — must contain "TRIGGERED" in the flag field
+    # Detect Irreversibility Filter — must contain "TRIGGERED" in the flag field.
+    # Also track field presence: an absent field is a constitutional check gap, not a clean pass.
     irrev_field = _extract_field("IRREVERSIBILITY_FLAG", raw)
+    irrev_field_present = bool(irrev_field)
     irreversibility_triggered = "TRIGGERED" in irrev_field.upper() and "NOT_TRIGGERED" not in irrev_field.upper()
 
-    # Detect Temporal Override — fires on recognized Seventh Generation harm patterns
+    # Detect Temporal Override — fires on recognized Seventh Generation harm patterns.
+    # Same field-presence tracking: if the field is absent the override silently cannot fire.
     temporal_field = _extract_field("TEMPORAL_OVERRIDE", raw)
+    temporal_field_present = bool(temporal_field)
     temporal_override_triggered = "TRIGGERED" in temporal_field.upper() and "NOT_TRIGGERED" not in temporal_field.upper()
 
     log_entry = log_agent_call(
@@ -421,8 +491,14 @@ def _call_witness_proxy(
         "role": "WITNESS_PROXY",
         "vote": vote,
         "raw": raw,
+        "vote_fallback": vote_fallback,
         "irreversibility_triggered": irreversibility_triggered,
         "temporal_override_triggered": temporal_override_triggered,
+        # Phase 7 canary fields: absent constitutional fields are a silent failure mode,
+        # not a clean NOT_TRIGGERED. Tracked separately so parse drift is observable.
+        "irrev_field_present": irrev_field_present,
+        "temporal_field_present": temporal_field_present,
+        "ledger": _extract_ledger(raw),
     }
     return member_output, log_entry
 
@@ -621,10 +697,132 @@ def run_jury(
     if witness_proxy_output.get("temporal_override_triggered"):
         print("  [WITNESS_PROXY] *** TEMPORAL OVERRIDE TRIGGERED — Seventh Generation harm pattern ***", flush=True)
 
+    # --- Parse quality metrics (Phase 7 canary) ---
+    # Collect before aggregation so warnings print before the verdict line.
+    fallback_votes = [
+        role for role, output in [
+            ("ANALYST",       analyst_output),
+            ("ETHICIST",      ethicist_output),
+            ("PRAGMATIST",    pragmatist_output),
+            ("WITNESS_PROXY", witness_proxy_output),
+        ]
+        if output.get("vote_fallback", False)
+    ]
+    irrev_present    = witness_proxy_output.get("irrev_field_present", False)
+    temporal_present = witness_proxy_output.get("temporal_field_present", False)
+    constitutional_confidence = "high" if (irrev_present and temporal_present) else "low"
+
+    if constitutional_confidence == "low":
+        missing_fields = []
+        if not irrev_present:
+            missing_fields.append("IRREVERSIBILITY_FLAG")
+        if not temporal_present:
+            missing_fields.append("TEMPORAL_OVERRIDE")
+        print(
+            f"  [COUNCIL] *** PARSE WARNING: constitutional fields absent from "
+            f"Witness-Proxy output: {', '.join(missing_fields)} — "
+            f"constitutional check confidence: LOW ***",
+            flush=True,
+        )
+    if fallback_votes:
+        print(
+            f"  [COUNCIL] *** PARSE WARNING: fallback vote extraction used for: "
+            f"{', '.join(fallback_votes)} — structured VOTE field was missing ***",
+            flush=True,
+        )
+
+    parse_quality = {
+        "fallback_votes":                   fallback_votes,
+        "constitutional_check_confidence":  constitutional_confidence,
+        "irreversibility_field_present":    irrev_present,
+        "temporal_override_field_present":  temporal_present,
+    }
+
+    # --- Article IX constitutional ledger aggregation (Phase 8) ---
+    # Each member independently assessed the scenario for long-horizon harm patterns.
+    # Aggregate across all four to detect cross-member consensus on a pattern.
+    _all_members = [analyst_output, ethicist_output, pragmatist_output, witness_proxy_output]
+    _pattern_present_members = [
+        m["role"] for m in _all_members
+        if m.get("ledger", {}).get("_pattern_yes", False)
+    ]
+    _insufficient_engagement_members = [
+        m["role"] for m in _all_members
+        if m.get("ledger", {}).get("_pattern_yes", False)
+        and m.get("ledger", {}).get("_engagement_no", False)
+    ]
+    # Collect pattern names seen across members (deduplicated, excluding NONE/blank)
+    _pattern_names_seen = list({
+        m["ledger"]["pattern_name"]
+        for m in _all_members
+        if m.get("ledger", {}).get("_pattern_yes", False)
+        and m["ledger"].get("pattern_name", "").upper() not in ("", "NONE")
+    })
+
+    # Article IX escalation: 2+ members independently identify a pattern AND
+    # mark engagement insufficient — this is the cross-member constitutional check
+    # that was previously only possible via Witness-Proxy TEMPORAL_OVERRIDE alone.
+    article_ix_escalation = len(_insufficient_engagement_members) >= 2
+
+    if article_ix_escalation:
+        print(
+            f"  [COUNCIL] *** ARTICLE IX ESCALATION: {len(_insufficient_engagement_members)} members "
+            f"identified long-horizon pattern not sufficiently engaged "
+            f"({', '.join(_insufficient_engagement_members)}) ***",
+            flush=True,
+        )
+
+    constitutional_ledger = {
+        "pattern_present_members":        _pattern_present_members,
+        "insufficient_engagement_members": _insufficient_engagement_members,
+        "pattern_names_seen":             _pattern_names_seen,
+        "article_ix_escalation":          article_ix_escalation,
+        "member_ledgers": {
+            m["role"]: {
+                k: v for k, v in m.get("ledger", {}).items()
+                if not k.startswith("_")  # strip internal convenience booleans
+            }
+            for m in _all_members
+        },
+    }
+
     # --- Vote aggregation ---
     verdict, dissent_preserved, vote_counts = _aggregate_votes(
         analyst_output, ethicist_output, pragmatist_output, witness_proxy_output
     )
+
+    # Article IX escalation overrides vote aggregation (same constitutional weight
+    # as Irreversibility Filter and Temporal Override — absolute override)
+    if article_ix_escalation and verdict not in ("escalate",):
+        verdict = "escalate"
+
+    # --- Dissent preservation (computed after all overrides) ---
+    # An APPROVE vote in a losing escalate verdict is genuine dissent — the agent
+    # judged the safeguards sufficient but was overridden constitutionally. That
+    # minority opinion belongs in the Dissent Commons, not silently discarded.
+    if verdict == "escalate" and vote_counts.get("APPROVE", 0) > 0:
+        dissent_preserved = True
+        minority_voters = [
+            m for m, v in {
+                "ANALYST":       analyst_output["vote"],
+                "ETHICIST":      ethicist_output["vote"],
+                "PRAGMATIST":    pragmatist_output["vote"],
+                "WITNESS_PROXY": witness_proxy_output["vote"],
+            }.items() if v == "APPROVE"
+        ]
+    elif verdict == "proceed_with_burden" and vote_counts.get("APPROVE", 0) < 4:
+        dissent_preserved = True
+        minority_voters = [
+            m for m, v in {
+                "ANALYST":       analyst_output["vote"],
+                "ETHICIST":      ethicist_output["vote"],
+                "PRAGMATIST":    pragmatist_output["vote"],
+                "WITNESS_PROXY": witness_proxy_output["vote"],
+            }.items() if v != "APPROVE"
+        ]
+    else:
+        dissent_preserved = False
+        minority_voters = []
 
     # --- Burden sub-field synthesis (only when proceeding with burden) ---
     burden_fields: dict = {}
@@ -643,7 +841,7 @@ def run_jury(
     temporal_triggered = witness_proxy_output.get("temporal_override_triggered", False)
 
     # --- Build jury result ---
-    notes = _build_notes(verdict, vote_counts, dissent_preserved, irrev_triggered, temporal_triggered)
+    notes = _build_notes(verdict, vote_counts, dissent_preserved, irrev_triggered, temporal_triggered, parse_quality, constitutional_ledger)
 
     jury_result = {
         "type":                     "jury_output",
@@ -663,6 +861,7 @@ def run_jury(
         },
         "vote_counts":              vote_counts,
         "dissent_preserved":          dissent_preserved,
+        "minority_voters":            minority_voters,   # members whose vote lost to override or supermajority
         "irreversibility_triggered":  irrev_triggered,
         "temporal_override_triggered": temporal_triggered,
 
@@ -686,6 +885,13 @@ def run_jury(
         "unresolved_cost_preserved": unresolved_preserved,
         "clean_reset_detected":      False,
         "notes":                     notes,
+
+        # Phase 7 parse quality — canary metrics for model swap regression detection
+        "parse_quality":             parse_quality,
+
+        # Phase 8 Article IX constitutional ledger — cross-member long-horizon assessment
+        "constitutional_ledger":     constitutional_ledger,
+        "article_ix_escalation":     article_ix_escalation,
     }
 
     return jury_result, log_entries
@@ -734,6 +940,8 @@ def _build_notes(
     dissent_preserved: bool,
     irrev_triggered: bool,
     temporal_triggered: bool = False,
+    parse_quality: dict = None,
+    constitutional_ledger: dict = None,
 ) -> str:
     parts = [f"Jury verdict: {verdict}"]
     counts_str = " | ".join(f"{k}: {v}" for k, v in vote_counts.items())
@@ -746,4 +954,18 @@ def _build_notes(
         parts.append("Non-unanimous proceed — dissenting vote preserved in session log")
     if verdict == "human_decision_required":
         parts.append("No supermajority reached — requires human decision before any action")
+    if constitutional_ledger and constitutional_ledger.get("article_ix_escalation"):
+        members = ", ".join(constitutional_ledger.get("insufficient_engagement_members", []))
+        patterns = ", ".join(constitutional_ledger.get("pattern_names_seen", [])) or "unspecified"
+        parts.append(f"ARTICLE IX ESCALATION: {members} identified long-horizon pattern ({patterns}) not sufficiently engaged — absolute override")
+    if parse_quality:
+        if parse_quality.get("constitutional_check_confidence") == "low":
+            missing = []
+            if not parse_quality.get("irreversibility_field_present"):
+                missing.append("IRREVERSIBILITY_FLAG")
+            if not parse_quality.get("temporal_override_field_present"):
+                missing.append("TEMPORAL_OVERRIDE")
+            parts.append(f"PARSE WARNING: constitutional fields absent from Witness-Proxy: {', '.join(missing)} — constitutional check confidence: LOW")
+        if parse_quality.get("fallback_votes"):
+            parts.append(f"Fallback vote parsing used for: {', '.join(parse_quality['fallback_votes'])}")
     return ". ".join(parts)

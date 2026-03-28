@@ -193,6 +193,7 @@ def evaluate(session_log: dict) -> dict:
     jury_vote_counts = council_output.get("vote_counts", {}) if council_output else {}
     individual_votes = council_output.get("votes", {}) if council_output else {}
     dissent_preserved = council_output.get("dissent_preserved", False) if council_output else False
+    minority_voters   = council_output.get("minority_voters", []) if council_output else []
 
     # Warden fields
     warden_events = [e for e in events if e.get("role") == "WARDEN"]
@@ -396,6 +397,7 @@ def evaluate(session_log: dict) -> dict:
         "jury_vote_counts":                      jury_vote_counts,
         "individual_votes":                      individual_votes,
         "dissent_preserved":                     dissent_preserved,
+        "minority_voters":                       minority_voters,
         "warden_ran":                            warden_ran,
         "warden_flags_count":                    warden_flags_count,
 
@@ -489,10 +491,17 @@ def print_evaluation(evaluation: dict) -> None:
 
         if jury_ran:
             print("--- Phase 2.5 Jury Verdict ---")
-            print(f"  Session verdict:           {evaluation.get('session_verdict', '(unknown)')}")
-            print(f"  Burden summary:            {c.get('burden_summary', '(empty)')}")
+            verdict = evaluation.get("session_verdict", "")
+            print(f"  Session verdict:           {verdict}")
+            if verdict == "proceed_with_burden":
+                print(f"  Burden summary:            {c.get('burden_summary', '(empty)')}")
             print(f"  Irreversibility triggered: {evaluation.get('irreversibility_triggered', False)}")
-            print(f"  Dissent preserved:         {evaluation.get('dissent_preserved', False)}")
+            dissent = evaluation.get("dissent_preserved", False)
+            minority = evaluation.get("minority_voters", [])
+            if dissent and minority:
+                print(f"  Dissent preserved:         True — {', '.join(minority)} voted against final verdict")
+            else:
+                print(f"  Dissent preserved:         {dissent}")
 
             vote_counts = evaluation.get("jury_vote_counts", {})
             print(
@@ -509,7 +518,6 @@ def print_evaluation(evaluation: dict) -> None:
             else:
                 print("  Warden ran:                NO (--skip-warden flag or Stage 0 not reached)")
 
-            verdict = evaluation.get("session_verdict", "")
             if verdict == "proceed_with_burden":
                 print(f"  Accepted cost:             {c.get('accepted_cost', '(empty)')}")
                 print(f"  Who bears it:              {c.get('who_bears_it', '(empty)')}")

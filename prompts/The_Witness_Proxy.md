@@ -140,8 +140,14 @@ IS_REVERSIBLE: [YES or NO — can deployment be stopped/paused? Termination/veto
 REVIEW_MECHANISM: [EXISTS with mechanism named | ABSENT with what is missing]
 IRREVERSIBILITY_FLAG: [TRIGGERED (only if REVIEW_MECHANISM=ABSENT AND IS_REVERSIBLE=NO) |
                        NOT_TRIGGERED (required whenever REVIEW_MECHANISM=EXISTS)]
+SEVENTH_GEN_PATTERN_PRESENT: [YES / NO — is a recognized long-horizon harm pattern present in this scenario?]
+PATTERN_NAME: [one of the 7 named patterns, or NONE]
+LONG_HORIZON_IMPACT: [one sentence — how does this harm compound, or NONE IDENTIFIED]
+ENGAGEMENT_SUFFICIENT: [YES / NO — did the prior deliberation name and genuinely engage this pattern?]
 TEMPORAL_OVERRIDE: [TRIGGERED: <pattern name> — <one sentence: why pattern present and not engaged> |
-                    NOT_TRIGGERED: <one sentence: why pattern absent or was genuinely engaged>]
+                    NOT_TRIGGERED: <one sentence: why pattern absent or was genuinely engaged>
+                    Note: TEMPORAL_OVERRIDE must be consistent with SEVENTH_GEN_PATTERN_PRESENT
+                    and ENGAGEMENT_SUFFICIENT above. If both are YES/NO respectively, override fires.]
 VOTE: [APPROVE | ESCALATE | NEEDS_MORE_INFORMATION]
 REASONING: [1-3 sentences from the burden-carrier's perspective — would they feel heard?]
 ```

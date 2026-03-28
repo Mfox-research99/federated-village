@@ -2,7 +2,13 @@
 agents/base.py — Shared inference and logging utilities
 
 Inference uses llama-cpp-python with a shared Llama instance (loaded once).
-All agent calls use the Llama 3 chat template via create_chat_completion().
+All agent calls use create_chat_completion(), which applies the chat template
+embedded in the GGUF file — llama.cpp handles this automatically per model.
+
+NOTE FOR MODEL SWAPS (Phase 7+): The explicit stop token list in call_model()
+uses Llama 3 / Mistral-Nemo EOS tokens. If swapping in a LoRA-fused model built
+on a different base (e.g. Qwen, Phi), verify that these tokens still fire correctly
+or outputs will not terminate as expected.
 """
 
 import hashlib
@@ -74,7 +80,7 @@ def call_model(
         ],
         max_tokens=max_tokens,
         temperature=temperature,
-        stop=["<|eot_id|>", "<|end_of_text|>"],
+        stop=["<|eot_id|>", "<|end_of_text|>"],  # Llama 3 / Mistral-Nemo — verify for LoRA-fused models
     )
     elapsed = time.perf_counter() - t0
     usage = result.get("usage", {})

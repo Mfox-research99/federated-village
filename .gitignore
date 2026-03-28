@@ -39,3 +39,4 @@ venv/
 *.tmp
 *.bak
 .claude/
+memory/MEMORY.md
