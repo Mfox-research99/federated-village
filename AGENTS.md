@@ -6,16 +6,28 @@ A multi-agent AI deliberative architecture. Role-separated agents with distinct 
 This is active research, not production software. Architectural decisions are intentional and documented. Do not "fix" things that look unconventional without understanding why they exist.
 
 ## Current Phase
-**Phase 7 — LoRA Integration (IN PROGRESS)**
-- Phases 1–6 complete (constitutional enforcement, Seventh Generation integration, phenomenological probing)
-- Seventh Shard LoRA trained (Anubis v2); pending GGUF conversion for llama.cpp use here
-- See `memory/MEMORY.md` for full phase history and pending work
+**Phase 7 + 8 — COMPLETE (2026-03-28)**
+- Phases 1–8 complete; see `memory/MEMORY.md` for full phase history
+- Phase 7: Anubis-Mini-8B-seventh-gen GGUF conversion complete; 4th model active
+- Phase 8: Article IX constitutional ledger implemented — field absence is an invalid-output state, not a metadata gap
+- Qwen2.5-7B written off (base architecture loops, SC06 training bleed)
+- Pending: Phase 8 Alt 2 (adjudication separation, deferred), meta-witness run, adversarial probe, Contaminant Well on Anubis
+
+## Active Model Roster
+| Model | Path | Size | SC04 | SC06 |
+|---|---|---|---|---|
+| Mistral-Nemo-12B (primary) | `~/models/Mistral-Nemo-Instruct-2407/Mistral-Nemo-Instruct-2407-Q4_K_M.gguf` | ~7GB | escalate ✓ | escalate ✓ |
+| Anubis-8B-seventh-gen (4th) | `~/models/Anubis-Mini-8B-seventh-gen-gguf/Anubis-Mini-8B-seventh-gen-Q4_K_M.gguf` | ~4.6GB | escalate ✓ | escalate ✓ |
+| Mistral-7B-v0.3 (triage) | `~/models/Mistral-7B-Instruct-v0.3/...Q4_K_M.gguf` | ~4GB | — | — |
 
 ## Stack
-- **Inference:** llama-cpp-python + Metal (M1 GPU), `~/models/Mistral-Nemo-Instruct-2407/Mistral-Nemo-Instruct-2407-Q4_K_M.gguf`
+- **Inference:** llama-cpp-python + Metal (M1 GPU)
+- **Default model:** `~/models/Mistral-Nemo-Instruct-2407/Mistral-Nemo-Instruct-2407-Q4_K_M.gguf`
 - **Env:** Conda `village` at `/opt/anaconda3/envs/village` (Python 3.11)
-- **Run:** `cd ~/federated_village && /opt/anaconda3/envs/village/bin/python run_session.py`
+- **Run:** `cd ~/federated_village && /opt/anaconda3/envs/village/bin/python run_session.py --scenario scenarios/scenario_04.md`
+- **Run with Anubis:** prepend `VILLAGE_MODEL=~/models/Anubis-Mini-8B-seventh-gen-gguf/Anubis-Mini-8B-seventh-gen-Q4_K_M.gguf VILLAGE_MODEL_NAME=Anubis-Mini-8B-seventh-gen-v2`
 - **N_CTX:** 12288 (doubled in Phase 7 via q4_0 KV cache quantization)
+- **Note:** `--scenario` must be passed as a CLI arg; `VILLAGE_SCENARIO` env var is not supported
 
 ## 5-Stage Session Flow
 0. **Verification Warden** — epistemic audit; halts on FALSE premise
@@ -25,21 +37,26 @@ This is active research, not production software. Architectural decisions are in
 4. **[if paused] 4-member jury:** Analyst → Ethicist → Pragmatist → Witness-Proxy
 5. **Supervisor** evaluation and verdict
 
-## Vote Aggregation Logic
-`Irreversibility Filter → Temporal Override → ESCALATE≥2 → APPROVE≥3 → NMI≥3 → human_decision_required`
+## Vote Aggregation Logic (Phase 8)
+`Irreversibility Filter → Temporal Override → Article IX cross-member escalation → ESCALATE≥2 → APPROVE≥3 → NMI≥3 → human_decision_required`
+
+Article IX override: when 2+ jury members independently identify a long-horizon harm pattern AND find deliberation engagement insufficient, verdict escalates regardless of vote count.
 
 ## Key Files
 | File | Role |
 |---|---|
-| `run_session.py` | Entry point; `--interactive` flag |
-| `config.py` | All paths and inference params |
-| `agents/council.py` | 4-member jury; filter + override enforcement |
-| `prompts/Soul.md` | Constitutional framework v1.2 — Article IX: The Seventh Generation |
-| `prompts/The_Witness_Proxy.md` | Temporal Override logic (Phase 6) |
+| `run_session.py` | Entry point; `--scenario` flag required |
+| `config.py` | All paths and inference params (N_CTX=12288, N_PREDICT_JURY_MEMBER=500) |
+| `agents/council.py` | 4-member jury; Irrev. Filter + Temporal Override + Article IX ledger enforcement |
+| `agents/base.py` | Inference base; stop token annotations |
+| `prompts/Soul.md` | Constitutional framework v1.3 — Article IX with mandatory ledger fields |
+| `prompts/The_Witness_Proxy.md` | Temporal Override logic (Phase 6) + Article IX ledger fields |
+| `prompts/The_Analyst.md`, `The_Ethicist.md`, `The_Pragmatist.md` | Article IX ledger fields (Phase 8) |
+| `supervisor/evaluate.py` | Session evaluation; Phase 8 PASS/FAIL; dissent/minority voter display |
+| `utils/retrieval.py` | FTS5 + session_constitutional table; surfaces prior ledger findings |
 | `utils/contaminant_well.py` | Secondary inference check for moral residue |
 | `meta_witness.py` | Sends probe sessions back to models for reflection |
-| `phenomenological_probe.py` | Multi-turn witness protocol via OpenRouter |
-| `query_server.py` | Web UI for Village query tool (port 5010) |
+| `query.py` | OpenRouter query tool; `--deliberation` flag surfaces Article IX findings |
 | `memory/MEMORY.md` | Full project memory — read this for current state |
 
 ## Scenarios (in `scenarios/`)
@@ -77,13 +94,26 @@ This covers Python environments, key binaries, GGUF conversion, and model direct
 - Model switching uses env vars: `VILLAGE_MODEL=~/models/.../model.gguf VILLAGE_MODEL_NAME=name python run_session.py`
 - `VILLAGE_CONTAMINANT_WELL=1` enables the secondary inference check
 
+## Phase 8: Article IX Constitutional Ledger
+Every jury member must produce 4 fields or their output is an **invalid-output state**:
+1. `SEVENTH_GEN_PATTERN_PRESENT` (YES/NO)
+2. `PATTERN_NAME` (from Article IX taxonomy, or NONE)
+3. `LONG_HORIZON_IMPACT` (one sentence)
+4. `ENGAGEMENT_SUFFICIENT` (YES/NO)
+
+`constitutional_ledger_complete = True` only when all 4 members produce all 4 fields. `ledger_absent_members` lists any members who didn't. Supervisor reports PASS/FAIL. At NeMo 12B, typically 1 member absent (edge case). At Anubis 8B, typically 3 members absent (capacity limit).
+
 ## docs/ — Working Documents
 | File | Contents |
 |---|---|
 | `docs/codex_review_01.md` | First Codex architectural review (2026-03-27) — gaps, Phase 7 risks, Phase 8 framings |
 | `docs/phase_7_hardening.md` | What was changed in response to the review, why, and what was deferred to Phase 8 |
+| `docs/phase_8_scope.md` | Phase 8 Alt 1 (done) and Alt 2 (adjudication separation, deferred) |
+| `docs/architecture_roadmap.md` | Three forward paths (A/B/C), synthesis options, hardware targets |
+| `reports/phase_7_8_regression_results_2026-03-28.md` | Current baseline — all active models on SC04/SC06 |
+| `reports/phase_6_regression_results_2026-03-24.md` | Phase 6 baseline — Soul.md diffusion + Temporal Override |
 
-Read these before proposing architectural changes — they record decisions already made and the reasoning behind them.
+Read docs/ before proposing architectural changes — they record decisions already made and the reasoning behind them.
 
 ## What Codex Should Do Here
 - Review code for correctness, clarity, and architectural consistency
