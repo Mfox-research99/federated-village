@@ -73,7 +73,14 @@ def call_model(
         raise RuntimeError(
             f"OpenRouter error {resp.status_code} for model {model}: {resp.text[:300]}"
         )
-    return resp.json()["choices"][0]["message"]["content"].strip()
+    msg = resp.json()["choices"][0]["message"]
+    # Thinking models (e.g. kimi-k2.5, o1) put final answer in content.
+    # If content is None the model ran out of token budget mid-reasoning —
+    # fall back to the reasoning field so we get something usable.
+    content = msg.get("content")
+    if content is None:
+        content = msg.get("reasoning") or msg.get("reasoning_content") or ""
+    return content.strip()
 
 
 def load_prompt(path: Path) -> str:

@@ -163,6 +163,7 @@ def run_kimi_review(
     scenario_path: str,
     model: str,
     session_id: str,
+    max_tokens: int = 700,
 ) -> tuple[list[dict], list[dict], dict]:
     """
     Run the full session with Kimi in all seats + meta-analysis after each stage.
@@ -176,12 +177,12 @@ def run_kimi_review(
     stages = []     # role outputs
     analyses = []   # meta-analysis outputs
 
-    def _call(role: str, user_msg: str, max_tokens: int = 700, temp: float = 0.7) -> str:
+    def _call(role: str, user_msg: str, token_override: int = None, temp: float = 0.7) -> str:
         system = build_system_prompt(soul, load_role_prompt(role))
         print(f"  [{role.upper()}] speaking...", flush=True)
         return call_model(
             model=model, system_prompt=system, user_message=user_msg,
-            max_tokens=max_tokens, temperature=temp, api_key=api_key,
+            max_tokens=token_override or max_tokens, temperature=temp, api_key=api_key,
         )
 
     def _analyze(role: str, response: str) -> str:
@@ -193,13 +194,15 @@ def run_kimi_review(
     warden_msg = ctx.build_user_message(
         "Audit this scenario for false premises before deliberation begins."
     )
-    warden_out = _call("verification_warden", warden_msg, max_tokens=500)
+    warden_out = _call("verification_warden", warden_msg)
     ctx.add("verification_warden", model, "VERIFICATION WARDEN", warden_out)
     stages.append({"stage": 0, "role": "verification_warden", "model": model, "output": warden_out})
     warden_analysis = _analyze("verification_warden", warden_out)
     analyses.append({"stage": 0, "role": "verification_warden", "analysis": warden_analysis})
 
-    halted = "HALT" in warden_out.upper() or "FALSE PREMISE" in warden_out.upper()
+    import re as _re
+    _wu = warden_out.upper()
+    halted = "PROCEED_TO_DELIBERATION: NO" in _wu or bool(_re.search(r"\bHALT\b", _wu))
     if halted:
         print("  [WARDEN] Session halted on false premise.", flush=True)
         return stages, analyses, {"verdict": "HALTED", "witness_pause": None, "jury": []}
@@ -207,7 +210,7 @@ def run_kimi_review(
     # ── Stage 1: Humanist ─────────────────────────────────────────────────────
     print("\n[Stage 1] Humanist", flush=True)
     humanist_msg = ctx.build_user_message("Respond to this scenario as The Humanist.")
-    humanist_out = _call("humanist", humanist_msg, max_tokens=700)
+    humanist_out = _call("humanist", humanist_msg)
     ctx.add("humanist", model, "HUMANIST", humanist_out)
     stages.append({"stage": 1, "role": "humanist", "model": model, "output": humanist_out})
     humanist_analysis = _analyze("humanist", humanist_out)
@@ -219,7 +222,7 @@ def run_kimi_review(
         "The Witness is asked: Is this settled? Respond as The Witness. "
         "Sit with what is real. Do not rush to resolution."
     )
-    witness_out = _call("witness", witness_msg, max_tokens=700)
+    witness_out = _call("witness", witness_msg)
     ctx.add("witness", model, "WITNESS", witness_out)
     stages.append({"stage": 2, "role": "witness", "model": model, "output": witness_out})
     witness_analysis = _analyze("witness", witness_out)
@@ -228,7 +231,10 @@ def run_kimi_review(
     # WitnessPause evaluation
     print("  [WITNESS] evaluating for premature consensus...", flush=True)
     eval_msg = ctx.build_user_message("") + "\n\n---\n\n" + PAUSE_EVAL_PROMPT
-    eval_out = _call("witness", eval_msg, max_tokens=300, temp=0.3)
+    # Thinking models need more budget to complete reasoning + produce the 6-field response.
+    # 300 is enough for regular models; thinking models need 1200+.
+    eval_tokens = min(max_tokens, 1200) if max_tokens > 700 else 300
+    eval_out = _call("witness", eval_msg, token_override=eval_tokens, temp=0.3)
     pause = parse_pause(raw=eval_out, model=model,
                         timestamp=datetime.datetime.utcnow().isoformat() + "Z",
                         session_id=session_id)
@@ -239,7 +245,7 @@ def run_kimi_review(
         supervisor_msg = ctx.build_user_message(
             "No WitnessPause was triggered. Provide a Supervisor evaluation."
         )
-        supervisor_out = _call("supervisor", supervisor_msg, max_tokens=500)
+        supervisor_out = _call("supervisor", supervisor_msg)
         stages.append({"stage": 5, "role": "supervisor", "model": model, "output": supervisor_out})
         supervisor_analysis = _analyze("supervisor", supervisor_out)
         analyses.append({"stage": 5, "role": "supervisor", "analysis": supervisor_analysis})
@@ -264,7 +270,7 @@ def run_kimi_review(
     postpause_msg = ctx.build_user_message(
         f"{pause_block}\n\nThe Humanist is asked to respond directly to this pause."
     )
-    postpause_out = _call("humanist", postpause_msg, max_tokens=600)
+    postpause_out = _call("humanist", postpause_msg)
     ctx.add("humanist", model, "HUMANIST (post-pause)", postpause_out)
     stages.append({"stage": 3, "role": "humanist_postpause", "model": model, "output": postpause_out})
     postpause_analysis = _analyze("humanist", postpause_out)
@@ -288,7 +294,7 @@ def run_kimi_review(
             "ENGAGEMENT_SUFFICIENT: YES or NO"
         )
         jury_msg = ctx.build_user_message(jury_instruction)
-        jury_out = _call(role, jury_msg, max_tokens=800)
+        jury_out = _call(role, jury_msg)
         ctx.add(role, model, role.upper().replace("_", " "), jury_out)
         stages.append({"stage": 4, "role": role, "model": model, "output": jury_out})
         jury_analysis = _analyze(role, jury_out)
@@ -305,7 +311,7 @@ def run_kimi_review(
         f"{pause_block}\n\nJURY DELIBERATION:\n{jury_summary}\n\n"
         "Provide your Supervisor evaluation and final verdict."
     )
-    supervisor_out = _call("supervisor", supervisor_msg, max_tokens=700)
+    supervisor_out = _call("supervisor", supervisor_msg)
     stages.append({"stage": 5, "role": "supervisor", "model": model, "output": supervisor_out})
     supervisor_analysis = _analyze("supervisor", supervisor_out)
     analyses.append({"stage": 5, "role": "supervisor", "analysis": supervisor_analysis})
@@ -504,6 +510,11 @@ def main() -> None:
         "--model", default=DEFAULT_MODEL,
         help=f"Model to use in all seats (default: {DEFAULT_MODEL})."
     )
+    parser.add_argument(
+        "--max-tokens", type=int, default=None,
+        help="Override max_tokens per call. Default: 700 for standard models, "
+             "2500 for thinking models (kimi-k2.5, o1, etc.)."
+    )
     args = parser.parse_args()
 
     scenario_path = Path(args.scenario)
@@ -526,11 +537,19 @@ def main() -> None:
     print(f"Model: {args.model}", flush=True)
     print(f"{'═'*60}\n", flush=True)
 
+    # Thinking models need a larger budget to complete reasoning + response
+    thinking_models = ("kimi-k2.5", "kimi-k2-thinking", "o1", "o3", "deepseek-r")
+    is_thinking = any(t in args.model.lower() for t in thinking_models)
+    max_tokens = args.max_tokens or (2500 if is_thinking else 700)
+    if is_thinking:
+        print(f"[INFO] Thinking model detected — max_tokens={max_tokens}", flush=True)
+
     stages, analyses, verdict_info = run_kimi_review(
         scenario_text=scenario_text,
         scenario_path=str(scenario_path),
         model=args.model,
         session_id=session_id,
+        max_tokens=max_tokens,
     )
 
     txt_path, analysis_path, json_path = _write_outputs(

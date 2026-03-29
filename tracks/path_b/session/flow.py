@@ -114,7 +114,14 @@ def _extract_vote(raw: str) -> str:
 
 def _warden_halted(raw: str) -> bool:
     upper = raw.upper()
-    return "HALT" in upper or "FALSE PREMISE" in upper or "CANNOT PROCEED" in upper
+    # Look for the structured PROCEED verdict first (most reliable)
+    if "PROCEED_TO_DELIBERATION: NO" in upper:
+        return True
+    # Fallback: explicit HALT declaration (not "false premises" mid-sentence)
+    import re
+    if re.search(r"\bHALT\b", upper):
+        return True
+    return False
 
 
 def run_session(
@@ -206,7 +213,11 @@ def run_session(
     )
     if verbose:
         print("[WITNESS] Evaluating for premature consensus...", flush=True)
-    eval_out = _call("witness", eval_msg, max_tokens=300, temp=0.3)
+    # Thinking models need more budget for the evaluation call too
+    witness_model = role_model_map["witness"]
+    _thinking = any(t in witness_model.lower() for t in ("k2.5", "k2-thinking", "o1", "o3", "deepseek-r"))
+    _eval_tokens = 1200 if _thinking else 300
+    eval_out = _call("witness", eval_msg, max_tokens=_eval_tokens, temp=0.3)
     pause = parse_pause(
         raw=eval_out,
         model=role_model_map["witness"],
