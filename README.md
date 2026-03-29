@@ -121,7 +121,7 @@ Four architectural directions are in development, each isolated in `tracks/`:
 - **Path C** — LoRA per character (trained weights per role; character in the weights, not the context)
 - **Path D** — Seventh Shard hardened Witness (first Path C implementation: Witness gets a trained model call from the companion repo)
 
-The companion repository for LoRA training is [Seventh Shard](https://github.com/Mfox-research99/seventh-shard).
+Path D connects to [Seventh Shard](https://github.com/Mfox-research99/seventh-shard) — a specialized outgrowth of this repo focused on distilling constitutional character into model weights via LoRA. The Village is the research body; the Shard exists to answer a question the Village raised.
 
 ---
 

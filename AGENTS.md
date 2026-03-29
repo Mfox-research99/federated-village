@@ -90,11 +90,19 @@ The Seventh Generation Principle is baked into every agent. Agents are constitut
 7. Orbital/atmospheric commons degradation
 
 ## Cross-Repo: seventh_shard
-This repo has a companion: `/Users/michaeldavis/seventh_shard` (GitHub: `Mfox-research99/seventh-shard`).
+`seventh_shard` is a specialized outgrowth of this repo — not a peer. The Village is the primary
+research body. The Shard exists to answer one question the Village raised: can constitutional
+character be distilled into model weights via LoRA, rather than living only in the prompt?
+
+**Local path:** `/Users/michaeldavis/seventh_shard` | **GitHub:** `Mfox-research99/seventh-shard`
+
+The Village drives the Shard:
 - Scenario text here → `config.py` SCENARIOS in shard
 - `Soul.md` Articles → `SYSTEM_PROMPT` in shard `config.py`
-- Trained LoRA adapters (fused GGUF) from shard → drop-in model replacement here
-- Dissent commons records from shard → inform Village scenario calibration
+
+The Shard feeds back into the Village:
+- Trained LoRA adapters (fused GGUF) → drop-in model replacements here
+- Dissent commons records → inform Village scenario calibration
 
 ## Shared Tooling Reference
 Before installing packages or running conversion pipelines, read:

@@ -11,8 +11,12 @@ constitutional framework. Character before capability. Legibility over performan
 
 ## Cross-Repo Relationship with Seventh Shard
 
-`federated_village` and `seventh_shard` are companion repositories.
-Changes in one may need to be reflected in the other.
+`seventh_shard` is a specialized research outgrowth of `federated_village`, not a peer repo.
+The Village is the primary body of research. The Shard grew out of it when the LoRA training
+question became substantial enough to warrant its own repo (Phase 7). Its sole purpose is to
+produce trained GGUFs that feed back into the Village as drop-in model replacements.
+
+Changes to the Village drive the Shard. Not the reverse.
 
 **GitHub:** `Mfox-research99/seventh-shard`
 **Local path:** `/Users/michaeldavis/seventh_shard`
