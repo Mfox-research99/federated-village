@@ -18,6 +18,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from agents.base import call_model, get_api_key
+from agents.fact_checker import verify_claims, inject_results
 from agents.pause import WitnessPause, PAUSE_EVAL_PROMPT, parse_pause
 from agents.roles import build_system_prompt, load_soul, load_role_prompt, ROLES
 from session.context import DeliberationContext
@@ -158,6 +159,19 @@ def run_session(
     ctx.add("verification_warden", role_model_map["verification_warden"], "VERIFICATION WARDEN", warden_out)
     record.stages.append({"stage": 0, "role": "verification_warden",
                           "model": role_model_map["verification_warden"], "output": warden_out})
+
+    # Fact-check unverified claims before flowing context downstream
+    if verbose:
+        print("[WARDEN] Running fact checks on unverified claims...", flush=True)
+    fact_results = verify_claims(warden_out, api_key, verbose=verbose)
+    if fact_results:
+        warden_out = inject_results(warden_out, fact_results)
+        record.stages[-1]["fact_check_results"] = [
+            {"claim": r.claim_text[:120], "verdict": r.verdict,
+             "confidence": r.confidence, "resolver": r.resolver,
+             "reasoning": r.reasoning}
+            for r in fact_results
+        ]
 
     if _warden_halted(warden_out):
         record.halted_at_warden = True
