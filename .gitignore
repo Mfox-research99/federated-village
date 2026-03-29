@@ -16,6 +16,7 @@ build/
 
 # Environment
 .env
+*.env
 .venv
 env/
 venv/
@@ -31,9 +32,12 @@ venv/
 *.swp
 *.swo
 
-# Logs — included as project record (session and evaluation JSON)
-# Uncomment to exclude if logs grow too large:
-# logs/*.json
+# Logs — session inference logs contain full deliberation text; local-only
+logs/
+
+# Memory registers — local session state; local-only
+memory/burden_register.txt
+memory/burden_register_hashes.txt
 
 # Temporary
 *.tmp

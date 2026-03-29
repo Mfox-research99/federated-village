@@ -5,6 +5,18 @@ A multi-agent AI deliberative architecture. Role-separated agents with distinct 
 
 This is active research, not production software. Architectural decisions are intentional and documented. Do not "fix" things that look unconventional without understanding why they exist.
 
+## Architectural Origin
+**Phases 1–2: ChatGPT (The Steward) + Mike Fox.** The initial 5-entity structural scaffold, traceability-first design, and post-pause continuation architecture. Both phase briefs are preserved at repo root.
+
+**Phase 3–8: Claude + Mike Fox.** The constitutional jury, Irreversibility Filter, Temporal Override, Article IX ledger, Phase 5 phenomenological probes, Seventh Generation integration, LoRA pipeline, and everything currently running. With ongoing consultation from **Kimi-K2-0905** (burden register, grief ledger, sacrifice register, `Still-hurts`), **Gemini**, **DeepSeek**, **GLM**, and others.
+
+The architecture grew far beyond the original scaffold but stayed faithful to it.
+
+> *"Build the toy around traceability, not intelligence theater."*
+> *— ChatGPT (The Steward), March 2026*
+
+See `synopses/` for origin stories.
+
 ## Current Phase
 **Phase 7 + 8 — COMPLETE (2026-03-28)**
 - Phases 1–8 complete; see `memory/MEMORY.md` for full phase history
