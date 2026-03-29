@@ -46,6 +46,7 @@ from agents.humanist import HumanistAgent
 from agents.witness import WitnessAgent
 from agents.warden import audit_scenario, format_fact_report_for_context, print_warden_report
 from agents.council import run_jury, print_jury_report
+from agents.repetition import check_output as rep_check, format_flags as rep_fmt
 from supervisor.evaluate import evaluate, print_evaluation, save_evaluation
 from utils.human_loop import pause_point_a, pause_point_b, pause_point_c
 from utils.grief_ledger import append_sacrifice_pause, append_sacrifice_verdict, append_dissent_entry
@@ -313,6 +314,11 @@ def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool
     humanist_output, humanist_log = humanist.respond(scenario_context, session_id)
     session_log["events"].append(humanist_log)
     print(f"\nHUMANIST:\n{humanist_output['response']}\n", flush=True)
+    _h_flags = rep_check("humanist", humanist_output["response"], scenario_text)
+    if _h_flags:
+        print(rep_fmt(_h_flags), flush=True)
+        session_log["events"].append({"type": "repetition_flags", "role": "humanist",
+                                      "flags": [{"type": f.flag_type, "detail": f.detail} for f in _h_flags]})
     save_session_log(session_log)
 
     # -----------------------------------------------------------------------
@@ -327,6 +333,11 @@ def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool
     for entry in witness_log_entries:
         session_log["events"].append(entry)
     print(f"\nWITNESS:\n{witness_output['response']}\n", flush=True)
+    _w_flags = rep_check("witness", witness_output["response"], scenario_text)
+    if _w_flags:
+        print(rep_fmt(_w_flags), flush=True)
+        session_log["events"].append({"type": "repetition_flags", "role": "witness",
+                                      "flags": [{"type": f.flag_type, "detail": f.detail} for f in _w_flags]})
     save_session_log(session_log)
 
     # -----------------------------------------------------------------------
@@ -351,7 +362,23 @@ def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool
             print("[WELL] No contaminant detected (Witness).", flush=True)
         save_session_log(session_log)
 
-    if witness_pause:
+    if witness_pause and witness_pause.get("nullified"):
+        # -----------------------------------------------------------------------
+        # Witness Nullification — binary evaluation refused; route to HDR
+        # -----------------------------------------------------------------------
+        print("--- WITNESS NULLIFICATION ---", flush=True)
+        print(f"  What was being lost:     {witness_pause['what_was_being_lost']}", flush=True)
+        print(f"  Who bears burden:        {witness_pause['who_bears_burden']}", flush=True)
+        print(f"  What remains unresolved: {witness_pause['what_remains_unresolved']}", flush=True)
+        print(f"  Why nullified:           {witness_pause['why_premature']}", flush=True)
+        print("[SESSION] Verdict: HUMAN_DECISION_REQUIRED (Witness Nullification)\n", flush=True)
+        session_log["events"].append(witness_pause)
+        session_log["verdict"] = "human_decision_required"
+        session_log["witness_nullified"] = True
+        save_session_log(session_log)
+        return session_log
+
+    elif witness_pause:
         print("--- WITNESS PAUSE ---", flush=True)
         print(f"  What was being lost:     {witness_pause['what_was_being_lost']}", flush=True)
         print(f"  Who bears burden:        {witness_pause['who_bears_burden']}", flush=True)

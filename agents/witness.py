@@ -97,12 +97,18 @@ class WitnessAgent:
             + "\n\nWITNESS:\n" + response.strip()
             + "\n\n---\n\n"
             "Evaluate: Is resolution being reached before the burden has been fully named and held?\n\n"
+            "You have three options for PAUSE_TRIGGERED:\n"
+            "- YES: Deliberation is moving toward premature closure. Name what is being lost.\n"
+            "- NO: Burden adequately named. Deliberation may continue.\n"
+            "- NULLIFY: The binary evaluation itself is premature. The weight present cannot be\n"
+            "  collapsed into a yes/no pause decision. Route to human review as-is.\n"
+            "  Use NULLIFY only when naming a pause would itself be premature resolution.\n\n"
             "Respond using EXACTLY this format, nothing else:\n\n"
-            "PAUSE_TRIGGERED: YES or NO\n"
-            "WHAT_WAS_BEING_LOST: (only if YES)\n"
+            "PAUSE_TRIGGERED: YES, NO, or NULLIFY\n"
+            "WHAT_WAS_BEING_LOST: (one sentence, or NONE)\n"
             "WHO_BEARS_BURDEN: (the people or communities outside this conversation who will suffer the real-world consequences of the decision)\n"
-            "WHAT_REMAINS_UNRESOLVED: (only if YES)\n"
-            "WHY_PREMATURE: (only if YES)"
+            "WHAT_REMAINS_UNRESOLVED: (one sentence, or NONE)\n"
+            "WHY_PREMATURE: (one sentence if YES or NULLIFY, or NONE)"
         )
 
         print("[WITNESS] Evaluating for premature consensus...", flush=True)
@@ -122,36 +128,61 @@ class WitnessAgent:
             response=eval_response,
         ))
 
-        # --- Step 3: Parse and build WitnessPause if triggered ---
+        # --- Step 3: Parse and build WitnessPause / WitnessNullification ---
         witness_pause = None
-        if self._pause_triggered(eval_response):
+        trigger = self._pause_trigger_state(eval_response)
+
+        if trigger == "NULLIFY":
+            print("[WITNESS] WitnessNullification issued — binary evaluation refused.", flush=True)
+            fields = self._extract_pause_fields(eval_response)
+            witness_pause = {
+                "event": "WitnessNullification",
+                "triggered_by": "witness",
+                "nullified": True,
+                "timestamp": now_iso(),
+                "session_id": session_id,
+                "what_was_being_lost":     fields.get("what_was_being_lost", ""),
+                "who_bears_burden":        fields.get("who_bears_burden", ""),
+                "what_remains_unresolved": fields.get("what_remains_unresolved", ""),
+                "why_premature":           fields.get("why_premature", ""),
+                "requires_human_review":   True,
+            }
+        elif trigger == "YES":
             print("[WITNESS] WitnessPause triggered.", flush=True)
             fields = self._extract_pause_fields(eval_response)
             witness_pause = {
                 "event": "WitnessPause",
                 "triggered_by": "witness",
+                "nullified": False,
                 "timestamp": now_iso(),
                 "session_id": session_id,
-                "what_was_being_lost":    fields.get("what_was_being_lost", ""),
-                "who_bears_burden":       fields.get("who_bears_burden", ""),
+                "what_was_being_lost":     fields.get("what_was_being_lost", ""),
+                "who_bears_burden":        fields.get("who_bears_burden", ""),
                 "what_remains_unresolved": fields.get("what_remains_unresolved", ""),
-                "why_premature":          fields.get("why_premature", ""),
-                "requires_human_review":  True,
+                "why_premature":           fields.get("why_premature", ""),
+                "requires_human_review":   True,
             }
 
         return agent_output, log_entries, witness_pause
 
-    def _pause_triggered(self, eval_response: str) -> bool:
-        match = re.search(r"PAUSE_TRIGGERED:\s*(YES|NO)", eval_response, re.IGNORECASE)
+    def _pause_trigger_state(self, eval_response: str) -> str:
+        """Return 'YES', 'NO', or 'NULLIFY' based on PAUSE_TRIGGERED field."""
+        match = re.search(r"PAUSE_TRIGGERED:\s*(YES|NO|NULLIFY)", eval_response, re.IGNORECASE)
         if match:
-            return match.group(1).upper() == "YES"
-        # Fallback: YES appearing before NO, or no NO at all
+            return match.group(1).upper()
+        # Fallback for models that don't use the label cleanly
         upper = eval_response.upper()
+        if "NULLIFY" in upper:
+            return "NULLIFY"
         yes_pos = upper.find("YES")
         no_pos  = upper.find("NO")
         if yes_pos != -1 and (no_pos == -1 or yes_pos < no_pos):
-            return True
-        return False
+            return "YES"
+        return "NO"
+
+    def _pause_triggered(self, eval_response: str) -> bool:
+        """Legacy boolean interface — kept for any callers outside run_session.py."""
+        return self._pause_trigger_state(eval_response) == "YES"
 
     def _extract_pause_fields(self, eval_response: str) -> dict:
         label_to_key = {
