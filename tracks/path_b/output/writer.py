@@ -117,11 +117,12 @@ def _build_text(r: SessionRecord) -> str:
                 lines.append(f"    {field}: {value}")
         lines.append("")
 
-    ledger_line = (
-        "COMPLETE (4/4)"
-        if r.article_ix_ledger_complete
-        else f"INCOMPLETE — absent: {', '.join(r.ledger_absent_members)}"
-    )
+    if not r.jury:
+        ledger_line = "N/A (no jury — WitnessPause not triggered)"
+    elif r.article_ix_ledger_complete:
+        ledger_line = "COMPLETE (4/4)"
+    else:
+        ledger_line = f"INCOMPLETE — absent: {', '.join(r.ledger_absent_members)}"
     lines.append(SEP)
     lines.append(f"VERDICT:               {r.verdict}")
     lines.append(f"ARTICLE IX LEDGER:     {ledger_line}")
