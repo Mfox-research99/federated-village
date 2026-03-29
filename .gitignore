@@ -36,6 +36,7 @@ venv/
 logs/
 
 # Path B session outputs — full deliberation transcripts + JSON records; local-only
+# session_index.jsonl is NOT ignored — it's the git-tracked research history
 tracks/path_b/output/results/
 codex/impl/path_b/results/
 

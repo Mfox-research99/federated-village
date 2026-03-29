@@ -86,18 +86,18 @@ def _parse_article_ix(raw: str) -> dict[str, str]:
 
     def extract(field_name: str) -> str:
         entry = next(
-            ((i, end, name) for i, (start, end, name) in enumerate(label_positions)
+            ((i, end_pos, name) for i, (start, end_pos, name) in enumerate(label_positions)
              if name.upper() == field_name.upper()),
             None,
         )
         if entry is None:
             return "ABSENT"
-        pos_i, _, end = entry
+        pos_i, end_pos, _ = entry
         next_start = len(clean)
         for later_start, _, _ in label_positions[pos_i + 1:]:
             next_start = later_start
             break
-        value = clean[end:next_start].strip(" \n\r\t-")
+        value = clean[end_pos:next_start].strip(" \n\r\t-")
         return value if value else "ABSENT"
 
     return {f: extract(f) for f in ARTICLE_IX_FIELDS}

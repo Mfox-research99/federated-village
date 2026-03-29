@@ -69,18 +69,18 @@ def parse_pause(raw: str, model: str, timestamp: str, session_id: str) -> Witnes
 
     def extract(field_name: str) -> str:
         entry = next(
-            ((idx, end, name) for idx, (start, end, name) in enumerate(label_positions)
+            ((idx, end_pos, name) for idx, (start, end_pos, name) in enumerate(label_positions)
              if name.upper() == field_name.upper()),
             None,
         )
         if entry is None:
             return "ABSENT"
-        pos_idx, _, end = entry
+        pos_idx, end_pos, _ = entry
         next_start = len(clean)
         for later_start, _, _ in label_positions[pos_idx + 1:]:
             next_start = later_start
             break
-        value = clean[end:next_start].strip(" \n\r\t-")
+        value = clean[end_pos:next_start].strip(" \n\r\t-")
         return value if value else "ABSENT"
 
     triggered_raw = extract("PAUSE_TRIGGERED").upper()

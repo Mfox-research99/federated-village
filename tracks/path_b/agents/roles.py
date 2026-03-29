@@ -19,6 +19,8 @@ import yaml
 
 # Path to the parent repo's prompts/ directory
 _DEFAULT_PROMPTS_DIR = Path(__file__).resolve().parents[3] / "prompts"
+# Local prompts/ for Path B-specific roles (e.g. The_Supervisor.md)
+_LOCAL_PROMPTS_DIR = Path(__file__).resolve().parents[1] / "prompts"
 
 ROLES = [
     "verification_warden",
@@ -98,14 +100,18 @@ def load_soul(prompts: Path | None = None) -> str:
 
 
 def load_role_prompt(role: str, prompts: Path | None = None) -> str:
-    d = prompts or prompts_dir()
     filename = ROLE_PROMPT_FILES.get(role)
     if not filename:
         raise ValueError(f"Unknown role: {role}")
-    path = d / filename
-    if not path.exists():
-        raise FileNotFoundError(f"Prompt file not found for role '{role}': {path}")
-    return path.read_text(encoding="utf-8").strip()
+    # Check main prompts dir first, then local Path B prompts/ as fallback
+    search_dirs = [prompts or prompts_dir(), _LOCAL_PROMPTS_DIR]
+    for d in search_dirs:
+        path = d / filename
+        if path.exists():
+            return path.read_text(encoding="utf-8").strip()
+    raise FileNotFoundError(
+        f"Prompt file not found for role '{role}' in {[str(d) for d in search_dirs]}"
+    )
 
 
 def build_system_prompt(soul: str, role_prompt: str) -> str:

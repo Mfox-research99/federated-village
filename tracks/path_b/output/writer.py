@@ -17,6 +17,7 @@ from pathlib import Path
 from session.flow import SessionRecord
 
 RESULTS_DIR = Path(__file__).parent / "results"
+SESSION_INDEX = Path(__file__).parent / "session_index.jsonl"
 
 
 def _timestamp() -> str:
@@ -48,8 +49,29 @@ def write_results(record: SessionRecord) -> tuple[Path, Path]:
 
     txt_path.write_text(_build_text(record), encoding="utf-8")
     json_path.write_text(_build_json(record), encoding="utf-8")
+    _append_index(record, base)
 
     return txt_path, json_path
+
+
+def _append_index(r: SessionRecord, base: str) -> None:
+    """Append a single metadata line to session_index.jsonl (git-tracked, no deliberation text)."""
+    import json as _json
+    entry = {
+        "session_id": r.session_id,
+        "timestamp": base[:15],          # YYYYMMDD_HHMMSS
+        "scenario": Path(r.scenario_path).name,
+        "config": Path(r.config_path).name,
+        "role_model_map": r.role_model_map,
+        "verdict": r.verdict,
+        "witness_pause_triggered": bool(r.witness_pause and r.witness_pause.triggered),
+        "article_ix_ledger_complete": r.article_ix_ledger_complete,
+        "ledger_absent_members": r.ledger_absent_members,
+        "halted_at_warden": r.halted_at_warden,
+        "files": {"txt": f"results/{base}.txt", "json": f"results/{base}.json"},
+    }
+    with SESSION_INDEX.open("a", encoding="utf-8") as f:
+        f.write(_json.dumps(entry) + "\n")
 
 
 # ── Text formatter ────────────────────────────────────────────────────────────
