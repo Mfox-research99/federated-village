@@ -3,8 +3,8 @@
 # Every role is named so the assignment is unambiguous in session logs.
 
 roles:
-  verification_warden: "anthropic/claude-3-haiku-20240307"
-  humanist:            "anthropic/claude-3-haiku-20240307"
+  verification_warden: "anthropic/claude-3.5-haiku"
+  humanist:            "anthropic/claude-3.5-haiku"
   witness:             "openai/gpt-4o"
   analyst:             "google/gemini-2.5-pro-preview"
   ethicist:            "mistralai/mistral-nemo"
