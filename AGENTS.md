@@ -5,6 +5,30 @@ A multi-agent AI deliberative architecture. Role-separated agents with distinct 
 
 This is active research, not production software. Architectural decisions are intentional and documented. Do not "fix" things that look unconventional without understanding why they exist.
 
+## ⚠️ Hardware and Scale Context — Read This Before Critiquing
+
+**This system runs on a MacBook Pro M1 with 16GB of RAM.**
+
+The primary deliberation models are small local GGUFs:
+- **Mistral-Nemo 12B** (Q4_K_M, ~7GB) — primary
+- **Anubis-Mini 8B** (Q4_K_M, ~4.6GB) — fourth model, LoRA-trained
+
+One model loads at a time. No concurrent inference. No live internet access.
+No database queries. No API calls during deliberation. Everything runs offline on Metal.
+
+This is a **design philosophy, not a resource limitation.** The research question is:
+*can constitutional character be distilled into small local weights?* Can a 7GB model
+sitting on a laptop hold the Seventh Generation principle genuinely — not as a cited
+rule but as internalized reasoning?
+
+When reviewing this architecture, evaluate it on its own terms:
+- Recommendations requiring cloud infrastructure, live data, or concurrent model
+  instances are out of scope for the primary implementation.
+- The Path B cloud track (tracks/path_b/) uses OpenRouter for research comparison,
+  but the constitutional system itself is designed to run locally and privately.
+- "Why not just call a database?" misses the point. The point is what a small model
+  can hold on its own.
+
 ## Architectural Origin
 **Phases 1–2: ChatGPT (The Steward) + Mike Fox.** The initial 5-entity structural scaffold, traceability-first design, and post-pause continuation architecture. Both phase briefs are preserved at repo root.
 

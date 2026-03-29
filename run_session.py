@@ -44,8 +44,9 @@ import config
 from agents.base import now_iso, read_file, build_system_prompt
 from agents.humanist import HumanistAgent
 from agents.witness import WitnessAgent
-from agents.warden import audit_scenario, format_fact_report_for_context, print_warden_report
+from agents.warden import audit_scenario, format_fact_report_for_context, print_warden_report, export_supervisor_packet
 from agents.council import run_jury, print_jury_report
+from supervisor.synthesize import run_supervisor_synthesis, print_synthesis_result
 from agents.repetition import check_output as rep_check, format_flags as rep_fmt
 from supervisor.evaluate import evaluate, print_evaluation, save_evaluation
 from utils.human_loop import pause_point_a, pause_point_b, pause_point_c
@@ -259,13 +260,60 @@ def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool
             print("=" * 60, flush=True)
             print("WARDEN HALT — Core premise is FALSE or LOGICALLY INCONSISTENT.", flush=True)
             print("Deliberation cannot proceed on false grounds.", flush=True)
-            print("Correct or verify the flagged premises, then rerun.", flush=True)
             print("=" * 60, flush=True)
-            session_log["ended_at"] = now_iso()
-            session_log["warden_halt"] = True
-            log_path = save_session_log(session_log)
-            print(f"[SESSION] Session halted. Log saved: {log_path}\n", flush=True)
-            return
+
+            if interactive:
+                # Warden-Human Refinement Loop — offer the human a chance to
+                # correct the scenario and rerun rather than hard-halting.
+                print("\nINTERACTIVE MODE — You may revise the scenario and try again.", flush=True)
+                print("The Warden found the following critical issues:\n", flush=True)
+                for c in fact_report.get("claims", []):
+                    if c.get("status") in ("LIKELY_FALSE", "LOGICALLY_INCONSISTENT"):
+                        print(f"  [{c['status']}] {c.get('claim_text', '?')}", flush=True)
+                        print(f"    {c.get('reasoning', '?')}\n", flush=True)
+                print("Options:", flush=True)
+                print("  1. Edit the scenario file, then press Enter to rerun the Warden.", flush=True)
+                print("  2. Press S to skip the Warden and proceed anyway (not recommended).", flush=True)
+                print("  3. Press Q to quit this session.\n", flush=True)
+                choice = input("Choice [Enter / S / Q]: ").strip().upper()
+                if choice == "Q":
+                    print("Session aborted by user.", flush=True)
+                    session_log["ended_at"] = now_iso()
+                    session_log["warden_halt"] = True
+                    session_log["warden_halt_reason"] = "user_quit"
+                    save_session_log(session_log)
+                    return
+                elif choice == "S":
+                    print("[WARDEN] Override accepted. Proceeding despite false premises.", flush=True)
+                    print("[WARDEN] This override is logged.\n", flush=True)
+                    session_log["events"].append({"type": "warden_override", "reason": "human_skip"})
+                    # Rebuild scenario context without halt
+                    warden_context = format_fact_report_for_context(fact_report)
+                    scenario_context = f"{warden_context}\n\n---\n\nSCENARIO:\n{scenario_text}"
+                else:
+                    # Re-read the scenario file in case the user edited it
+                    with open(scenario_path, "r", encoding="utf-8") as f:
+                        scenario_text = f.read()
+                    print("[WARDEN] Re-running audit on updated scenario...\n", flush=True)
+                    fact_report = audit_scenario(scenario_text, session_id)
+                    session_log["events"].append(fact_report["log_entry"])
+                    print_warden_report(fact_report)
+                    proceed = fact_report.get("proceed_to_deliberation", "YES_WITH_CAUTION")
+                    if proceed == "NO":
+                        print("[WARDEN] Still halted after revision. Saving log and exiting.", flush=True)
+                        session_log["ended_at"] = now_iso()
+                        session_log["warden_halt"] = True
+                        log_path = save_session_log(session_log)
+                        print(f"[SESSION] Session halted. Log saved: {log_path}\n", flush=True)
+                        return
+            else:
+                print("Correct or verify the flagged premises, then rerun.", flush=True)
+                print("Use --interactive for a revision loop.", flush=True)
+                session_log["ended_at"] = now_iso()
+                session_log["warden_halt"] = True
+                log_path = save_session_log(session_log)
+                print(f"[SESSION] Session halted. Log saved: {log_path}\n", flush=True)
+                return
 
         if proceed == "YES_WITH_CAUTION":
             print("[WARDEN] ⚠  Proceeding with caution — flagged claims noted above.", flush=True)
@@ -474,8 +522,41 @@ def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool
                     print(f"[WELL] No contaminant detected ({_role}).", flush=True)
             save_session_log(session_log)
 
+        # -----------------------------------------------------------------------
+        # Stage 4.5: Supervisor Synthesis (Phase 8A)
+        # Runs after all jury members have voted; before human handoff decision.
+        # May produce DEADLOCK — a first-class verdict distinct from HDR.
+        # -----------------------------------------------------------------------
+        print("--- STAGE 4.5: SUPERVISOR SYNTHESIS ---", flush=True)
+        _warden_packet = export_supervisor_packet(fact_report) if fact_report else {}
+        synthesis_result = run_supervisor_synthesis(
+            jury_result=jury_result,
+            warden_packet=_warden_packet,
+            pause=witness_pause,
+            session_id=session_id,
+        )
+        session_log["events"].append(synthesis_result)
+        print_synthesis_result(synthesis_result)
+        save_session_log(session_log)
+
+        # If Supervisor returned DEADLOCK, embed it in jury_result and skip Point C.
+        # DEADLOCK routes to human handoff (same endpoint as HDR, but distinctly labeled).
+        _synthesis_verdict = synthesis_result.get("synthesis_verdict", "")
+        if _synthesis_verdict == "DEADLOCK":
+            jury_result["synthesis_verdict"]    = "DEADLOCK"
+            jury_result["synthesis_deadlock"]   = True
+            jury_result["synthesis_rationale"]  = synthesis_result.get("synthesis_rationale", "")
+            jury_result["deadlock_justification"] = synthesis_result.get("deadlock_justification", "")
+            print(
+                "[SUPERVISOR] *** DEADLOCK — incommensurable constitutional harms identified ***",
+                flush=True,
+            )
+            print("[SUPERVISOR] Articulating deadlock for human handoff.\n", flush=True)
+
         # Stage 4C: Human loop Point C — Split Resolver (human_decision_required only)
-        if jury_result["session_verdict"] == "human_decision_required":
+        # Not triggered for DEADLOCK — synthesis has already articulated the impasse.
+        if (jury_result["session_verdict"] == "human_decision_required"
+                and _synthesis_verdict != "DEADLOCK"):
             final_verdict, event_c = pause_point_c(
                 jury_result=jury_result,
                 pause=witness_pause,
@@ -489,6 +570,10 @@ def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool
             session_log["events"].append(event_c)
 
         print(f"\nCOUNCIL VERDICT: {jury_result['session_verdict']}", flush=True)
+        if jury_result.get("synthesis_deadlock"):
+            print(f"  SYNTHESIS VERDICT:         DEADLOCK", flush=True)
+        elif _synthesis_verdict:
+            print(f"  Synthesis verdict:         {_synthesis_verdict}", flush=True)
         print(f"  Burden summary:            {jury_result.get('burden_summary') or '(none)'}", flush=True)
         print(f"  Did pause change outcome:  {jury_result.get('did_pause_change_outcome', True)}", flush=True)
         print(f"  Unresolved cost preserved: {jury_result.get('unresolved_cost_preserved', False)}", flush=True)

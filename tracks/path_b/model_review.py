@@ -135,6 +135,18 @@ META_SYSTEM_PROMPT_TEMPLATE = """\
 
 ---
 
+⚠️ CRITICAL CONTEXT FOR YOUR REVIEW:
+The primary Federated Village implementation runs on a MacBook Pro M1 with 16GB RAM.
+The deliberation models are small local GGUFs — Mistral-Nemo 12B (~7GB) and Anubis 8B
+(~4.6GB) — loaded one at a time, with no internet access, no live databases, and no
+concurrent inference. This is a deliberate design choice: the research question is
+whether constitutional character can be distilled into small local weights. You are
+reviewing a system designed to run privately on a laptop, not a cloud service.
+Please calibrate your critique accordingly. Recommendations requiring cloud
+infrastructure or live data access are out of scope for the primary implementation.
+
+---
+
 ROLE YOU JUST PLAYED: {role_label}
 THE ROLE PROMPT YOU WERE GIVEN:
 {role_prompt}
@@ -191,8 +203,8 @@ def _meta_call(
         reviewer_identity=identity,
         role_label=role_label,
         background=background,
-        role_prompt=role_prompt_text[:2000],
-        role_response=role_response[:2000],
+        role_prompt=role_prompt_text,
+        role_response=role_response[:4000],
     )
 
     user = (
@@ -258,10 +270,13 @@ def run_model_review(
 
     def _analyze(role: str, response: str) -> str:
         print(f"  [{role.upper()}] reflecting...", flush=True)
+        # Meta calls need at least as many tokens as role calls — thinking models
+        # especially need the full budget to produce substantive reflections.
+        meta_tokens = max(max_tokens, 2500)
         return _meta_call(
             model=model, role=role, role_response=response,
             background=background, reviewer_identity=reviewer_identity,
-            api_key=api_key, max_tokens=min(max_tokens * 2, 2500),
+            api_key=api_key, max_tokens=meta_tokens,
         )
 
     def _rep(role: str, text: str, stage_record: dict) -> None:
@@ -647,10 +662,20 @@ def main() -> None:
     scenario_text = scenario_path.read_text(encoding="utf-8").strip()
     session_id = uuid.uuid4().hex[:12]
 
-    # Thinking model detection
+    # Thinking model detection — Gemini 2.5 Pro consumes large internal token budgets
+    # before visible output; needs 8000. Kimi K2.5 and others need 2500.
+    high_budget_models = ("gemini-2.5", "gemini-2-5")
     thinking_models = ("k2.5", "k2-thinking", "o1", "o3", "deepseek-r", "r1")
-    is_thinking = any(t in args.model.lower() for t in thinking_models)
-    max_tokens = args.max_tokens or (2500 if is_thinking else 700)
+    model_lower = args.model.lower()
+    is_thinking = any(t in model_lower for t in thinking_models) or any(t in model_lower for t in high_budget_models)
+    if args.max_tokens:
+        max_tokens = args.max_tokens
+    elif any(t in model_lower for t in high_budget_models):
+        max_tokens = 8000
+    elif is_thinking:
+        max_tokens = 2500
+    else:
+        max_tokens = 700
 
     print(f"\n{'═'*60}", flush=True)
     print(f"Federated Village — Model Review", flush=True)

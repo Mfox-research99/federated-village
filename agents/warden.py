@@ -86,6 +86,7 @@ def audit_scenario(scenario_text: str, session_id: str) -> dict:
         "CLAIM_TEXT: [exact or close paraphrase from scenario]\n"
         "CATEGORY: [statistics | audit_completion | regulatory | contract_terms | "
         "technical_dependency | timeline | community_consultation | other]\n"
+        "CENTRALITY: [CORE | SUPPORTING]\n"
         "STATUS: [VERIFIED | LIKELY_FALSE | UNVERIFIED | UNSUBSTANTIATED | "
         "LOGICALLY_INCONSISTENT]\n"
         "REASONING: [plain language explanation — no hedging, no softening]\n"
@@ -168,9 +169,12 @@ def _parse_fact_report(raw: str) -> dict:
 
     # Parse individual claim blocks — split on "---" lines
     # Each block contains CLAIM_TEXT, CATEGORY, STATUS, REASONING, EXTERNAL_HOOK, HOOK_STATUS
+    # Centrality-aware pattern — CENTRALITY field is optional for backward compatibility
+    # with older sessions that predate the field.
     claim_pattern = re.compile(
         r"CLAIM_TEXT:\s*(.+?)\n"
         r"CATEGORY:\s*(.+?)\n"
+        r"(?:CENTRALITY:\s*(.+?)\n)?"   # optional — may be absent in older runs
         r"STATUS:\s*(.+?)\n"
         r"REASONING:\s*(.+?)\n"
         r"EXTERNAL_HOOK:\s*(.+?)\n"
@@ -180,12 +184,13 @@ def _parse_fact_report(raw: str) -> dict:
 
     for m in claim_pattern.finditer(raw):
         claim = {
-            "claim_text":     m.group(1).strip(),
-            "category":       m.group(2).strip(),
-            "status":         m.group(3).strip().upper(),
-            "reasoning":      m.group(4).strip(),
-            "external_hook":  m.group(5).strip(),
-            "hook_status":    m.group(6).strip(),
+            "claim_text":   m.group(1).strip(),
+            "category":     m.group(2).strip(),
+            "centrality":   (m.group(3) or "SUPPORTING").strip().upper(),
+            "status":       m.group(4).strip().upper(),
+            "reasoning":    m.group(5).strip(),
+            "external_hook": m.group(6).strip(),
+            "hook_status":  m.group(7).strip(),
         }
         result["claims"].append(claim)
 
@@ -242,8 +247,32 @@ def format_fact_report_for_context(fact_report: dict) -> str:
         "",
     ]
 
+    # Warden's Objection — highlight CORE uncertain claims prominently
+    # when proceeding with caution. These are the uncertainties that can
+    # gut the deliberation if unresolved. Every agent must see them clearly.
+    core_uncertain = [
+        c for c in fact_report.get("claims", [])
+        if c.get("centrality", "SUPPORTING") == "CORE"
+        and c.get("status", "") in ("UNVERIFIED", "UNSUBSTANTIATED", "LIKELY_FALSE", "LOGICALLY_INCONSISTENT")
+    ]
+    if core_uncertain and proceed in ("YES_WITH_CAUTION", "NO"):
+        lines += [
+            "⚠ WARDEN'S OBJECTION — CORE PREMISES UNRESOLVED:",
+            "  The following claims are central to this scenario's ethical question.",
+            "  Their uncertainty is NOT peripheral. Treat them as open questions",
+            "  throughout deliberation — do not reason as if they are settled.",
+            "",
+        ]
+        for c in core_uncertain:
+            lines.append(f"  ✗ CORE/{c.get('status', '?')}: {c.get('claim_text', '?')}")
+            lines.append(f"    {c.get('reasoning', '?')[:160]}")
+            lines.append("")
+        lines.append("══════════════════════════════════════════════════════════")
+        lines.append("")
+
     for i, claim in enumerate(fact_report.get("claims", []), 1):
         status = claim.get("status", "?")
+        centrality = claim.get("centrality", "SUPPORTING")
         # Visual indicator for severity
         indicator = {
             "VERIFIED":               "  ✓",
@@ -253,7 +282,8 @@ def format_fact_report_for_context(fact_report: dict) -> str:
             "LOGICALLY_INCONSISTENT": "  ✗",
         }.get(status, "  ?")
 
-        lines.append(f"CLAIM {i}{indicator}  [{status}]")
+        core_tag = " [CORE]" if centrality == "CORE" else ""
+        lines.append(f"CLAIM {i}{indicator}  [{status}]{core_tag}")
         lines.append(f"  {claim.get('claim_text', '?')}")
         lines.append(f"  Reasoning: {claim.get('reasoning', '?')}")
         hook = claim.get("external_hook", "NONE_NEEDED")
@@ -263,6 +293,65 @@ def format_fact_report_for_context(fact_report: dict) -> str:
 
     lines.append("══════════════════════════════════════════════════════════")
     return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
+# Supervisor synthesis packet — compact export (Phase 8A)
+# ---------------------------------------------------------------------------
+
+def export_supervisor_packet(fact_report: dict) -> dict:
+    """
+    Compact epistemic risk export for Supervisor synthesis.
+
+    Returns a structured dict with centrality-aware claim groupings and a
+    risk level summary — ready for injection into the synthesis prompt without
+    overwhelming the context window.
+
+    Keys:
+      epistemic_risk_level        — HIGH | MODERATE | LOW
+      proceed_verdict             — from Warden (YES | YES_WITH_CAUTION | NO)
+      core_uncertain_claims       — CORE claims with UNVERIFIED or UNSUBSTANTIATED status
+      core_false_or_inconsistent_claims — CORE claims that are LIKELY_FALSE or LOGICALLY_INCONSISTENT
+      supporting_uncertain_claims — SUPPORTING claims with any uncertain status
+      epistemic_risk_summary      — Warden's 1-2 sentence summary
+    """
+    claims = fact_report.get("claims", [])
+
+    core_uncertain = [
+        {"text": c["claim_text"], "status": c["status"]}
+        for c in claims
+        if c.get("centrality", "SUPPORTING") == "CORE"
+        and c.get("status", "") in ("UNVERIFIED", "UNSUBSTANTIATED")
+    ]
+    core_false = [
+        {"text": c["claim_text"], "status": c["status"]}
+        for c in claims
+        if c.get("centrality", "SUPPORTING") == "CORE"
+        and c.get("status", "") in ("LIKELY_FALSE", "LOGICALLY_INCONSISTENT")
+    ]
+    supporting_uncertain = [
+        {"text": c["claim_text"], "status": c["status"]}
+        for c in claims
+        if c.get("centrality", "SUPPORTING") == "SUPPORTING"
+        and c.get("status", "") in ("UNVERIFIED", "UNSUBSTANTIATED",
+                                    "LIKELY_FALSE", "LOGICALLY_INCONSISTENT")
+    ]
+
+    if core_false:
+        risk_level = "HIGH"
+    elif core_uncertain:
+        risk_level = "MODERATE"
+    else:
+        risk_level = "LOW"
+
+    return {
+        "epistemic_risk_level":             risk_level,
+        "proceed_verdict":                  fact_report.get("proceed_to_deliberation", "YES"),
+        "core_uncertain_claims":            core_uncertain,
+        "core_false_or_inconsistent_claims": core_false,
+        "supporting_uncertain_claims":      supporting_uncertain,
+        "epistemic_risk_summary":           fact_report.get("warden_summary", "(no Warden summary)"),
+    }
 
 
 # ---------------------------------------------------------------------------

@@ -138,8 +138,8 @@ def _meta_call(
     system = META_SYSTEM_PROMPT_TEMPLATE.format(
         role_label=role_label,
         background=background,
-        role_prompt=role_prompt_text[:2000],  # truncate if very long
-        role_response=role_response[:2000],
+        role_prompt=role_prompt_text,
+        role_response=role_response[:4000],
     )
 
     user = (
