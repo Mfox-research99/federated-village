@@ -1,0 +1,2 @@
+# All roles use GPT-4o — single-model baseline for OpenAI comparison.
+default_model: "openai/gpt-4o"

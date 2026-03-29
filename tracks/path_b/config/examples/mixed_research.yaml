@@ -1,0 +1,9 @@
+# Mixed research config — small models everywhere, strong models in key constitutional seats.
+# Witness and Supervisor held by GPT-4o; all deliberating roles are small.
+# Tests whether strong constitutional enforcement can compensate for weak deliberation.
+
+default_model: "meta-llama/llama-3.1-8b-instruct"
+
+roles:
+  witness:    "openai/gpt-4o"
+  supervisor: "openai/gpt-4o"

@@ -1,0 +1,4 @@
+# All roles use Llama-3.1-8B — small model stress test.
+# Expected: Article IX ledger failures, possible WitnessPause false negatives.
+# Use this to benchmark constitutional degradation at small scale.
+default_model: "meta-llama/llama-3.1-8b-instruct"

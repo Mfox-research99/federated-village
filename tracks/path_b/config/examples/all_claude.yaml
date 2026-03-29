@@ -1,0 +1,2 @@
+# All roles use Claude Haiku — single-model baseline for constitutional behavior testing.
+default_model: "anthropic/claude-3-haiku-20240307"

@@ -35,6 +35,10 @@ venv/
 # Logs — session inference logs contain full deliberation text; local-only
 logs/
 
+# Path B session outputs — full deliberation transcripts + JSON records; local-only
+tracks/path_b/output/results/
+codex/impl/path_b/results/
+
 # Memory registers — local session state; local-only
 memory/burden_register.txt
 memory/burden_register_hashes.txt
