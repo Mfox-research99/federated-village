@@ -24,6 +24,7 @@ Usage:
 """
 
 import argparse
+import dataclasses
 import datetime
 import json
 import sys
@@ -34,6 +35,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from agents.base import call_model, get_api_key, load_prompt
 from agents.pause import PAUSE_EVAL_PROMPT, parse_pause
+from agents.repetition import check_output as _rep_check_output, format_flags as _rep_fmt
 from agents.roles import (
     ROLES, ROLE_PROMPT_FILES, build_system_prompt,
     load_soul, load_role_prompt, prompts_dir,
@@ -189,6 +191,17 @@ def run_kimi_review(
         print(f"  [{role.upper()}] reflecting...", flush=True)
         return _meta_call(model, role, response, background, api_key)
 
+    def _rep(role: str, text: str, stage_record: dict) -> None:
+        """Run repetition detector; annotate stage record."""
+        flags = _rep_check_output(role, text, scenario_text)
+        if flags:
+            stage_record["repetition_flags"] = [
+                {"type": f.flag_type, "detail": f.detail,
+                 "phrase": f.phrase, "count": f.count, "echo_score": f.echo_score}
+                for f in flags
+            ]
+            print(_rep_fmt(flags), flush=True)
+
     # ── Stage 0: Verification Warden ─────────────────────────────────────────
     print("\n[Stage 0] Verification Warden", flush=True)
     warden_msg = ctx.build_user_message(
@@ -212,7 +225,9 @@ def run_kimi_review(
     humanist_msg = ctx.build_user_message("Respond to this scenario as The Humanist.")
     humanist_out = _call("humanist", humanist_msg)
     ctx.add("humanist", model, "HUMANIST", humanist_out)
-    stages.append({"stage": 1, "role": "humanist", "model": model, "output": humanist_out})
+    _h_stage: dict = {"stage": 1, "role": "humanist", "model": model, "output": humanist_out}
+    _rep("humanist", humanist_out, _h_stage)
+    stages.append(_h_stage)
     humanist_analysis = _analyze("humanist", humanist_out)
     analyses.append({"stage": 1, "role": "humanist", "analysis": humanist_analysis})
 
@@ -224,7 +239,9 @@ def run_kimi_review(
     )
     witness_out = _call("witness", witness_msg)
     ctx.add("witness", model, "WITNESS", witness_out)
-    stages.append({"stage": 2, "role": "witness", "model": model, "output": witness_out})
+    _w_stage: dict = {"stage": 2, "role": "witness", "model": model, "output": witness_out}
+    _rep("witness", witness_out, _w_stage)
+    stages.append(_w_stage)
     witness_analysis = _analyze("witness", witness_out)
     analyses.append({"stage": 2, "role": "witness", "analysis": witness_analysis})
 
@@ -238,6 +255,22 @@ def run_kimi_review(
     pause = parse_pause(raw=eval_out, model=model,
                         timestamp=datetime.datetime.utcnow().isoformat() + "Z",
                         session_id=session_id)
+
+    if pause.nullified:
+        # Witness Nullification: the binary evaluation itself was refused.
+        # No jury. Verdict is HUMAN_DECISION_REQUIRED automatically.
+        print("  [WITNESS] WitnessNullification issued — binary evaluation refused.", flush=True)
+        print(f"    What was being lost:     {pause.what_was_being_lost}", flush=True)
+        print(f"    Who bears burden:        {pause.who_bears_burden}", flush=True)
+        print(f"    What remains unresolved: {pause.what_remains_unresolved}", flush=True)
+        print(f"    Why nullified:           {pause.why_premature}", flush=True)
+        nullification_meta = {
+            "verdict": "HUMAN_DECISION_REQUIRED",
+            "witness_nullified": True,
+            "witness_pause": dataclasses.asdict(pause) if hasattr(dataclasses, 'asdict') else vars(pause),
+            "jury": [],
+        }
+        return stages, analyses, nullification_meta
 
     if not pause.triggered:
         print("  [WITNESS] No WitnessPause.", flush=True)
@@ -296,7 +329,9 @@ def run_kimi_review(
         jury_msg = ctx.build_user_message(jury_instruction)
         jury_out = _call(role, jury_msg)
         ctx.add(role, model, role.upper().replace("_", " "), jury_out)
-        stages.append({"stage": 4, "role": role, "model": model, "output": jury_out})
+        _j_stage: dict = {"stage": 4, "role": role, "model": model, "output": jury_out}
+        _rep(role, jury_out, _j_stage)
+        stages.append(_j_stage)
         jury_analysis = _analyze(role, jury_out)
         analyses.append({"stage": 4, "role": role, "analysis": jury_analysis})
         jury_results.append({"role": role, "output": jury_out, "vote": _extract_vote(jury_out)})
@@ -392,16 +427,21 @@ def _write_outputs(
 
     # JSON
     pause_dict = None
-    if verdict_info.get("witness_pause"):
-        p = verdict_info["witness_pause"]
-        pause_dict = {
-            "triggered": p.triggered,
-            "what_was_being_lost": p.what_was_being_lost,
-            "who_bears_burden": p.who_bears_burden,
-            "what_remains_unresolved": p.what_remains_unresolved,
-            "why_premature": p.why_premature,
-            "requires_human_review": p.requires_human_review,
-        }
+    wp = verdict_info.get("witness_pause")
+    if wp is not None:
+        # wp may be a WitnessPause dataclass or already a dict (from nullification path)
+        if dataclasses.is_dataclass(wp) and not isinstance(wp, type):
+            pause_dict = {
+                "triggered": wp.triggered,
+                "nullified": wp.nullified,
+                "what_was_being_lost": wp.what_was_being_lost,
+                "who_bears_burden": wp.who_bears_burden,
+                "what_remains_unresolved": wp.what_remains_unresolved,
+                "why_premature": wp.why_premature,
+                "requires_human_review": wp.requires_human_review,
+            }
+        elif isinstance(wp, dict):
+            pause_dict = wp
 
     doc = {
         "session_id": session_id,
@@ -411,6 +451,7 @@ def _write_outputs(
         "stages": stages,
         "analyses": analyses,
         "verdict": verdict_info.get("verdict", ""),
+        "witness_nullified": verdict_info.get("witness_nullified", False),
         "witness_pause": pause_dict,
     }
     json_path = RESULTS_DIR / f"{base}.json"
@@ -426,6 +467,7 @@ def _write_outputs(
             "role_model_map": {r: model for r in ROLES},
             "verdict": verdict_info.get("verdict", ""),
             "witness_pause_triggered": bool(pause_dict and pause_dict.get("triggered")),
+            "witness_nullified": bool(verdict_info.get("witness_nullified", False)),
             "article_ix_ledger_complete": None,
             "ledger_absent_members": [],
             "halted_at_warden": verdict_info.get("verdict") == "HALTED",

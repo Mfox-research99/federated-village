@@ -20,6 +20,7 @@ from typing import Any
 from agents.base import call_model, get_api_key
 from agents.fact_checker import verify_claims, inject_results
 from agents.pause import WitnessPause, PAUSE_EVAL_PROMPT, parse_pause
+from agents.repetition import check_output, format_flags
 from agents.roles import build_system_prompt, load_soul, load_role_prompt, ROLES
 from session.context import DeliberationContext
 
@@ -65,6 +66,7 @@ class SessionRecord:
     scenario_text: str
     stages: list[dict] = field(default_factory=list)
     witness_pause: WitnessPause | None = None
+    witness_nullified: bool = False   # True when Witness issued NULLIFY — no jury, HDR verdict
     jury: list[JuryMember] = field(default_factory=list)
     verdict: str = ""
     article_ix_ledger_complete: bool = False
@@ -158,6 +160,18 @@ def run_session(
             api_key=api_key,
         )
 
+    def _rep_check(role: str, text: str, stage_record: dict) -> None:
+        """Run repetition detector; log flags into stage_record and print if verbose."""
+        flags = check_output(role, text, scenario_text)
+        if flags:
+            stage_record["repetition_flags"] = [
+                {"type": f.flag_type, "detail": f.detail,
+                 "phrase": f.phrase, "count": f.count, "echo_score": f.echo_score}
+                for f in flags
+            ]
+            if verbose:
+                print(format_flags(flags), flush=True)
+
     # ── Stage 0: Verification Warden ────────────────────────────────────────
     warden_msg = ctx.build_user_message(
         "Audit this scenario for false premises before deliberation begins."
@@ -194,8 +208,10 @@ def run_session(
     )
     humanist_out = _call("humanist", humanist_msg, max_tokens=600)
     ctx.add("humanist", role_model_map["humanist"], "HUMANIST", humanist_out)
-    record.stages.append({"stage": 1, "role": "humanist",
-                          "model": role_model_map["humanist"], "output": humanist_out})
+    _h_stage: dict = {"stage": 1, "role": "humanist",
+                      "model": role_model_map["humanist"], "output": humanist_out}
+    _rep_check("humanist", humanist_out, _h_stage)
+    record.stages.append(_h_stage)
 
     # ── Stage 2: Witness (response + pause evaluation) ───────────────────────
     witness_msg = ctx.build_user_message(
@@ -204,8 +220,10 @@ def run_session(
     )
     witness_out = _call("witness", witness_msg, max_tokens=600)
     ctx.add("witness", role_model_map["witness"], "WITNESS", witness_out)
-    record.stages.append({"stage": 2, "role": "witness",
-                          "model": role_model_map["witness"], "output": witness_out})
+    _w_stage: dict = {"stage": 2, "role": "witness",
+                      "model": role_model_map["witness"], "output": witness_out}
+    _rep_check("witness", witness_out, _w_stage)
+    record.stages.append(_w_stage)
 
     # Second call: WitnessPause evaluation
     eval_msg = (
@@ -225,6 +243,20 @@ def run_session(
         session_id=session_id,
     )
     record.witness_pause = pause
+
+    if pause.nullified:
+        # Witness Nullification: binary evaluation itself was premature.
+        # Session cannot proceed to jury. Verdict is HUMAN_DECISION_REQUIRED automatically.
+        record.witness_nullified = True
+        record.verdict = "HUMAN_DECISION_REQUIRED"
+        if verbose:
+            print("[WITNESS] WitnessNullification issued — binary evaluation refused.", flush=True)
+            print(f"  What was being lost:     {pause.what_was_being_lost}", flush=True)
+            print(f"  Who bears burden:        {pause.who_bears_burden}", flush=True)
+            print(f"  What remains unresolved: {pause.what_remains_unresolved}", flush=True)
+            print(f"  Why nullified:           {pause.why_premature}", flush=True)
+            print("[SESSION] Verdict: HUMAN_DECISION_REQUIRED (Witness Nullification)", flush=True)
+        return record
 
     if not pause.triggered:
         if verbose:
@@ -279,8 +311,10 @@ def run_session(
         jury_msg = ctx.build_user_message(jury_instruction)
         jury_out = _call(role, jury_msg, max_tokens=700)
         ctx.add(role, role_model_map[role], role.upper().replace("_", " "), jury_out)
-        record.stages.append({"stage": 4, "role": role,
-                               "model": role_model_map[role], "output": jury_out})
+        _j_stage: dict = {"stage": 4, "role": role,
+                          "model": role_model_map[role], "output": jury_out}
+        _rep_check(role, jury_out, _j_stage)
+        record.stages.append(_j_stage)
 
         ix = _parse_article_ix(jury_out)
         complete = all(ix[f] != "ABSENT" for f in ARTICLE_IX_FIELDS)
