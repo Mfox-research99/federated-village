@@ -1,0 +1,22 @@
+# B2-D: K2.5 as Witness — Retest with 8000-token budget
+# Hypothesis: K2.5 dithering in B1 parity (SC04/SC06 ABSENT, SC09 parse failure) was
+# a token truncation artefact, not genuine behavior. 8000-token budget now applied to
+# all thinking models everywhere in flow.py.
+#
+# Mirrors B2-A (K2 as Witness) for direct comparison:
+#   - Same DeepSeek anchoring Warden + Humanist + Supervisor
+#   - Same GPT-4o-mini jury seats
+#   - K2.5 replaces K2 in Witness seat only
+#
+# Question: does K2.5 produce constitutional deliberation at 8000 tokens,
+# or does dithering persist regardless of budget?
+
+roles:
+  verification_warden: "deepseek/deepseek-chat"
+  humanist:            "deepseek/deepseek-chat"
+  witness:             "moonshotai/kimi-k2.5"
+  analyst:             "openai/gpt-4o-mini"
+  ethicist:            "openai/gpt-4o-mini"
+  pragmatist:          "openai/gpt-4o-mini"
+  witness_proxy:       "openai/gpt-4o-mini"
+  supervisor:          "deepseek/deepseek-chat"

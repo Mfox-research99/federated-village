@@ -6,10 +6,11 @@ Tests the constitutional framework with different model lineages in specific sea
 B1 established parity baselines (one model everywhere). B2 asks whether cross-model
 friction activates deliberative behavior that parity testing missed.
 
-Three configurations:
+Four configurations:
   b2_a  K2 as Witness — K2's nullification instinct in its natural seat
   b2_b  Frontier Supervisor — Gemini 2.5 Pro receiving a completed jury record
   b2_c  Mixed Council — different lineages in every seat
+  b2_d  K2.5 as Witness — retest with 8000-token budget (was truncated in B1)
 
 Usage:
   # Single config, one scenario
@@ -48,6 +49,7 @@ B2_CONFIGS: dict[str, str] = {
     "b2_a": "b2_a_k2_witness.yaml",
     "b2_b": "b2_b_frontier_supervisor.yaml",
     "b2_c": "b2_c_mixed_council.yaml",
+    "b2_d": "b2_d_k2_5_witness.yaml",
 }
 
 B2_SCENARIOS: dict[str, str] = {
