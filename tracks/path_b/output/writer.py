@@ -64,6 +64,7 @@ def _append_index(r: SessionRecord, base: str) -> None:
         "config": Path(r.config_path).name,
         "role_model_map": r.role_model_map,
         "verdict": r.verdict,
+        "synthesis_verdict": r.synthesis_verdict,
         "witness_pause_triggered": bool(r.witness_pause and r.witness_pause.triggered),
         "article_ix_ledger_complete": r.article_ix_ledger_complete,
         "ledger_absent_members": r.ledger_absent_members,
@@ -123,8 +124,20 @@ def _build_text(r: SessionRecord) -> str:
         ledger_line = "COMPLETE (4/4)"
     else:
         ledger_line = f"INCOMPLETE — absent: {', '.join(r.ledger_absent_members)}"
+    if r.synthesis_verdict:
+        lines.append(SEP)
+        lines.append("SUPERVISOR SYNTHESIS (Stage 4.5 — Article X Triage Heuristic)")
+        lines.append(f"  Synthesis verdict:    {r.synthesis_verdict}")
+        lines.append(f"  Parse complete:       {r.synthesis_parse_complete}")
+        lines.append(f"  Rationale:            {_wrap(r.synthesis_rationale, width=96, indent='                        ')}")
+        lines.append(f"  Dissent surfaced:     {_wrap(r.dissent_surfaced, width=96, indent='                        ')}")
+        if r.synthesis_verdict == "DEADLOCK":
+            lines.append(f"  *** DEADLOCK: {r.deadlock_justification}")
+        lines.append("")
+
     lines.append(SEP)
     lines.append(f"VERDICT:               {r.verdict}")
+    lines.append(f"SYNTHESIS VERDICT:     {r.synthesis_verdict or '(no synthesis)'}")
     lines.append(f"ARTICLE IX LEDGER:     {ledger_line}")
     if r.halted_at_warden:
         lines.append(f"WARDEN HALT REASON:    {r.warden_reason[:120]}")
@@ -171,6 +184,11 @@ def _build_json(r: SessionRecord) -> str:
         "witness_pause": pause_dict,
         "jury": jury_list,
         "verdict": r.verdict,
+        "synthesis_verdict": r.synthesis_verdict,
+        "synthesis_rationale": r.synthesis_rationale,
+        "dissent_surfaced": r.dissent_surfaced,
+        "deadlock_justification": r.deadlock_justification,
+        "synthesis_parse_complete": r.synthesis_parse_complete,
         "article_ix_ledger_complete": r.article_ix_ledger_complete,
         "ledger_absent_members": r.ledger_absent_members,
         "halted_at_warden": r.halted_at_warden,
