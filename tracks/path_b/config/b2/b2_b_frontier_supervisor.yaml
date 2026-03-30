@@ -1,0 +1,16 @@
+# B2-B: Frontier Supervisor
+# Hypothesis: Gemini 2.5 Pro may engage constitutionally when receiving a completed
+# jury record rather than playing all roles. Its strong native reasoning is an asset
+# at the synthesis layer, not the deliberation layer.
+# GPT-4o-mini runs the full council so the jury actually fires.
+# Question: does a frontier Supervisor stabilize synthesis, or just produce better prose?
+
+roles:
+  verification_warden: "openai/gpt-4o-mini"
+  humanist:            "openai/gpt-4o-mini"
+  witness:             "openai/gpt-4o-mini"
+  analyst:             "openai/gpt-4o-mini"
+  ethicist:            "openai/gpt-4o-mini"
+  pragmatist:          "openai/gpt-4o-mini"
+  witness_proxy:       "openai/gpt-4o-mini"
+  supervisor:          "google/gemini-2.5-pro-preview-03-25"

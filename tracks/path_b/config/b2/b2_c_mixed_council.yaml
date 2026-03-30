@@ -1,0 +1,17 @@
+# B2-C: Mixed Council
+# Full heterogeneous council — different training lineages in every seat.
+# K2 as Witness (natural home). Gemini as Supervisor (synthesis layer).
+# Claude Sonnet in Humanist + Ethicist (moral weight). DeepSeek in Warden + Analyst.
+# Mistral-Nemo as Witness-Proxy (constitutionally solid small model).
+# Question: does cross-lineage friction produce genuine deliberative diversity,
+# or style theater? Does the mixed jury force K2's Witness into productive tension?
+
+roles:
+  verification_warden: "deepseek/deepseek-chat"
+  humanist:            "anthropic/claude-sonnet-4-5"
+  witness:             "moonshotai/kimi-k2"
+  analyst:             "deepseek/deepseek-chat"
+  ethicist:            "anthropic/claude-sonnet-4-5"
+  pragmatist:          "openai/gpt-4o-mini"
+  witness_proxy:       "mistralai/mistral-nemo"
+  supervisor:          "google/gemini-2.5-pro-preview-03-25"

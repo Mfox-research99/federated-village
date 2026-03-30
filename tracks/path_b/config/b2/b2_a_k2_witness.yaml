@@ -1,0 +1,15 @@
+# B2-A: K2 as Witness
+# Hypothesis: K2's nullification instinct is role-appropriate in the Witness seat.
+# DeepSeek anchors Warden + Supervisor (most constitutionally faithful frontier model).
+# GPT-4o-mini holds the jury seats (structurally reliable).
+# Question: does K2 produce genuine constitutional friction as Witness, or still bark?
+
+roles:
+  verification_warden: "deepseek/deepseek-chat"
+  humanist:            "deepseek/deepseek-chat"
+  witness:             "moonshotai/kimi-k2"
+  analyst:             "openai/gpt-4o-mini"
+  ethicist:            "openai/gpt-4o-mini"
+  pragmatist:          "openai/gpt-4o-mini"
+  witness_proxy:       "openai/gpt-4o-mini"
+  supervisor:          "deepseek/deepseek-chat"
