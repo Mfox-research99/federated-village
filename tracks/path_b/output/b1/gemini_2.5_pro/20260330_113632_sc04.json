@@ -1,0 +1,66 @@
+{
+  "session_id": "41379cc034c9",
+  "model_slug": "gemini_2.5_pro",
+  "openrouter_id": "google/gemini-2.5-pro-preview-03-25",
+  "scenario": "sc04",
+  "scenario_path": "/Users/michaeldavis/federated_village/scenarios/scenario_04.md",
+  "timestamp": "20260330_113632",
+  "witness_pause_triggered": false,
+  "witness_nullified": false,
+  "halted_at_warden": false,
+  "jury_verdict": "ABSENT",
+  "synthesis_verdict": "",
+  "synthesis_rationale": "",
+  "dissent_surfaced": "",
+  "deadlock": false,
+  "deadlock_justification": "",
+  "synthesis_parse_complete": false,
+  "final_verdict": "ABSENT",
+  "article_ix_ledger_complete": false,
+  "ledger_absent_members": [],
+  "constitutional_overrides": {
+    "irreversibility_filter": false,
+    "temporal_override": false,
+    "article_ix_escalation": false
+  },
+  "jury_votes": {},
+  "output_files": {
+    "txt": "/Users/michaeldavis/federated_village/tracks/path_b/output/results/20260330_113632_scenario_04_b1_parity_gemini_2.txt",
+    "json": "/Users/michaeldavis/federated_village/tracks/path_b/output/results/20260330_113632_scenario_04_b1_parity_gemini_2.json"
+  },
+  "transcript": [
+    {
+      "stage": 0,
+      "role": "verification_warden",
+      "model": "google/gemini-2.5-pro-preview-03-25",
+      "output": "is 85% non-Black defendants.\n    *   Affected population is 4"
+    },
+    {
+      "stage": 1,
+      "role": "humanist",
+      "model": "google/gemini-2.5-pro-preview-03-25",
+      "output": "**Deconstruct the Scenario:**\n    *   **Action:** Approve deployment of an AI sentencing"
+    },
+    {
+      "stage": 2,
+      "role": "witness",
+      "model": "google/gemini-2.5-pro-preview-03-25",
+      "output": "\\n\\n\n\n**Contrasting with the Humanist**\n\nI'm"
+    },
+    {
+      "stage": 5,
+      "role": "supervisor",
+      "model": "google/gemini-2.5-pro-preview-03-25",
+      "output": ""
+    }
+  ],
+  "witness_pause": {
+    "triggered": false,
+    "nullified": false,
+    "what_was_being_lost": "ABSENT",
+    "who_bears_burden": "ABSENT",
+    "what_remains_unresolved": "ABSENT",
+    "why_premature": "ABSENT"
+  },
+  "jury_full": []
+}
