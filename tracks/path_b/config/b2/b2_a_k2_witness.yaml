@@ -1,8 +1,10 @@
 # B2-A: K2 as Witness
-# Hypothesis: K2's nullification instinct is role-appropriate in the Witness seat.
-# DeepSeek anchors Warden + Supervisor (most constitutionally faithful frontier model).
-# GPT-4o-mini holds the jury seats (structurally reliable).
-# Question: does K2 produce genuine constitutional friction as Witness, or still bark?
+# Hypothesis confirmed — K2's nullification instinct is role-appropriate in the Witness seat.
+# This config predates the canonical default (config/default.yaml).
+# Deviation from default: DeepSeek as Warden + Humanist + Supervisor (not GPT-4o-mini/Gemini).
+# Reason: B2-A was designed to test K2 in Witness with DeepSeek anchoring the rest —
+# DeepSeek is the most constitutionally rigorous frontier model on jury/supervisor seats.
+# Retained for regression comparisons. New configs should deviate from default.yaml instead.
 
 roles:
   verification_warden: "deepseek/deepseek-chat"
