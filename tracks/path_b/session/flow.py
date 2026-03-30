@@ -372,6 +372,7 @@ def run_session(
         record.verdict = "HUMAN_DECISION_REQUIRED"
         if verbose:
             print("[WITNESS] WitnessNullification issued — binary evaluation refused.", flush=True)
+            print(f"  Nullification type:      {pause.nullification_type}", flush=True)
             print(f"  What was being lost:     {pause.what_was_being_lost}", flush=True)
             print(f"  Who bears burden:        {pause.who_bears_burden}", flush=True)
             print(f"  What remains unresolved: {pause.what_remains_unresolved}", flush=True)

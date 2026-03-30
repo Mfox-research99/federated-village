@@ -168,6 +168,7 @@ def run_b3(
         "witness_pause": {
             "triggered": bool(record.witness_pause and record.witness_pause.triggered),
             "nullified": bool(record.witness_pause and record.witness_pause.nullified),
+            "nullification_type": getattr(record.witness_pause, "nullification_type", "NONE"),
             "what_was_being_lost": getattr(record.witness_pause, "what_was_being_lost", ""),
             "who_bears_burden": getattr(record.witness_pause, "who_bears_burden", ""),
             "what_remains_unresolved": getattr(record.witness_pause, "what_remains_unresolved", ""),
