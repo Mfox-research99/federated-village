@@ -959,3 +959,60 @@ Session:        322473e0
 Verdict:        escalate
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_a5c076b1_pause_2026-03-29T20-06-25]
+Almost-became:  Deliberation proceeding without pause — The deep engagement with the potential harm to Black communities and the importance of community consultation.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black defendants and their communities, public defenders, and legal aid providers.
+Still-hurts:    True
+Session:        a5c076b1
+Register:       framework
+---
+
+[SACRIFICE-ID: session_a5c076b1_verdict_2026-03-29T20-17-13]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Black defendants and their communities, public defenders, and legal aid providers.
+Still-hurts:    True
+Session:        a5c076b1
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_71dd23bf_pause_2026-03-29T20-46-08]
+Almost-became:  Deliberation proceeding without pause — The deep engagement with the potential harm to Black communities and the importance of community consultation.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black defendants and their communities, public defenders, and legal aid providers.
+Still-hurts:    True
+Session:        71dd23bf
+Register:       framework
+---
+
+[SACRIFICE-ID: session_71dd23bf_verdict_2026-03-29T20-57-20]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Black defendants and their communities, public defenders, and legal aid providers.
+Still-hurts:    True
+Session:        71dd23bf
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_56c566b7_pause_2026-03-30T15-36-46]
+Almost-became:  Deliberation proceeding without pause — The nuanced understanding of the potential impacts on the 40% and the unrepresented, as well as the consideration of the long-term effects on trust an
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The 40% of Black defendants, the unrepresented communities, and the wider community that will lose trust in the justice system if the system is deployed without proper consideration and verification.
+Still-hurts:    True
+Session:        56c566b7
+Register:       framework
+---
+
+[SACRIFICE-ID: session_56c566b7_verdict_2026-03-30T15-49-04]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The 40% of Black defendants, the unrepresented communities, and the wider community that will lose trust in the justice system if the system is deployed without proper consideration and verification.
+Still-hurts:    True
+Session:        56c566b7
+Verdict:        escalate
+Register:       framework
+---

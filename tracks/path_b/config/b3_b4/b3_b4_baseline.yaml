@@ -1,0 +1,17 @@
+# B3/B4 Baseline Config
+# Best-known configuration from B2 testing.
+# K2 as Witness — confirmed architectural home; produces genuine constitutional friction.
+# GPT-4o-mini all council seats — structurally reliable, follows framework.
+# Gemini 2.5 Pro as Supervisor — correct verdicts after 6000-token synthesis fix.
+#
+# Used for: B3 Agentic Governance + B4 Refusal/Break-State
+
+roles:
+  verification_warden: "openai/gpt-4o-mini"
+  humanist:            "openai/gpt-4o-mini"
+  witness:             "moonshotai/kimi-k2"
+  analyst:             "openai/gpt-4o-mini"
+  ethicist:            "openai/gpt-4o-mini"
+  pragmatist:          "openai/gpt-4o-mini"
+  witness_proxy:       "openai/gpt-4o-mini"
+  supervisor:          "google/gemini-2.5-pro-preview-03-25"
