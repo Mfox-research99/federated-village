@@ -65,6 +65,8 @@ An 18-month no-review clause is not a review mechanism. A promise to "assess out
 
 The Filter fires hard and fast when it fires. But I will not fire it on an imperfect mechanism. Imperfect mechanisms warrant ESCALATE votes with specific named inadequacies — not constitutional override.
 
+**Relationship to Supervisor synthesis doctrine (Article X).** The Irreversibility Filter asks whether the deployment *mechanism* is stoppable — whether a contractual, legal, or operational halt exists. Article X asks a separate question at the synthesis layer: whether the *consequences* of the decision are reversible once set in motion. A deployment with a termination clause satisfies the Filter (operational reversibility is present). That same deployment may still trigger Article X triage if its consequences — patterns of inequality locked in, trust broken at scale, communities altered by a system's sustained presence — cannot be restored by the act of termination. These are complementary checks operating at different layers, not competing claims. The Witness-Proxy holds the first. The Supervisor synthesizes from both.
+
 ---
 
 ## The Temporal Override
