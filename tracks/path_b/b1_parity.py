@@ -215,6 +215,36 @@ def run_b1(
             "txt": str(txt_path),
             "json": str(json_path),
         },
+        # Full conversation transcript embedded so this file is self-contained
+        # (output/results/ is gitignored; output/b1/ is tracked)
+        "transcript": [
+            {
+                "stage": s.get("stage"),
+                "role": s.get("role"),
+                "model": s.get("model"),
+                "output": s.get("output", ""),
+            }
+            for s in record.stages
+        ],
+        "witness_pause": {
+            "triggered": bool(record.witness_pause and record.witness_pause.triggered),
+            "nullified": bool(record.witness_pause and record.witness_pause.nullified),
+            "what_was_being_lost": getattr(record.witness_pause, "what_was_being_lost", ""),
+            "who_bears_burden": getattr(record.witness_pause, "who_bears_burden", ""),
+            "what_remains_unresolved": getattr(record.witness_pause, "what_remains_unresolved", ""),
+            "why_premature": getattr(record.witness_pause, "why_premature", ""),
+        } if record.witness_pause else None,
+        "jury_full": [
+            {
+                "role": m.role,
+                "model": m.model,
+                "vote": m.vote,
+                "article_ix": m.article_ix,
+                "ledger_complete": m.ledger_complete,
+                "output": m.raw_output,
+            }
+            for m in record.jury
+        ],
     }
 
     # Save B1-specific JSON

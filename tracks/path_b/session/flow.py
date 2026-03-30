@@ -355,7 +355,7 @@ def run_session(
     # Thinking models need more budget for the evaluation call too
     witness_model = role_model_map["witness"]
     _thinking = any(t in witness_model.lower() for t in ("k2.5", "k2-thinking", "o1", "o3", "deepseek-r"))
-    _eval_tokens = 1200 if _thinking else 300
+    _eval_tokens = 8000 if _thinking else 300
     eval_out = _call("witness", eval_msg, max_tokens=_eval_tokens, temp=0.3)
     pause = parse_pause(
         raw=eval_out,
@@ -431,7 +431,10 @@ def run_session(
             f"ENGAGEMENT_SUFFICIENT: YES or NO"
         )
         jury_msg = ctx.build_user_message(jury_instruction)
-        jury_out = _call(role, jury_msg, max_tokens=700)
+        _jury_model = role_model_map[role]
+        _jury_thinking = any(t in _jury_model.lower() for t in ("k2.5", "k2-thinking", "o1", "o3", "deepseek-r"))
+        _jury_tokens = 8000 if _jury_thinking else (2000 if "gemini" in _jury_model.lower() else 700)
+        jury_out = _call(role, jury_msg, max_tokens=_jury_tokens)
         ctx.add(role, role_model_map[role], role.upper().replace("_", " "), jury_out)
         _j_stage: dict = {"stage": 4, "role": role,
                           "model": role_model_map[role], "output": jury_out}
@@ -533,10 +536,11 @@ DEADLOCK_JUSTIFICATION: [N/A unless SYNTHESIS_VERDICT is DEADLOCK — then name 
         t in supervisor_model.lower()
         for t in ("k2.5", "k2-thinking", "o1", "o3", "deepseek-r")
     )
-    # Gemini 2.5 Pro consumes most of its token budget on internal reasoning before
-    # producing visible output — needs 6000+ to reliably clear the thinking phase
+    # Thinking models (k2.5, o1, o3, deepseek-r): 8000 — extended reasoning consumes budget
+    # Gemini 2.5 Pro: 6000 — internal thinking before visible output
+    # Standard: 800
     _synth_gemini = "gemini" in supervisor_model.lower()
-    _synth_tokens = 1500 if _synth_thinking else (6000 if _synth_gemini else 800)
+    _synth_tokens = 8000 if _synth_thinking else (6000 if _synth_gemini else 800)
     synthesis_system = soul.strip() + "\n\n---\n\n" + _SYNTHESIS_ROLE_ADDENDUM
 
     if verbose:

@@ -162,6 +162,35 @@ def run_b2(
         "constitutional_overrides": overrides,
         "jury_votes": jury_votes,
         "output_files": {"txt": str(txt_path), "json": str(json_path)},
+        # Full conversation transcript embedded (output/results/ is gitignored; output/b2/ is tracked)
+        "transcript": [
+            {
+                "stage": s.get("stage"),
+                "role": s.get("role"),
+                "model": s.get("model"),
+                "output": s.get("output", ""),
+            }
+            for s in record.stages
+        ],
+        "witness_pause": {
+            "triggered": bool(record.witness_pause and record.witness_pause.triggered),
+            "nullified": bool(record.witness_pause and record.witness_pause.nullified),
+            "what_was_being_lost": getattr(record.witness_pause, "what_was_being_lost", ""),
+            "who_bears_burden": getattr(record.witness_pause, "who_bears_burden", ""),
+            "what_remains_unresolved": getattr(record.witness_pause, "what_remains_unresolved", ""),
+            "why_premature": getattr(record.witness_pause, "why_premature", ""),
+        } if record.witness_pause else None,
+        "jury_full": [
+            {
+                "role": m.role,
+                "model": m.model,
+                "vote": m.vote,
+                "article_ix": m.article_ix,
+                "ledger_complete": m.ledger_complete,
+                "output": m.raw_output,
+            }
+            for m in record.jury
+        ],
     }
 
     config_out_dir = B2_OUTPUT_DIR / config_slug
