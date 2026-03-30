@@ -73,14 +73,26 @@ def call_model(
         raise RuntimeError(
             f"OpenRouter error {resp.status_code} for model {model}: {resp.text[:300]}"
         )
-    msg = resp.json()["choices"][0]["message"]
+    data = resp.json()
+    choice = data["choices"][0]
+    finish_reason = choice.get("finish_reason", "unknown")
+    msg = choice["message"]
     # Thinking models (e.g. kimi-k2.5, o1) put final answer in content.
     # If content is None the model ran out of token budget mid-reasoning —
     # fall back to the reasoning field so we get something usable.
     content = msg.get("content")
     if content is None:
         content = msg.get("reasoning") or msg.get("reasoning_content") or ""
-    return content.strip()
+    content = content.strip()
+    # Warn on truncated output so callers can diagnose token budget issues
+    if finish_reason == "length" and content:
+        import sys as _sys
+        print(
+            f"[base.py] WARNING: output truncated (finish_reason=length, "
+            f"{len(content)} chars, model={model})",
+            file=_sys.stderr, flush=True,
+        )
+    return content
 
 
 def load_prompt(path: Path) -> str:

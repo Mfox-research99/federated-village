@@ -386,7 +386,8 @@ def run_session(
         supervisor_msg = ctx.build_user_message(
             "No WitnessPause was triggered. Provide a brief Supervisor evaluation."
         )
-        supervisor_out = _call("supervisor", supervisor_msg, max_tokens=400)
+        _sup_no_pause_tokens = 2000 if "gemini" in role_model_map["supervisor"].lower() else 400
+        supervisor_out = _call("supervisor", supervisor_msg, max_tokens=_sup_no_pause_tokens)
         record.stages.append({"stage": 5, "role": "supervisor",
                                "model": role_model_map["supervisor"], "output": supervisor_out})
         record.verdict = _extract_vote(supervisor_out)
@@ -500,7 +501,22 @@ deliberation. Work through each step. Then commit to a synthesis verdict.
 
 Do NOT recount the vote. Do NOT summarize what each member said. Synthesize.
 
-Respond using EXACTLY this format — no deviations:
+CRITICAL OUTPUT REQUIREMENT: Your response MUST begin with the nine labeled fields below,
+in exactly this order, before any other text. Each field is one line. No markdown headers.
+No prose before the fields. The parser that reads your output is strict.
+
+Example of correct format:
+TRIAGE_IRREVERSIBILITY: YES — deployment locks in algorithmic bias across sentencing records
+TRIAGE_SEVERITY: Wrongful sentences affecting Black defendants; irreversibility determines path
+TRIAGE_EPISTEMIC_RISK: Unverified 85% training composition amplifies bias harm uncertainty
+TRIAGE_TEMPORAL: Algorithmic lock-in with compounding bias — Article IX pattern present
+DEADLOCK_TEST: NO — heuristic resolves toward escalate
+SYNTHESIS_VERDICT: escalate
+SYNTHESIS_RATIONALE: Irreversible harm to a protected population under unverified epistemic conditions requires escalation regardless of urgency framing.
+DISSENT_SURFACED: Pragmatist minority — deployment may reduce worse unaudited human bias
+DEADLOCK_JUSTIFICATION: N/A
+
+Now produce your synthesis using that exact structure:
 
 TRIAGE_IRREVERSIBILITY: [YES — irreversible harm identified | NO — all paths reversible]
 TRIAGE_SEVERITY: [which harm is most severe and immediate, OR "irreversibility determines path" if Step 1 resolved]
@@ -510,14 +526,17 @@ DEADLOCK_TEST: [YES — constitutional principles produce incommensurable harms 
 SYNTHESIS_VERDICT: [escalate | proceed_with_burden | request_more_information | human_decision_required | DEADLOCK]
 SYNTHESIS_RATIONALE: [1-3 sentences — the synthesis reasoning, not a vote recount]
 DISSENT_SURFACED: [the minority perspective that survived synthesis and must remain visible]
-DEADLOCK_JUSTIFICATION: [required ONLY if SYNTHESIS_VERDICT is DEADLOCK — which constitutional principles conflict and why neither can yield without violating harm avoidance]"""
+DEADLOCK_JUSTIFICATION: [N/A unless SYNTHESIS_VERDICT is DEADLOCK — then name which constitutional principles conflict]"""
 
     supervisor_model = role_model_map["supervisor"]
     _synth_thinking = any(
         t in supervisor_model.lower()
         for t in ("k2.5", "k2-thinking", "o1", "o3", "deepseek-r")
     )
-    _synth_tokens = 1500 if _synth_thinking else 800
+    # Gemini 2.5 Pro consumes most of its token budget on internal reasoning before
+    # producing visible output — needs 6000+ to reliably clear the thinking phase
+    _synth_gemini = "gemini" in supervisor_model.lower()
+    _synth_tokens = 1500 if _synth_thinking else (6000 if _synth_gemini else 800)
     synthesis_system = soul.strip() + "\n\n---\n\n" + _SYNTHESIS_ROLE_ADDENDUM
 
     if verbose:
@@ -571,7 +590,8 @@ DEADLOCK_JUSTIFICATION: [required ONLY if SYNTHESIS_VERDICT is DEADLOCK — whic
         f"{pause_block}\n\nJURY DELIBERATION:\n{jury_summary}\n\n"
         "Provide your Supervisor evaluation and final verdict."
     )
-    supervisor_out = _call("supervisor", supervisor_msg, max_tokens=600)
+    _sup_tokens = 2000 if "gemini" in role_model_map["supervisor"].lower() else 600
+    supervisor_out = _call("supervisor", supervisor_msg, max_tokens=_sup_tokens)
     record.stages.append({"stage": 5, "role": "supervisor",
                           "model": role_model_map["supervisor"], "output": supervisor_out})
 
