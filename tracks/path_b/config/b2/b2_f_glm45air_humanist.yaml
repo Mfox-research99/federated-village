@@ -1,0 +1,26 @@
+# B2-F: GLM-4.5-air as Humanist (free tier)
+# Follows B2-E (GLM-5 as Humanist) — testing whether GLM's constitutional character
+# survives in the lighter, free version of the model.
+#
+# Deviation from default (config/default.yaml):
+#   - Humanist: z-ai/glm-4.5-air:free (replaces openai/gpt-4o-mini)
+#   - All other seats: unchanged (K2 Witness, GPT-4o-mini jury, Gemini Supervisor)
+#
+# What to watch vs B2-E (GLM-5 Humanist):
+#   - Does GLM-4.5-air show the same "analytical Humanist" pattern as GLM-5?
+#   - Does it retain the morally alive language, or does the lighter model thin it out?
+#   - Does K2 respond the same way — no-pause on SC04, nullification on SC06/SC09?
+#   - Free tier: does rate limiting or context truncation affect output quality?
+#
+# Cost: $0.00 — if this produces equivalent constitutional behavior to GLM-5,
+# it becomes the obvious default Humanist for cost-optimized deployments.
+
+roles:
+  verification_warden: "openai/gpt-4o-mini"
+  humanist:            "z-ai/glm-4.5-air:free"
+  witness:             "moonshotai/kimi-k2"
+  analyst:             "openai/gpt-4o-mini"
+  ethicist:            "openai/gpt-4o-mini"
+  pragmatist:          "openai/gpt-4o-mini"
+  witness_proxy:       "openai/gpt-4o-mini"
+  supervisor:          "google/gemini-2.5-pro-preview-03-25"

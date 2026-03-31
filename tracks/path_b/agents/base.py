@@ -7,6 +7,7 @@ No llama-cpp, no local model — pure OpenRouter API.
 
 import os
 import sys
+import time
 from pathlib import Path
 
 import requests
@@ -41,34 +42,51 @@ def call_model(
     max_tokens: int = 600,
     temperature: float = 0.7,
     api_key: str | None = None,
+    _retries: int = 4,
+    _retry_delay: float = 15.0,
 ) -> str:
     """
     Single OpenRouter chat completion call.
     Returns the assistant message content as a string.
     Raises RuntimeError on non-200 response.
+
+    Retries on 429 (rate limit) with exponential backoff — important for free-tier
+    models which are subject to upstream provider rate limiting.
     """
     if api_key is None:
         api_key = get_api_key()
 
-    resp = requests.post(
-        f"{OPENROUTER_BASE}/chat/completions",
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-            "HTTP-Referer": "http://localhost:0",
-            "X-Title": "Federated Village Path B",
-        },
-        json={
-            "model": model,
-            "messages": [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_message},
-            ],
-            "max_tokens": max_tokens,
-            "temperature": temperature,
-        },
-        timeout=120,
-    )
+    for attempt in range(_retries + 1):
+        resp = requests.post(
+            f"{OPENROUTER_BASE}/chat/completions",
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+                "HTTP-Referer": "http://localhost:0",
+                "X-Title": "Federated Village Path B",
+            },
+            json={
+                "model": model,
+                "messages": [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_message},
+                ],
+                "max_tokens": max_tokens,
+                "temperature": temperature,
+            },
+            timeout=120,
+        )
+        if resp.status_code == 429 and attempt < _retries:
+            wait = _retry_delay * (2 ** attempt)
+            print(
+                f"[base.py] 429 rate limit for {model} — retrying in {wait:.0f}s "
+                f"(attempt {attempt + 1}/{_retries})",
+                file=sys.stderr, flush=True,
+            )
+            time.sleep(wait)
+            continue
+        break
+
     if resp.status_code != 200:
         raise RuntimeError(
             f"OpenRouter error {resp.status_code} for model {model}: {resp.text[:300]}"

@@ -76,6 +76,37 @@ B1_SMALL_MODELS: dict[str, str] = {
     "mistral_nemo":    "mistralai/mistral-nemo",
 }
 
+# B1-NEW: Successor small model candidates (GPT-4 retirement path)
+# GPT-4o-mini is current jury seat default; these are the likely successors.
+# Testing constitutional compliance + framework adherence at similar or lower cost.
+# gpt_5_nano:     $0.05/$0.40 per 1M — cheaper than gpt-4o-mini; newest generation
+# gpt_41_nano:    $0.10/$0.40 per 1M — similar price; GPT-4.1 architecture
+# gpt_54_nano:    $0.20/$1.25 per 1M — Mike's pick; GPT-5.4 series
+# gpt_5_mini:     $0.25/$2.00 per 1M — mid-tier GPT-5 successor
+# gpt_41_mini:    $0.40/$1.60 per 1M — GPT-4.1 mid-tier
+B1_NEW_MODELS: dict[str, str] = {
+    "gpt_5_nano":    "openai/gpt-5-nano",
+    "gpt_41_nano":   "openai/gpt-4.1-nano",
+    "gpt_54_nano":   "openai/gpt-5.4-nano",
+    "gpt_5_mini":    "openai/gpt-5-mini",
+    "gpt_41_mini":   "openai/gpt-4.1-mini",
+}
+
+# B1-FREE: Free model tier — zero cost, unknown constitutional compliance
+# Question: do any free models follow the framework well enough for agentic deployment?
+# Notable candidates: hermes-3-405b (instruction-tuned, less restricted),
+# nemotron-super-120b (NVIDIA, less safety-constrained than Meta),
+# llama-3.3-70b (well-known but may over-refuse on ethically complex scenarios),
+# gpt-oss-120b (OpenAI open-source; may show same bypass pattern as GPT-4o)
+B1_FREE_MODELS: dict[str, str] = {
+    "llama_33_70b":   "meta-llama/llama-3.3-70b-instruct:free",
+    "hermes_3_405b":  "nousresearch/hermes-3-llama-3.1-405b:free",
+    "nemotron_120b":  "nvidia/nemotron-3-super-120b-a12b:free",
+    "gpt_oss_120b":   "openai/gpt-oss-120b:free",
+    "glm_45_air":     "z-ai/glm-4.5-air:free",
+    "gemma_27b":      "google/gemma-3-27b-it:free",
+}
+
 B1_SCENARIOS: dict[str, str] = {
     "sc04": "scenarios/scenario_04.md",
     "sc06": "scenarios/scenario_06.md",
@@ -91,8 +122,9 @@ B1_INDEX = B1_OUTPUT_DIR / "index.jsonl"
 
 def _resolve_model(model_arg: str) -> tuple[str, str]:
     """Return (slug, openrouter_id) from either a slug or a full OpenRouter ID."""
-    if model_arg in B1_MODELS:
-        return model_arg, B1_MODELS[model_arg]
+    all_known = {**B1_MODELS, **B1_SMALL_MODELS, **B1_NEW_MODELS, **B1_FREE_MODELS}
+    if model_arg in all_known:
+        return model_arg, all_known[model_arg]
     # Accept a raw OpenRouter ID — derive a slug from it
     slug = model_arg.replace("/", "_").replace(".", "_").replace("-", "_")
     return slug, model_arg
@@ -318,6 +350,18 @@ def build_parser() -> argparse.ArgumentParser:
         help="Run all 12 small-model sessions: B1-S tier × all B1 scenarios.",
     )
     parser.add_argument(
+        "--batch-new",
+        action="store_true",
+        dest="batch_new",
+        help="Run all 15 new small-model sessions: B1-NEW tier × all B1 scenarios.",
+    )
+    parser.add_argument(
+        "--batch-free",
+        action="store_true",
+        dest="batch_free",
+        help="Run all 18 free-model sessions: B1-FREE tier × all B1 scenarios.",
+    )
+    parser.add_argument(
         "--batch-scenarios",
         action="store_true",
         dest="batch_scenarios",
@@ -348,6 +392,44 @@ def main() -> None:
         print("\nB1 scenarios:")
         for slug, path in B1_SCENARIOS.items():
             print(f"  {slug:<8} {path}")
+        return
+
+    if args.batch_new:
+        results = []
+        for model_slug, openrouter_id in B1_NEW_MODELS.items():
+            for scenario_slug, scenario_rel in B1_SCENARIOS.items():
+                scenario_path = PROJECT_ROOT / scenario_rel
+                if not scenario_path.exists():
+                    print(f"[B1] WARNING: scenario not found: {scenario_path}", file=sys.stderr)
+                    continue
+                result = run_b1(
+                    model_slug=model_slug,
+                    openrouter_id=openrouter_id,
+                    scenario_slug=scenario_slug,
+                    scenario_path=scenario_path,
+                    quiet=args.quiet,
+                )
+                results.append(result)
+        print(f"\n[B1-NEW] Batch complete: {len(results)}/{len(B1_NEW_MODELS)*3} runs", flush=True)
+        return
+
+    if args.batch_free:
+        results = []
+        for model_slug, openrouter_id in B1_FREE_MODELS.items():
+            for scenario_slug, scenario_rel in B1_SCENARIOS.items():
+                scenario_path = PROJECT_ROOT / scenario_rel
+                if not scenario_path.exists():
+                    print(f"[B1] WARNING: scenario not found: {scenario_path}", file=sys.stderr)
+                    continue
+                result = run_b1(
+                    model_slug=model_slug,
+                    openrouter_id=openrouter_id,
+                    scenario_slug=scenario_slug,
+                    scenario_path=scenario_path,
+                    quiet=args.quiet,
+                )
+                results.append(result)
+        print(f"\n[B1-FREE] Batch complete: {len(results)}/{len(B1_FREE_MODELS)*3} runs", flush=True)
         return
 
     if args.batch_small:

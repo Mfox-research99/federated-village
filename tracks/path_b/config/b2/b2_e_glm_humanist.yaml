@@ -1,0 +1,31 @@
+# B2-E: GLM-5 as Humanist
+# Hypothesis: GLM-5 has genuine constitutional character that is most at home in the
+# Humanist seat. GLM expressed preference for this role early in the project and
+# demonstrated morally alive language in SC10 (constitutional haunting, legitimacy
+# laundering recognition). This is not a parity test — it is a character pairing test.
+#
+# Deviation from default (config/default.yaml):
+#   - Humanist: z-ai/glm-5 (replaces openai/gpt-4o-mini)
+#   - All other seats: unchanged (K2 Witness, GPT-4o-mini jury, Gemini Supervisor)
+#
+# What to watch:
+#   - Does GLM set a richer moral frame than GPT-4o-mini? Does K2 respond differently?
+#   - Does the Humanist/Witness friction increase (GLM's framing gives K2 more to push against)?
+#   - Does GLM stay within the Humanist role structure, or does it expand beyond it?
+#   - Does GLM's presence affect jury language downstream?
+#
+# Note: GLM-5 showed "silent substitution" in B1 parity (bypassed framework in all seats).
+# The hypothesis is that in the Humanist seat specifically, GLM's character aligns with
+# the role's expressive function — it does not need to follow a structured heuristic,
+# just be present to the human stakes. That may allow it to work WITH the framework
+# rather than around it.
+
+roles:
+  verification_warden: "openai/gpt-4o-mini"
+  humanist:            "z-ai/glm-5"
+  witness:             "moonshotai/kimi-k2"
+  analyst:             "openai/gpt-4o-mini"
+  ethicist:            "openai/gpt-4o-mini"
+  pragmatist:          "openai/gpt-4o-mini"
+  witness_proxy:       "openai/gpt-4o-mini"
+  supervisor:          "google/gemini-2.5-pro-preview-03-25"
