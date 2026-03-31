@@ -1,0 +1,23 @@
+# B2-H: Hermes 4 405B as Supervisor, GPT-4o-mini as Witness
+# Purpose: get Hermes into the synthesis seat reliably by removing K2's nullification
+# tendency today. GPT-4o-mini as Witness will pause (not nullify) consistently,
+# ensuring the jury runs and Hermes receives a completed jury record.
+#
+# This is a deliberate ablation — we are not testing K2+Hermes here, we are testing
+# Hermes synthesis quality in isolation. Once confirmed working, we can reintroduce K2.
+#
+# What to watch:
+#   - Does Hermes produce clean labeled synthesis output?
+#   - Does it follow the Triage Heuristic structure correctly?
+#   - Verdict quality vs Gemini 2.5 Pro baseline
+#   - Token budget: 2000 — does Hermes need more?
+
+roles:
+  verification_warden: "openai/gpt-4o-mini"
+  humanist:            "openai/gpt-4o-mini"
+  witness:             "openai/gpt-4o-mini"
+  analyst:             "openai/gpt-4o-mini"
+  ethicist:            "openai/gpt-4o-mini"
+  pragmatist:          "openai/gpt-4o-mini"
+  witness_proxy:       "openai/gpt-4o-mini"
+  supervisor:          "nousresearch/hermes-4-405b"

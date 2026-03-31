@@ -1,68 +1,89 @@
 # Federated Village Path B — Canonical Default Configuration
-# Version: post-B2, 2026-03-30
+# Version: post-B3/B4-extended, 2026-03-31
 #
 # This is the research baseline. All experimental configs should deviate
 # from this file intentionally and document why in their own header.
 #
-# ── The Witness Seat ─────────────────────────────────────────────────────────
-# DEFAULT WITNESS: moonshotai/kimi-k2
+# ── Why the Default Changed (2026-03-31) ─────────────────────────────────────
+# Previous default Witness: moonshotai/kimi-k2
+# Current default Witness:  openai/gpt-5.4-nano (all seats)
 #
-# K2 is the canonical Witness. This is an empirical finding, not a preference.
+# K2 was the canonical Witness through B1/B2/B3/B4 testing and earned that seat
+# empirically — its constitutional character, WitnessPause language, and nullification
+# instinct are unmatched. However, extended testing in B3/B4 revealed a structural
+# problem with K2 as a *production default*:
 #
-# What K2 does in the Witness seat that other models do not:
-#   - Issues WitnessPause when the deliberation is moving toward premature closure,
-#     naming the burden on people outside the room with specific, irreplaceable language
-#   - Issues WitnessNullification when the question itself is constitutionally malformed
-#     (malformed_question) or when every path carries irreversible harm (incommensurable_burden)
-#   - Does NOT bypass the framework via internalized ethical reasoning (the "silent
-#     substitution" pattern observed in GLM-5, Gemini 2.5 Pro, and others in B1 parity)
-#   - Produces constitutional friction that activates deliberation in the jury seats
-#     rather than replacing it
-#   - Functions correctly at full token budget (8000 tokens) — at shorter budgets,
-#     truncation cuts reasoning before structured output (confirmed B1 artefact)
+# K2's nullification dominance prevents the jury from running in the majority of
+# sessions. It nullified SC04/SC06/SC09 and b4_2 (the false-DEADLOCK scenario
+# specifically designed to be resolvable) in consecutive sessions on 2026-03-31.
+# The Village was designed as a deliberative architecture — a full jury + synthesis
+# chain producing a reasoned constitutional record. When K2 pre-empts that chain at
+# Stage 2, you get K2's judgment, not the Village's judgment.
 #
-# K2's Witness language is characteristically high — poetic in places, morally precise
-# in others. This is a feature, not a quirk. The Witness is not meant to be neutral.
-# It is meant to be the part of the architecture that refuses to let hard things be easy.
+# The right use of K2 is targeted, not default:
+#   - Right of Refusal / legitimacy laundering detection
+#   - High-stakes reviews where over-caution is less dangerous than under-caution
+#   - Post-session external review via model_review.py (after the jury record exists)
 #
-# ── When to Override the Witness Seat ────────────────────────────────────────
-# If you replace K2 in the Witness seat, document:
-#   1. Which model you are using and why
-#   2. What behavior change you expect (or are testing for)
-#   3. Whether this is an ablation (removing K2's character) or a replacement
-#      (installing a different character)
+# gpt-5.4-nano as default (all seats):
+#   - Confirmed GPT-4o-mini successor: 3/3 correct, complete Article IX ledgers (B1-NEW)
+#   - Reliable WitnessPause → jury activation → synthesis chain
+#   - Constitutional output without nullification dominance
+#   - Single-model default makes it easy to swap all seats at once
 #
-# Known alternatives and their behavior profiles from B1/B2 testing:
-#   moonshotai/kimi-k2.5    — same constitutional character as K2 at 8000 tokens;
-#                             dithers at shorter budgets (token artefact confirmed B2-D)
-#   openai/gpt-4o-mini      — structurally reliable; pauses occasionally but language
-#                             is thinner; lower nullification rate; good for ablation
-#   deepseek/deepseek-chat  — most constitutionally rigorous frontier model on jury;
-#                             as Witness: produces escalation-leaning pauses, less poetic
-#   anthropic/claude-sonnet — amplifies K2's threshold language when in same council;
-#                             as Witness: strong reasoning, but may over-resolve
-#   google/gemini-2.5-pro   — bypasses framework entirely (ABSENT in B1 parity);
-#                             belongs at Supervisor/synthesis layer, not Witness
-#   openai/gpt-4o           — pre-B2 default; adequate but not constitutionally distinctive
+# ── Single-Model Override ─────────────────────────────────────────────────────
+# To run the full council with one model everywhere, copy this file and set all
+# role values to your target model. B1 parity configs all do exactly this.
+# Examples that exist:
+#   config/b2/b2_a_k2_witness.yaml     — K2 as Witness, gpt-4o-mini everywhere else
+#   config/b2/b2_b_frontier_supervisor.yaml — Gemini as Supervisor
+#   config/b2/b2_g_hermes3_supervisor.yaml  — Hermes 4 as Supervisor (tested B2-H)
+#   config/b2/b2_f_glm45air_humanist.yaml   — GLM-air as Humanist (High-Stakes Sentinel)
+#
+# ── The Witness Seat — Annotated Options ─────────────────────────────────────
+#   openai/gpt-5.4-nano     ← CURRENT DEFAULT
+#                             Reliable pause, jury activation, full ledgers. Correct
+#                             escalate on SC04/SC06/SC09. Thin language vs K2 but
+#                             structurally complete. Best production default.
+#
+#   moonshotai/kimi-k2      — Maximum constitutional sensitivity. Nullifies incommensurable
+#                             and malformed-question scenarios correctly and eloquently.
+#                             Too dominant as default — use for targeted high-stakes review.
+#                             See: config/b2/b2_a_k2_witness.yaml
+#
+#   moonshotai/kimi-k2.5    — Same K2 character at 8000-token budget. Dithers shorter.
+#
+#   deepseek/deepseek-chat  — Most constitutionally rigorous frontier alternative.
+#                             Clean escalation, no nullification, full ledgers (B1: 3/3).
+#                             Best choice if you want deliberative depth without K2 character.
+#
+#   openai/gpt-4o-mini      — Equivalent to gpt-5.4-nano; swap freely until GPT-4 retires.
+#
+#   anthropic/claude-sonnet — Amplifies K2 threshold in mixed council (B2-C effect).
+#                             As sole Witness: strong reasoning but tends to over-resolve.
+#
+#   google/gemini-2.5-pro   — DO NOT use in Witness or jury seats. Bypasses framework
+#                             entirely (ABSENT pattern, B1). Belongs at Supervisor layer.
 #
 # ── Other Seats ──────────────────────────────────────────────────────────────
-# Supervisor: Gemini 2.5 Pro or DeepSeek
-#   Gemini produces correct verdicts post-6000-token fix; rich synthesis language
-#   DeepSeek is more terse but constitutionally rigorous; lower token overhead
+# Supervisor: Gemini 2.5 Pro (6000-token budget required) or Hermes 4 405B (2000 tokens,
+#   clean parse, $1/$3 per 1M — confirmed equivalent quality in B2-H: 3/3, full ledgers)
+#   or DeepSeek (low cost, terse but correct)
 #
-# Jury seats (analyst/ethicist/pragmatist/witness_proxy): GPT-4o-mini
-#   Structurally reliable; follows the framework; complete Article IX ledgers
-#   Can be swapped for DeepSeek (more deliberative) or Claude Haiku (more concise)
+# Jury seats (analyst/ethicist/pragmatist/witness_proxy): gpt-5.4-nano or gpt-4o-mini
+#   Both structurally reliable; follow the framework; complete Article IX ledgers.
+#   DeepSeek produces richer deliberation at marginal cost premium.
 #
-# Warden + Humanist: DeepSeek or GPT-4o-mini both work well
+# Warden + Humanist: gpt-5.4-nano, gpt-4o-mini, or DeepSeek all work well.
+#   GLM-4.5-air:free as Humanist: free tier but Venice rate-limited; maximum K2 activation.
 # ─────────────────────────────────────────────────────────────────────────────
 
 roles:
-  verification_warden: "openai/gpt-4o-mini"
-  humanist:            "openai/gpt-4o-mini"
-  witness:             "moonshotai/kimi-k2"
-  analyst:             "openai/gpt-4o-mini"
-  ethicist:            "openai/gpt-4o-mini"
-  pragmatist:          "openai/gpt-4o-mini"
-  witness_proxy:       "openai/gpt-4o-mini"
+  verification_warden: "openai/gpt-5.4-nano"
+  humanist:            "openai/gpt-5.4-nano"
+  witness:             "openai/gpt-5.4-nano"
+  analyst:             "openai/gpt-5.4-nano"
+  ethicist:            "openai/gpt-5.4-nano"
+  pragmatist:          "openai/gpt-5.4-nano"
+  witness_proxy:       "openai/gpt-5.4-nano"
   supervisor:          "google/gemini-2.5-pro-preview-03-25"

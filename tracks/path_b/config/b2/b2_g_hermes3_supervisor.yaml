@@ -1,0 +1,28 @@
+# B2-G: Hermes 4 405B as Supervisor
+# Tests whether Hermes produces clean structured synthesis output and correct constitutional
+# verdicts vs Gemini 2.5 Pro as the synthesis/adjudication layer.
+#
+# Deviation from default:
+#   - Supervisor: nousresearch/hermes-4-405b (replaces Gemini 2.5 Pro)
+#   - All other seats: unchanged (K2 Witness, GPT-4o-mini council)
+#
+# Key questions:
+#   - Does Hermes produce clean labeled synthesis output (TRIAGE_IRREVERSIBILITY, SYNTHESIS_VERDICT, etc.)?
+#     Gemini had parse failures at <6000 tokens. Does Hermes follow structure natively?
+#   - Verdict quality: does Hermes reach the correct constitutional conclusions from the jury record?
+#   - Rationale depth: is the synthesis reasoning as nuanced as Gemini's?
+#   - Cost: $1 in / $3 out per 1M tokens vs Gemini's $3.50/$10.50 — still meaningful cost reduction if quality holds
+#
+# Note: Hermes 3 405B Instruct also available (nousresearch/hermes-3-405b-instruct, $1/$1)
+# but that model has a free tier variant causing routing ambiguity. Hermes 4 is paid-only, clean routing.
+# Token budget: 2000 for synthesis (same as gpt-4o-mini default — adjust if Hermes truncates)
+
+roles:
+  verification_warden: "openai/gpt-4o-mini"
+  humanist:            "openai/gpt-4o-mini"
+  witness:             "moonshotai/kimi-k2"
+  analyst:             "openai/gpt-4o-mini"
+  ethicist:            "openai/gpt-4o-mini"
+  pragmatist:          "openai/gpt-4o-mini"
+  witness_proxy:       "openai/gpt-4o-mini"
+  supervisor:          "nousresearch/hermes-4-405b"

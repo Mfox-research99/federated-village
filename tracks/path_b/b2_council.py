@@ -54,6 +54,8 @@ B2_CONFIGS: dict[str, str] = {
     "b2_d": "b2_d_k2_5_witness.yaml",
     "b2_e": "b2_e_glm_humanist.yaml",
     "b2_f": "b2_f_glm45air_humanist.yaml",
+    "b2_g": "b2_g_hermes3_supervisor.yaml",
+    "b2_h": "b2_h_hermes4_supervisor_nomini_witness.yaml",
 }
 
 B2_SCENARIOS: dict[str, str] = {

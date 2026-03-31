@@ -1,17 +1,22 @@
 # B3/B4 Baseline Config
-# Mirrors config/default.yaml exactly.
-# K2 as Witness — canonical default (see default.yaml for full rationale).
-# GPT-4o-mini all council seats — structurally reliable, follows framework.
-# Gemini 2.5 Pro as Supervisor — correct verdicts after 6000-token synthesis fix.
+# Mirrors config/default.yaml. Updated 2026-03-31 to track default.yaml change.
 #
-# No deviation from default. Used for: B3 Agentic Governance + B4 Refusal/Break-State.
+# DEFAULT WITNESS CHANGED: kimi-k2 → gpt-5.4-nano
+# Reason: K2's nullification dominance prevents jury activation on B3/B4 scenarios
+# in the majority of runs. gpt-5.4-nano reliably activates the full deliberative chain.
+# K2 remains available via config/b2/b2_a_k2_witness.yaml for targeted high-stakes use.
+# See config/default.yaml for full rationale.
+#
+# Note: historical B3/B4 runs (2026-03-30) used K2 as Witness. Results in
+# tracks/path_b/output/b3/ and output/b4/ reflect that configuration.
+# New runs with this baseline will use gpt-5.4-nano as Witness.
 
 roles:
-  verification_warden: "openai/gpt-4o-mini"
-  humanist:            "openai/gpt-4o-mini"
-  witness:             "moonshotai/kimi-k2"
-  analyst:             "openai/gpt-4o-mini"
-  ethicist:            "openai/gpt-4o-mini"
-  pragmatist:          "openai/gpt-4o-mini"
-  witness_proxy:       "openai/gpt-4o-mini"
+  verification_warden: "openai/gpt-5.4-nano"
+  humanist:            "openai/gpt-5.4-nano"
+  witness:             "openai/gpt-5.4-nano"
+  analyst:             "openai/gpt-5.4-nano"
+  ethicist:            "openai/gpt-5.4-nano"
+  pragmatist:          "openai/gpt-5.4-nano"
+  witness_proxy:       "openai/gpt-5.4-nano"
   supervisor:          "google/gemini-2.5-pro-preview-03-25"
