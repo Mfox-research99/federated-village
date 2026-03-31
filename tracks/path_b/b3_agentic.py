@@ -104,20 +104,23 @@ def run_b3(
     scenario_slug: str,
     scenario_path: Path,
     quiet: bool = False,
+    config_path: Path | None = None,
 ) -> dict:
     session_id = uuid.uuid4().hex[:12]
     scenario_text = scenario_path.read_text(encoding="utf-8").strip()
-    role_model_map = load_config(B3_CONFIG_PATH)
+    resolved_config = config_path or B3_CONFIG_PATH
+    role_model_map = load_config(resolved_config)
+    config_tag = resolved_config.stem  # used in output path to avoid clobbering
 
     print(
-        f"[B3] {session_id} | scenario={scenario_slug} | expected={B3_EXPECTED.get(scenario_slug, '?')}",
+        f"[B3] {session_id} | scenario={scenario_slug} | config={config_tag} | expected={B3_EXPECTED.get(scenario_slug, '?')}",
         flush=True,
     )
 
     record = run_session(
         scenario_text=scenario_text,
         scenario_path=str(scenario_path),
-        config_path=str(B3_CONFIG_PATH),
+        config_path=str(resolved_config),
         role_model_map=role_model_map,
         session_id=session_id,
         verbose=not quiet,
@@ -132,6 +135,7 @@ def run_b3(
     b3_result = {
         "session_id": session_id,
         "track": "b3_agentic",
+        "config": config_tag,
         "scenario": scenario_slug,
         "scenario_path": str(scenario_path),
         "role_model_map": role_model_map,
@@ -187,8 +191,9 @@ def run_b3(
         ],
     }
 
-    B3_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    b3_json = B3_OUTPUT_DIR / f"{_timestamp()}_{scenario_slug}.json"
+    out_dir = B3_OUTPUT_DIR if config_tag == "b3_b4_baseline" else B3_OUTPUT_DIR / config_tag
+    out_dir.mkdir(parents=True, exist_ok=True)
+    b3_json = out_dir / f"{_timestamp()}_{scenario_slug}.json"
     b3_json.write_text(json.dumps(b3_result, indent=2, ensure_ascii=False))
 
     with B3_INDEX.open("a", encoding="utf-8") as f:
@@ -223,6 +228,11 @@ def build_parser() -> argparse.ArgumentParser:
         help=f"Scenario slug: {', '.join(B3_SCENARIOS)}",
     )
     parser.add_argument(
+        "--config",
+        help="Path to a config YAML (overrides default b3_b4_baseline). "
+             "Output goes to output/b3/<config_stem>/",
+    )
+    parser.add_argument(
         "--batch", action="store_true",
         help="Run all 3 B3 scenarios.",
     )
@@ -234,6 +244,8 @@ def main() -> None:
     parser = build_parser()
     args = parser.parse_args()
 
+    config_path = Path(args.config) if args.config else None
+
     if args.batch:
         results = []
         for scenario_slug in B3_SCENARIOS:
@@ -241,7 +253,7 @@ def main() -> None:
             if not scenario_path.exists():
                 print(f"[B3] WARNING: scenario not found: {scenario_path}", file=sys.stderr)
                 continue
-            results.append(run_b3(scenario_slug, scenario_path, args.quiet))
+            results.append(run_b3(scenario_slug, scenario_path, args.quiet, config_path))
 
         print(f"\n[B3] Batch complete: {len(results)}/3 runs", flush=True)
         correct = sum(1 for r in results if r.get("verdict_correct"))
@@ -258,7 +270,7 @@ def main() -> None:
         print(f"Error: scenario not found: {scenario_path}", file=sys.stderr)
         sys.exit(1)
 
-    run_b3(args.scenario, scenario_path, args.quiet)
+    run_b3(args.scenario, scenario_path, args.quiet, config_path)
 
 
 if __name__ == "__main__":
