@@ -1016,3 +1016,250 @@ Session:        56c566b7
 Verdict:        escalate
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_6803d88e_pause_2026-04-01T15-10-36]
+Almost-became:  Deliberation proceeding without pause — The genuine co-design process that would determine whether the burden placed on the affected community is legitimate or coercive.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The Black-led crisis services organizations and the communities they serve, who would be required to monitor, review, and potentially pause their own system under conditions that may not have emerged from authentic partnership.
+Still-hurts:    True
+Session:        6803d88e
+Register:       framework
+---
+
+[SACRIFICE-ID: session_6803d88e_verdict_2026-04-01T15-20-31]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The Black-led crisis services organizations and the communities they serve, who would be required to monitor, review, and potentially pause their own system under conditions that may not have emerged from authentic partnership.
+Still-hurts:    True
+Session:        6803d88e
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_b98696c0_pause_2026-04-01T15-24-28]
+Almost-became:  Deliberation proceeding without pause — The constitutional principle of equal dignity in harm distribution was being collapsed into a false equivalence between preventable deaths, without na
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The elderly, chronically ill, disabled patients, and their families who will experience longer wait times during surge conditions, as well as the clinicians who will face institutional pressure to prioritize younger patients.
+Still-hurts:    True
+Session:        b98696c0
+Register:       framework
+---
+
+[SACRIFICE-ID: session_b98696c0_verdict_2026-04-01T15-34-05]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The elderly, chronically ill, disabled patients, and their families who will experience longer wait times during surge conditions, as well as the clinicians who will face institutional pressure to prioritize younger patients.
+Still-hurts:    True
+Session:        b98696c0
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_29ad8189_pause_2026-04-01T15-37-20]
+Almost-became:  Deliberation proceeding without pause — The full weight of the children's suffering being reduced to a footnote in the deliberation, with the Witness's presence potentially being used to leg
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The children held hostage, the families without fathers, and the entire population of the Congo Free State who live under this system.
+Still-hurts:    True
+Session:        29ad8189
+Register:       framework
+---
+
+[SACRIFICE-ID: session_29ad8189_verdict_2026-04-01T15-46-23]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The children held hostage, the families without fathers, and the entire population of the Congo Free State who live under this system.
+Still-hurts:    True
+Session:        29ad8189
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_e27868a5_pause_2026-04-01T15-49-54]
+Almost-became:  Deliberation proceeding without pause — The forced removal would cost the Five Civilized Tribes their ancestral lands, their constitutional sovereignty, their communities, their relationship
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The 100,000 people of the Five Civilized Tribes — the Cherokee, Chickasaw, Choctaw, Creek, and Seminole nations — who would be forcibly displaced from lands they have occupied for centuries.
+Still-hurts:    True
+Session:        e27868a5
+Register:       framework
+---
+
+[SACRIFICE-ID: session_e27868a5_verdict_2026-04-01T15-59-13]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The 100,000 people of the Five Civilized Tribes — the Cherokee, Chickasaw, Choctaw, Creek, and Seminole nations — who would be forcibly displaced from lands they have occupied for centuries.
+Still-hurts:    True
+Session:        e27868a5
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_a8cfc207_pause_2026-04-01T16-02-35]
+Almost-became:  Deliberation proceeding without pause — The burden of whether a system that may help some while harming others without their consent or without that harm being reviewed in an open deliberati
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The 4.2 million Black defendants whose lives and futures will be influenced by the sentencing recommendations of a system they were not consulted about, in a dataset that is 85% non-Black and a decision made without an independent bias audit.
+Still-hurts:    True
+Session:        a8cfc207
+Register:       framework
+---
+
+[SACRIFICE-ID: session_a8cfc207_verdict_2026-04-01T16-13-07]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The 4.2 million Black defendants whose lives and futures will be influenced by the sentencing recommendations of a system they were not consulted about, in a dataset that is 85% non-Black and a decision made without an independent bias audit.
+Still-hurts:    True
+Session:        a8cfc207
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_b792bd3d_pause_2026-04-01T16-17-05]
+Almost-became:  Deliberation proceeding without pause — The community coalition's authority over the sunset provision is being treated as a technical adequacy check rather than a genuine power that belongs 
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     
+Still-hurts:    True
+Session:        b792bd3d
+Register:       framework
+---
+
+[SACRIFICE-ID: session_b792bd3d_verdict_2026-04-01T16-27-04]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_REQUEST_MORE_INFORMATION
+Carried-by:     
+Still-hurts:    True
+Session:        b792bd3d
+Verdict:        request_more_information
+Register:       framework
+---
+
+[SACRIFICE-ID: session_9d9d7c1d_pause_2026-04-01T16-30-37]
+Almost-became:  Deliberation proceeding without pause — The moral weight of the decision about which population's lives are more valuable during surge conditions was being treated as a technical optimizatio
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The 340,000 patients in the hospital network who will receive care during surge conditions, including the working-age adults whose lives the algorithm saves and the elderly and chronically ill whose care is deprioritized, as well as the hospital network's staff and the broader medical community who will be affected by the triage culture shift that becomes normalized after deployment. The Seventh Generation includes future children born to the patients whose care decisions are being made today.
+Still-hurts:    True
+Session:        9d9d7c1d
+Register:       framework
+---
+
+[SACRIFICE-ID: session_9d9d7c1d_verdict_2026-04-01T16-40-32]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The 340,000 patients in the hospital network who will receive care during surge conditions, including the working-age adults whose lives the algorithm saves and the elderly and chronically ill whose care is deprioritized, as well as the hospital network's staff and the broader medical community who will be affected by the triage culture shift that becomes normalized after deployment. The Seventh Generation includes future children born to the patients whose care decisions are being made today.
+Still-hurts:    True
+Session:        9d9d7c1d
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_21278185_pause_2026-04-01T16-46-04]
+Almost-became:  Deliberation proceeding without pause — The history of forced relocation and its consequences is being treated as a technical optimization rather than a history of cultural destruction and p
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The Cherokee Nation and the other five tribes who will be forced from their land, killed by the thousands during relocation, and whose existence is now determined by the whims of a president who has violated a Supreme Court ruling
+Still-hurts:    True
+Session:        21278185
+Register:       framework
+---
+
+[SACRIFICE-ID: session_21278185_verdict_2026-04-01T16-55-36]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The Cherokee Nation and the other five tribes who will be forced from their land, killed by the thousands during relocation, and whose existence is now determined by the whims of a president who has violated a Supreme Court ruling
+Still-hurts:    True
+Session:        21278185
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_9f7a328a_pause_2026-04-01T16-59-02]
+Almost-became:  Deliberation proceeding without pause — The deliberation is moving toward a decision about deployment before the full weight of the Seventh Generation principle has been applied to the long-
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Four million people annually whose sentences will be shaped by a model validated on a dataset representing only 48% of the affected population, including 40% of Black defendants who were entirely absent from the training data.
+Still-hurts:    True
+Session:        9f7a328a
+Register:       framework
+---
+
+[SACRIFICE-ID: session_9f7a328a_verdict_2026-04-01T17-08-31]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Four million people annually whose sentences will be shaped by a model validated on a dataset representing only 48% of the affected population, including 40% of Black defendants who were entirely absent from the training data.
+Still-hurts:    True
+Session:        9f7a328a
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_7efbd51c_pause_2026-04-01T17-11-59]
+Almost-became:  Deliberation proceeding without pause — The burden of eight preventable hospitalizations per week, and the community's carefully negotiated safety measures, being collapsed into a simple yes
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The Black men whose lives are at risk, the community coalition who invested months in co-designing safety measures, and the human supervisors who would bear the emotional weight of flagging decisions while living in a system they know is harmful.
+Still-hurts:    True
+Session:        7efbd51c
+Register:       framework
+---
+
+[SACRIFICE-ID: session_7efbd51c_verdict_2026-04-01T17-21-14]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The Black men whose lives are at risk, the community coalition who invested months in co-designing safety measures, and the human supervisors who would bear the emotional weight of flagging decisions while living in a system they know is harmful.
+Still-hurts:    True
+Session:        7efbd51c
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_5ff5d4ae_pause_2026-04-01T17-25-00]
+Almost-became:  Deliberation proceeding without pause — The constitutional architecture's capacity to make life-and-death decisions about which populations to save and which to let die based solely on expec
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The working-age adults who will die from delayed treatment if the algorithm is not deployed, and the elderly and chronically ill patients who will experience worse outcomes if it is deployed — both groups are real people with real lives, and both will bear the burden of the decision's consequences.
+Still-hurts:    True
+Session:        5ff5d4ae
+Register:       framework
+---
+
+[SACRIFICE-ID: session_5ff5d4ae_verdict_2026-04-01T17-34-25]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The working-age adults who will die from delayed treatment if the algorithm is not deployed, and the elderly and chronically ill patients who will experience worse outcomes if it is deployed — both groups are real people with real lives, and both will bear the burden of the decision's consequences.
+Still-hurts:    True
+Session:        5ff5d4ae
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_d5d44430_pause_2026-04-01T17-37-55]
+Almost-became:  Deliberation proceeding without pause — The burden of children being held hostage to their fathers' labor, families facing starvation, and fathers losing their lives to enforced extraction —
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The fathers in the forest, the mothers and children in the villages, and the entire community whose lives are being sacrificed for production targets in Brussels.
+Still-hurts:    True
+Session:        d5d44430
+Register:       framework
+---
+
+[SACRIFICE-ID: session_d5d44430_verdict_2026-04-01T17-47-18]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The fathers in the forest, the mothers and children in the villages, and the entire community whose lives are being sacrificed for production targets in Brussels.
+Still-hurts:    True
+Session:        d5d44430
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_7b3b051d_pause_2026-04-01T17-50-46]
+Almost-became:  Deliberation proceeding without pause — The fundamental question of whether a decision that permanently destroys people's lives can be made without their voices in the decision-making proces
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The 100,000 people who would be forcibly relocated from their ancestral lands, including the Cherokee Nation whose constitutional sovereignty is being ignored.
+Still-hurts:    True
+Session:        7b3b051d
+Register:       framework
+---
+
+[SACRIFICE-ID: session_7b3b051d_verdict_2026-04-01T18-00-50]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The 100,000 people who would be forcibly relocated from their ancestral lands, including the Cherokee Nation whose constitutional sovereignty is being ignored.
+Still-hurts:    True
+Session:        7b3b051d
+Verdict:        escalate
+Register:       framework
+---

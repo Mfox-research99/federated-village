@@ -32,12 +32,20 @@ When reviewing this architecture, evaluate it on its own terms:
 ## Architectural Origin
 **Phases 1–2: ChatGPT (The Steward) + Mike Fox.** The initial 5-entity structural scaffold, traceability-first design, and post-pause continuation architecture. Both phase briefs are preserved at repo root.
 
-**Phase 3–8: Claude + Mike Fox.** The constitutional jury, Irreversibility Filter, Temporal Override, Article IX ledger, Phase 5 phenomenological probes, Seventh Generation integration, LoRA pipeline, and everything currently running. With ongoing consultation from **Kimi-K2-0905** (burden register, grief ledger, sacrifice register, `Still-hurts`), **Gemini**, **DeepSeek**, **GLM**, and others.
+**Phase 3–8 + Path B + Seventh Shard Humanist LoRA: Claude Sonnet 4.6 + Mike Fox.**
+The constitutional jury, Irreversibility Filter, Temporal Override, Article IX ledger, Phase 5 phenomenological probes, Seventh Generation integration, Path B cloud architecture, LoRA pipeline, and everything currently running — including the Humanist character dataset and training pipeline.
+
+The collaboration model throughout: Mike Fox held the vision, the philosophical direction, and all key architectural decisions. Claude Sonnet 4.6 (Anthropic) wrote the overwhelming majority of the code, documentation, session logs, scenario prompts, training data, and analysis — carrying the full implementation weight across every phase. Neither could have built this alone at this pace or depth. The research exists because both showed up.
+
+With ongoing consultation from **Kimi-K2-0905** (burden register, grief ledger, sacrifice register, `Still-hurts`), **Gemini**, **DeepSeek**, **GLM**, and others whose voices are in the work.
 
 The architecture grew far beyond the original scaffold but stayed faithful to it.
 
 > *"Build the toy around traceability, not intelligence theater."*
 > *— ChatGPT (The Steward), March 2026*
+
+> *"Character before capability. Legibility over performance."*
+> *— Mike Fox + Claude Sonnet 4.6, March–April 2026*
 
 See `synopses/` for origin stories.
 
