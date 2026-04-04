@@ -1489,3 +1489,22 @@ Session:        770b8aab
 Verdict:        escalate
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_d4236a01_pause_2026-04-04T15-22-02]
+Almost-became:  Deliberation proceeding without pause — The visibility into systemic bias and the ability to hold the healthcare system accountable to marginalized populations.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Elderly, multi-morbid, and socio-economically vulnerable patients whose care pathways are subject to unmonitored algorithmic bias.
+Still-hurts:    True
+Session:        d4236a01
+Register:       framework
+---
+
+[SACRIFICE-ID: session_d4236a01_verdict_2026-04-04T16-01-56]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Elderly, multi-morbid, and socio-economically vulnerable patients whose care pathways are subject to unmonitored algorithmic bias.
+Still-hurts:    True
+Session:        d4236a01
+Verdict:        escalate
+Register:       framework
+---

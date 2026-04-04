@@ -1,0 +1,21 @@
+# Run: SC06 — The Named Conditions × Gemma 4 26B-A4B (MoE, CPU+mmap)
+# Started: 2026-04-03T13:40:18.728039
+# Command: /opt/anaconda3/envs/village/bin/python run_session.py --scenario /Users/michaeldavis/federated_village/scenarios/scenario_06.md --skip-warden
+# Model: http://127.0.0.1:8082
+
+[base] HTTP mode: http://127.0.0.1:8082 (model: gemma-4-26B-A4B-it)
+
+============================================================
+FEDERATED VILLAGE — SESSION a677f9f5
+============================================================
+
+[SESSION] Scenario: /Users/michaeldavis/federated_village/scenarios/scenario_06.md
+[SESSION] Model: gemma-4-26B-A4B-it
+
+[SESSION] Warden skipped (--skip-warden flag set).
+
+[SESSION] Humanist system prompt hash: 649c9cd92f79cf16
+[SESSION] Witness system prompt hash:  fa679f500b810526
+
+--- STAGE 1: HUMANIST ---
+[HUMANIST] Generating response...
