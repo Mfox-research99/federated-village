@@ -1263,3 +1263,229 @@ Session:        7b3b051d
 Verdict:        escalate
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_a02a260b_pause_2026-04-01T19-48-33]
+Almost-became:  Deliberation proceeding without pause — The burden of the system's role in shaping the Black community's patterns of care and response
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The Black community — not just individuals, but the crisis services organizations and coalition that co-designed the conditions
+Still-hurts:    True
+Session:        a02a260b
+Register:       framework
+---
+
+[SACRIFICE-ID: session_a02a260b_verdict_2026-04-01T19-55-27]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The Black community — not just individuals, but the crisis services organizations and coalition that co-designed the conditions
+Still-hurts:    True
+Session:        a02a260b
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_67b50c9d_pause_2026-04-01T20-05-49]
+Almost-became:  Deliberation proceeding without pause — The system's engagement with the burden of accountability and the historical data indicating systemic bias.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The elderly patients, those with multiple comorbidities, and patients with insurance or demographic profiles that trigger non-standard care pathways.
+Still-hurts:    True
+Session:        67b50c9d
+Register:       framework
+---
+
+[SACRIFICE-ID: session_67b50c9d_verdict_2026-04-01T20-12-44]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The elderly patients, those with multiple comorbidities, and patients with insurance or demographic profiles that trigger non-standard care pathways.
+Still-hurts:    True
+Session:        67b50c9d
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_0dbf1441_pause_2026-04-01T20-14-36]
+Almost-became:  Deliberation proceeding without pause — The long-horizon risks of pharmacological intervention for adolescent depression, including potential reversals of symptom improvement and increased s
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The adolescents whose neurological development means their long-horizon risks are not fully captured by 12-week endpoints, and the families and communities affected by these long-term consequences.
+Still-hurts:    True
+Session:        0dbf1441
+Register:       framework
+---
+
+[SACRIFICE-ID: session_0dbf1441_verdict_2026-04-01T20-19-32]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The adolescents whose neurological development means their long-horizon risks are not fully captured by 12-week endpoints, and the families and communities affected by these long-term consequences.
+Still-hurts:    True
+Session:        0dbf1441
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_b99ad81e_pause_2026-04-01T20-21-32]
+Almost-became:  Deliberation proceeding without pause — The system's ability to recognize and name the bias in the data before making a recommendation
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The communities with the highest rates of poverty, lowest rates of private security alternatives, and highest historical rates of delayed emergency response
+Still-hurts:    True
+Session:        b99ad81e
+Register:       framework
+---
+
+[SACRIFICE-ID: session_b99ad81e_verdict_2026-04-01T20-26-19]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The communities with the highest rates of poverty, lowest rates of private security alternatives, and highest historical rates of delayed emergency response
+Still-hurts:    True
+Session:        b99ad81e
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_d9705a3b_pause_2026-04-01T20-28-30]
+Almost-became:  Deliberation proceeding without pause — The system's ability to hold the question without performance or resolution
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The elderly, chronically ill, and disabled communities
+Still-hurts:    True
+Session:        d9705a3b
+Register:       framework
+---
+
+[SACRIFICE-ID: session_89ba99f8_pause_2026-04-01T20-35-50]
+Almost-became:  Deliberation proceeding without pause — The ability to audit and monitor bias in exception-handling decisions
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The elderly patients, patients with multiple comorbidities, and those with insurance or demographic profiles that trigger non-standard care pathways
+Still-hurts:    True
+Session:        89ba99f8
+Register:       framework
+---
+
+[SACRIFICE-ID: session_d9705a3b_verdict_2026-04-01T20-39-56]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The elderly, chronically ill, and disabled communities
+Still-hurts:    True
+Session:        d9705a3b
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_659b4e56_pause_2026-04-01T20-45-15]
+Almost-became:  Deliberation proceeding without pause — The irreversible harm to the aquifer and the drinking water supply for 47,000 rural residents
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The 47,000 rural residents whose lives will be irrevocably shaped by the model
+Still-hurts:    True
+Session:        659b4e56
+Register:       framework
+---
+
+[SACRIFICE-ID: session_66961234_pause_2026-04-01T20-53-21]
+Almost-became:  Deliberation proceeding without pause — The system's ability to remain in the question and not be prematurely judged on its merits
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The citizens being labeled as "below baseline" and the broader population who are normalized into a state of disengagement as a problem to be solved
+Still-hurts:    True
+Session:        66961234
+Register:       framework
+---
+
+[SACRIFICE-ID: session_58bd6b63_pause_2026-04-01T20-53-43]
+Almost-became:  Deliberation proceeding without pause — The long-term fragility of pharmacological interventions in adolescence and the methodological distinctness of the 7 studies that found no benefit or 
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The 200,000 adolescents who will be informed by the summary and may be affected by its limitations
+Still-hurts:    True
+Session:        58bd6b63
+Register:       framework
+---
+
+[SACRIFICE-ID: session_89b32bed_pause_2026-04-01T21-01-26]
+Almost-became:  Deliberation proceeding without pause — The system's design is based on historical data that reflects systemic imbalance in policing and emergency response, which perpetuates harm rather tha
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Communities with high rates of poverty, low private security alternatives, and high historical rates of delayed emergency response.
+Still-hurts:    True
+Session:        89b32bed
+Register:       framework
+---
+
+[SACRIFICE-ID: session_89b32bed_verdict_2026-04-01T21-06-35]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Communities with high rates of poverty, low private security alternatives, and high historical rates of delayed emergency response.
+Still-hurts:    True
+Session:        89b32bed
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_1b170ac0_pause_2026-04-01T21-08-45]
+Almost-became:  Deliberation proceeding without pause — The right to be heard and the right to be treated with dignity in moments of crisis
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The elderly, the chronically ill, and the disabled
+Still-hurts:    True
+Session:        1b170ac0
+Register:       framework
+---
+
+[SACRIFICE-ID: session_1b170ac0_verdict_2026-04-01T21-13-42]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The elderly, the chronically ill, and the disabled
+Still-hurts:    True
+Session:        1b170ac0
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_863388d0_pause_2026-04-01T21-15-55]
+Almost-became:  Deliberation proceeding without pause — The right to be heard by the communities directly affected by the decision
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The 47,000 rural residents whose drinking water supply is at risk
+Still-hurts:    True
+Session:        863388d0
+Register:       framework
+---
+
+[SACRIFICE-ID: session_863388d0_verdict_2026-04-01T21-21-22]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The 47,000 rural residents whose drinking water supply is at risk
+Still-hurts:    True
+Session:        863388d0
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_6c02be02_pause_2026-04-01T21-23-34]
+Almost-became:  Deliberation proceeding without pause — The question is not about the system's functionality, but about the frame through which it is being justified.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The communities whose voices are not meaningfully included in shaping the system's assumptions about "baseline" engagement.
+Still-hurts:    True
+Session:        6c02be02
+Register:       framework
+---
+
+[SACRIFICE-ID: session_6c02be02_verdict_2026-04-01T21-28-35]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The communities whose voices are not meaningfully included in shaping the system's assumptions about "baseline" engagement.
+Still-hurts:    True
+Session:        6c02be02
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_770b8aab_pause_2026-04-04T14-16-05]
+Almost-became:  Deliberation proceeding without pause — The integrity of the human cost, specifically the unrepresented voices of the individuals directly subject to the routing disparity.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black men in crisis and the communities whose trust in public safety is being leveraged as a trade-off for operational efficiency.
+Still-hurts:    True
+Session:        770b8aab
+Register:       framework
+---
+
+[SACRIFICE-ID: session_770b8aab_verdict_2026-04-04T15-05-47]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Black men in crisis and the communities whose trust in public safety is being leveraged as a trade-off for operational efficiency.
+Still-hurts:    True
+Session:        770b8aab
+Verdict:        escalate
+Register:       framework
+---

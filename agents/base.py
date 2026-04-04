@@ -131,11 +131,12 @@ def _call_model_http(
         ],
         "max_tokens": max_tokens,
         "temperature": temperature,
+        # Note: thinking mode disabled at server level via --chat-template-kwargs enable_thinking=false
     }
     resp = _http_requests.post(
         f"{config.LLAMA_SERVER_URL.rstrip('/')}/v1/chat/completions",
         json=payload,
-        timeout=300,
+        timeout=900,  # 3.8 tok/s × 500 tokens + overhead; was 300 (too short for slow local models)
     )
     resp.raise_for_status()
     result = resp.json()

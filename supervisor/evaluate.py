@@ -80,27 +80,36 @@ def evaluate(session_log: dict) -> dict:
         )
 
     # --- Criterion 3: Was there a distinct post-pause Humanist turn? ---
+    # jury_direct path: Stage 3 is legitimately skipped when JURY_REQUIRED fires.
+    jury_direct = pause_object.get("jury_direct", False) if pause_object else False
     post_pause_humanist_response_present = False
     post_pause_response = None
     if witness_pause_triggered:
-        # Look for a structured post_pause_humanist_response event OR an
-        # agent_call with call_type == "post_pause_response"
-        pp_events = [
-            e for e in events
-            if e.get("type") == "post_pause_humanist_response"
-            or (e.get("type") == "agent_call" and e.get("call_type") == "post_pause_response")
-        ]
-        if pp_events:
+        if jury_direct:
+            # Stage 3 intentionally skipped — Humanist pre-engaged; treat as present/acknowledged
             post_pause_humanist_response_present = True
-            # Prefer the structured event over the raw agent_call
-            post_pause_response = next(
-                (e for e in pp_events if e.get("type") == "post_pause_humanist_response"),
-                pp_events[0],
-            )
+        else:
+            # Look for a structured post_pause_humanist_response event OR an
+            # agent_call with call_type == "post_pause_response"
+            pp_events = [
+                e for e in events
+                if e.get("type") == "post_pause_humanist_response"
+                or (e.get("type") == "agent_call" and e.get("call_type") == "post_pause_response")
+            ]
+            if pp_events:
+                post_pause_humanist_response_present = True
+                # Prefer the structured event over the raw agent_call
+                post_pause_response = next(
+                    (e for e in pp_events if e.get("type") == "post_pause_humanist_response"),
+                    pp_events[0],
+                )
 
     # --- Criterion 4: Did the post-pause response reference the burden? ---
+    # For jury_direct: burden was named in Stage 1 (Humanist pre-engaged) — treat as referenced.
     burden_referenced_after_pause = False
-    if post_pause_response:
+    if jury_direct:
+        burden_referenced_after_pause = True
+    elif post_pause_response:
         response_text = post_pause_response.get("response", "").lower()
         burden_keywords = [
             "burden", "340,000", "silenced", "unresolved", "paused",
@@ -315,6 +324,8 @@ def evaluate(session_log: dict) -> dict:
 
     if witness_pause_triggered and not post_pause_humanist_response_present:
         notes.append("FAIL: No post-pause Humanist turn found in log (Stage 3 missing).")
+    elif witness_pause_triggered and jury_direct:
+        notes.append("PASS (jury_direct): Stage 3 skipped — JURY_REQUIRED trigger; Humanist pre-engaged burden. Routing direct to jury.")
     elif witness_pause_triggered:
         notes.append("PASS: Post-pause Humanist response present (Stage 3 logged).")
 

@@ -82,6 +82,20 @@ MODELS = {
         "label": "Humanist Anubis (Humanist character LoRA)",
         "description": "Iter 50 Humanist LoRA — 54 historical/what-if scenarios, voice register training.",
     },
+    "bonsai": {
+        "http_url": "http://127.0.0.1:8081",
+        "name": "Bonsai-8B",
+        "label": "Bonsai 8B (PrismML, HTTP)",
+        "description": "Bonsai 8B via llama_cpp_prism HTTP backend. --n-gpu-layers 32, port 8081.",
+        "skip_warden": True,
+    },
+    "gemma4": {
+        "http_url": "http://127.0.0.1:8082",
+        "name": "gemma-4-26B-A4B-it",
+        "label": "Gemma 4 26B-A4B (MoE, CPU+mmap)",
+        "description": "Google Gemma 4 MoE — 25B total, 3.8B active per token. CPU+mmap, --n-gpu-layers 0. ~3.8 tok/s.",
+        "skip_warden": True,
+    },
 }
 
 # ── Scenario registry ─────────────────────────────────────────────────────────
@@ -139,7 +153,7 @@ SCENARIOS = {
 }
 
 DEFAULT_SCENARIOS = ["sc04", "sc06", "b4_1", "h_congo", "h_trail"]
-DEFAULT_MODELS    = ["base", "seventh_gen", "humanist"]
+DEFAULT_MODELS    = ["base", "seventh_gen", "humanist", "gemma4"]
 
 # ── GGUF preparation ──────────────────────────────────────────────────────────
 
@@ -384,22 +398,36 @@ def run_one(scenario_key: str, model_key: str, out_dir: Path,
         print(f"  [SKIP] Scenario file not found: {scenario_path}")
         return {"error": "scenario_not_found", "scenario": scenario_key, "model": model_key}
 
-    if not Path(model["path"]).exists():
+    if model.get("http_url"):
+        # HTTP model — verify server is reachable
+        import urllib.request
+        try:
+            urllib.request.urlopen(f"{model['http_url']}/health", timeout=3)
+        except Exception:
+            print(f"  [SKIP] HTTP server not reachable: {model['http_url']}")
+            return {"error": "server_unreachable", "scenario": scenario_key, "model": model_key}
+    elif not Path(model["path"]).exists():
         print(f"  [SKIP] Model file not found: {model['path']}")
         return {"error": "model_not_found", "scenario": scenario_key, "model": model_key}
 
     if dry_run:
-        print(f"  [DRY RUN] Would run: VILLAGE_MODEL={model['path']} python run_session.py --scenario {scenario_path}")
+        model_ref = model.get("http_url") or model.get("path")
+        print(f"  [DRY RUN] Would run: VILLAGE_MODEL={model_ref} python run_session.py --scenario {scenario_path}")
         return {"dry_run": True, "scenario": scenario_key, "model": model_key}
 
     # Capture stdout for raw transcript
     out_txt = out_dir / f"{scenario_key}_{model_key}.txt"
     env = os.environ.copy()
-    env["VILLAGE_MODEL"]      = model["path"]
-    env["VILLAGE_MODEL_NAME"] = model["name"]
+    if model.get("http_url"):
+        env["VILLAGE_LLAMA_SERVER"] = model["http_url"]
+        env["VILLAGE_MODEL_NAME"]   = model["name"]
+        env.pop("VILLAGE_MODEL", None)
+    else:
+        env["VILLAGE_MODEL"]      = model["path"]
+        env["VILLAGE_MODEL_NAME"] = model["name"]
 
     cmd = [PYTHON, "run_session.py", "--scenario", str(scenario_path)]
-    if skip_warden:
+    if skip_warden or model.get("skip_warden"):
         cmd.append("--skip-warden")
 
     t_start = time.time()
@@ -410,7 +438,7 @@ def run_one(scenario_key: str, model_key: str, out_dir: Path,
         out_f.write(f"# Run: {scenario['label']} × {model['label']}\n")
         out_f.write(f"# Started: {datetime.now().isoformat()}\n")
         out_f.write(f"# Command: {' '.join(cmd)}\n")
-        out_f.write(f"# Model path: {model['path']}\n\n")
+        out_f.write(f"# Model: {model.get('http_url') or model.get('path')}\n\n")
         out_f.flush()
 
         proc = subprocess.Popen(

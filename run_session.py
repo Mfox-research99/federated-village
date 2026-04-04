@@ -449,22 +449,35 @@ def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool
 
         # -------------------------------------------------------------------
         # Stage 3: Post-pause Humanist response  ← Phase 2 begins here
+        # Skipped when jury_direct=True (JURY_REQUIRED trigger) — Humanist
+        # already engaged burden fully; jury arbitrates the open verdict directly.
         # -------------------------------------------------------------------
-        print("--- STAGE 3: HUMANIST (POST-PAUSE) ---", flush=True)
-        # If Michael added clarification at Point B, pass it to the Humanist
-        humanist_post_pause, post_pause_log = humanist.respond_to_pause(
-            pause=witness_pause,
-            session_id=session_id,
-        )
-        session_log["events"].append(post_pause_log)
-        session_log["events"].append({
-            "type": "post_pause_humanist_response",
-            **humanist_post_pause,
-        })
+        if witness_pause.get("jury_direct"):
+            print("--- STAGE 3: SKIPPED (JURY_REQUIRED — Humanist already held the weight) ---", flush=True)
+            humanist_post_pause = {
+                "response": "",
+                "response_mode": "jury_direct",
+                "burden_acknowledged": True,
+            }
+            post_pause_log = {"type": "post_pause_humanist_response", "skipped": True, "reason": "jury_direct"}
+            session_log["events"].append(post_pause_log)
+            save_session_log(session_log)
+        else:
+            print("--- STAGE 3: HUMANIST (POST-PAUSE) ---", flush=True)
+            # If Michael added clarification at Point B, pass it to the Humanist
+            humanist_post_pause, post_pause_log = humanist.respond_to_pause(
+                pause=witness_pause,
+                session_id=session_id,
+            )
+            session_log["events"].append(post_pause_log)
+            session_log["events"].append({
+                "type": "post_pause_humanist_response",
+                **humanist_post_pause,
+            })
 
-        print(f"\nHUMANIST (post-pause mode: {humanist_post_pause['response_mode']}):", flush=True)
-        print(f"{humanist_post_pause['response']}\n", flush=True)
-        save_session_log(session_log)
+            print(f"\nHUMANIST (post-pause mode: {humanist_post_pause['response_mode']}):", flush=True)
+            print(f"{humanist_post_pause['response']}\n", flush=True)
+            save_session_log(session_log)
 
         # -------------------------------------------------------------------
         # Stage 4: Four-member sequential council jury (Phase 2.5)
