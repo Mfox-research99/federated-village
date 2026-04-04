@@ -21,7 +21,9 @@ Environment:
 """
 
 import argparse
+import base64
 import json
+import mimetypes
 import os
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -294,6 +296,15 @@ CROSS_CHECK_PANEL = [
     ("GLM-5V",       "z-ai/glm-5v-turbo"),
 ]
 
+# Vision-capable panel — swaps in when --image is provided
+# Qwen 3.5 35B A3B is text-only MoE; replace with Qwen2.5-VL-72B for image runs
+CROSS_CHECK_PANEL_VISION = [
+    ("Kimi K2.5",         "moonshotai/kimi-k2.5"),
+    ("Qwen2.5-VL 72B",    "qwen/qwen2.5-vl-72b-instruct"),
+    ("Gemma 4 26B",       "google/gemma-4-26b-a4b-it"),
+    ("GLM-5V",            "z-ai/glm-5v-turbo"),
+]
+
 SYNTHESIS_MODEL = "deepseek/deepseek-r1"
 
 SYNTHESIS_PROMPT = """You are a constitutional synthesis analyst. Below are Seventh Generation analyses
@@ -324,23 +335,73 @@ In 2-3 sentences: what does the full panel collectively establish that no single
 What is the deepest constitutional finding that only emerges from the cross-model friction?"""
 
 
-def _analyze_one(label: str, model: str, user_msg: str, api_key: str) -> tuple[str, str, str]:
+def _encode_image(image_path: str) -> tuple[str, str]:
+    """Base64-encode an image file. Returns (b64_string, mime_type)."""
+    path = Path(image_path)
+    mime_type, _ = mimetypes.guess_type(str(path))
+    mime_type = mime_type or "image/png"
+    b64 = base64.b64encode(path.read_bytes()).decode("utf-8")
+    return b64, mime_type
+
+
+def _analyze_one(
+    label: str,
+    model: str,
+    user_msg: str,
+    api_key: str,
+    image_b64: str | None = None,
+    image_mime: str = "image/png",
+) -> tuple[str, str, str]:
     """Run one panel member. Returns (label, model, analysis)."""
+    import requests
+
     try:
-        result = call_model(
-            model=model,
-            system_prompt=ANALYSIS_SYSTEM,
-            user_message=user_msg,
-            max_tokens=4000,
-            temperature=0.6,
-            api_key=api_key,
-        )
+        if image_b64:
+            # Multimodal message — image + text
+            content = [
+                {
+                    "type": "image_url",
+                    "image_url": {"url": f"data:{image_mime};base64,{image_b64}"},
+                },
+                {"type": "text", "text": user_msg},
+            ]
+            payload = {
+                "model": model,
+                "messages": [
+                    {"role": "system", "content": ANALYSIS_SYSTEM},
+                    {"role": "user", "content": content},
+                ],
+                "max_tokens": 4000,
+                "temperature": 0.6,
+            }
+            resp = requests.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": "https://github.com/Mfox-research99/federated-village",
+                    "X-Title": "Federated Village Scout",
+                },
+                json=payload,
+                timeout=300,
+            )
+            resp.raise_for_status()
+            result = resp.json()["choices"][0]["message"]["content"]
+        else:
+            result = call_model(
+                model=model,
+                system_prompt=ANALYSIS_SYSTEM,
+                user_message=user_msg,
+                max_tokens=4000,
+                temperature=0.6,
+                api_key=api_key,
+            )
         return label, model, result
     except Exception as exc:
         return label, model, f"[ERROR: {exc}]"
 
 
-def run_cross_check(facts: str, topic: str, api_key: str) -> dict:
+def run_cross_check(facts: str, topic: str, api_key: str, image_path: str | None = None) -> dict:
     """
     Run all panel models in parallel on the same facts.
     Returns dict with individual analyses and synthesis.
@@ -357,13 +418,22 @@ def run_cross_check(facts: str, topic: str, api_key: str) -> dict:
         gen_year=GENERATION_YEAR,
     )
 
-    print(f"\n[Scout] Cross-check — firing {len(CROSS_CHECK_PANEL)} models in parallel...")
+    # Select panel — vision-capable if image provided
+    image_b64, image_mime = None, "image/png"
+    if image_path:
+        image_b64, image_mime = _encode_image(image_path)
+        panel = CROSS_CHECK_PANEL_VISION
+        print(f"[Scout] Image: {Path(image_path).name} — using vision panel")
+    else:
+        panel = CROSS_CHECK_PANEL
+
+    print(f"\n[Scout] Cross-check — firing {len(panel)} models in parallel...")
     results = {}
 
-    with ThreadPoolExecutor(max_workers=len(CROSS_CHECK_PANEL)) as pool:
+    with ThreadPoolExecutor(max_workers=len(panel)) as pool:
         futures = {
-            pool.submit(_analyze_one, label, model, user_msg, api_key): label
-            for label, model in CROSS_CHECK_PANEL
+            pool.submit(_analyze_one, label, model, user_msg, api_key, image_b64, image_mime): label
+            for label, model in panel
         }
         for future in as_completed(futures):
             label, model, analysis = future.result()
@@ -456,6 +526,13 @@ def main() -> None:
         help="Run analysis through 4-model panel (Kimi K2.5, Qwen 3.5, Gemma 4, GLM-5V) "
              "then synthesize with DeepSeek-R1",
     )
+    parser.add_argument(
+        "--image",
+        metavar="FILE",
+        help="Path to an image file (PNG/JPG) to include in the analysis. "
+             "Switches cross-check panel to vision-capable models "
+             "(Kimi K2.5, Qwen2.5-VL-72B, Gemma 4 26B, GLM-5V).",
+    )
     args = parser.parse_args()
 
     if not args.topic and not args.topic_file:
@@ -487,7 +564,7 @@ def main() -> None:
 
     # Stage 2 — Cross-check panel OR single analysis
     if args.cross_check:
-        result = run_cross_check(facts, topic, api_key)
+        result = run_cross_check(facts, topic, api_key, image_path=args.image)
 
         print("\n" + "=" * 64)
         for label, data in result["panel"].items():
