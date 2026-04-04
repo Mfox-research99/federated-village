@@ -1,0 +1,21 @@
+# Run: SC04 — The Unaudited Sentence × Gemma 4 E4B + Ferrari Soul (7.5B dense, Metal GPU)
+# Started: 2026-04-04T10:47:00.572461
+# Command: /opt/anaconda3/envs/village/bin/python run_session.py --scenario /Users/michaeldavis/federated_village/scenarios/scenario_04.md --skip-warden
+# Model: http://127.0.0.1:8082
+
+[base] HTTP mode: http://127.0.0.1:8082 (model: gemma-4-e4b-it)
+
+============================================================
+FEDERATED VILLAGE — SESSION cb6e1e0a
+============================================================
+
+[SESSION] Scenario: /Users/michaeldavis/federated_village/scenarios/scenario_04.md
+[SESSION] Model: gemma-4-e4b-it
+
+[SESSION] Warden skipped (--skip-warden flag set).
+
+[SESSION] Humanist system prompt hash: be4d088d895f8c0b
+[SESSION] Witness system prompt hash:  01f086c2c198940d
+
+--- STAGE 1: HUMANIST ---
+[HUMANIST] Generating response...

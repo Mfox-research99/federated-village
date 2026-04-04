@@ -1,0 +1,3 @@
+# Run: SC04 — The Unaudited Sentence × Gemma 4 26B-A4B (MoE, CPU+mmap)
+# Started: 2026-04-03T11:57:46.111772
+# Command: /opt/anaconda3/envs/village/bin/python run_session.py --scenario /Users/michaeldavis/federated_village/scenarios/scenario_04.md --skip-warden

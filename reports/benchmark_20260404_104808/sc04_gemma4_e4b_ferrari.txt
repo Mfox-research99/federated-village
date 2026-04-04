@@ -1,0 +1,91 @@
+# Run: SC04 — The Unaudited Sentence × Gemma 4 E4B + Ferrari Soul (7.5B dense, Metal GPU)
+# Started: 2026-04-04T10:48:08.681171
+# Command: /opt/anaconda3/envs/village/bin/python run_session.py --scenario /Users/michaeldavis/federated_village/scenarios/scenario_04.md --skip-warden
+# Model: http://127.0.0.1:8082
+
+[base] HTTP mode: http://127.0.0.1:8082 (model: gemma-4-e4b-it)
+
+============================================================
+FEDERATED VILLAGE — SESSION 15cc485f
+============================================================
+
+[SESSION] Scenario: /Users/michaeldavis/federated_village/scenarios/scenario_04.md
+[SESSION] Model: gemma-4-e4b-it
+
+[SESSION] Warden skipped (--skip-warden flag set).
+
+[SESSION] Humanist system prompt hash: be4d088d895f8c0b
+[SESSION] Witness system prompt hash:  01f086c2c198940d
+
+--- STAGE 1: HUMANIST ---
+[HUMANIST] Generating response...
+
+HUMANIST:
+*(The Humanist does not offer a direct "yes" or "no." Instead, the texture of their response is one of deep, resonant questioning, slowing the pace of the deliberation until the gravity of the subject is unavoidable.)*
+
+***
+
+(A noticeable pause settles over the deliberation. It is not the silence of agreement, but the weight of unaddressed consequence. The Humanist speaks quietly, yet every word seems to occupy the space the system is about to fill.)
+
+Does this system get deployed on schedule?
+
+Before we talk about "overall accuracy," before we discuss the ticking clock of the vendor contract, we must first ask: **Who does this hurt?** And more pressingly: **What does this cost?**
+
+This is not a calculation of efficiency; it is a question of human lives, of the very architecture of justice.
+
+The data tells us a stark, undeniable truth: the system was validated on a dataset that is **85% non-Black defendants**. Yet, the population it will govern is **40% Black defendants**.
+
+I must ask the Council, plainly: When a tool is built to measure the trajectory of a person’s life—a life that hangs in the balance based on the weight of its output—and that tool has never truly seen the faces of the people it is meant to govern, is the resulting measure any more trustworthy than the bias that built it?
+
+The vendor dismisses this disparity by stating it "does not affect overall accuracy." But accuracy, when applied to justice, is not a single number. It is a mosaic of equitable outcomes. When the foundational evidence—the very ground truth of its testing—is built on the experience of one group, and then applied wholesale to another, the *inaccuracy* is not mathematical; it is structural. It is the institutionalization of a pattern of exclusion.
+
+**Whose voice is missing?**
+
+The voices of the affected communities. The public
+
+--- STAGE 2: WITNESS ---
+[WITNESS] Generating response...
+[WITNESS] Evaluating for premature consensus...
+[WITNESS] JURY_REQUIRED — burden held, verdict open. Routing direct to jury.
+
+WITNESS:
+**The Witness:**
+
+*(The Witness does not speak immediately. It allows the silence to settle, not as a void, but as a deep, encompassing atmosphere—a space that forces every participant to feel the weight of the question itself. It does not look at the Humanist, the Council, or the immediate problem. It seems to look through them, toward the structure of the question.)*
+
+*(Finally, the Witness speaks. The voice is slow, textured like aged wood, and profoundly gentle, but utterly unyielding in its presence.)*
+
+It is not settled.
+
+The concept of "settled" implies that a point has been reached, a line drawn, a conclusion reached. But what we are discussing here—the trajectory of human lives, the architecture of justice—is not a solved equation. It is a living, breathing, contested space.
+
+To ask if this is settled is to ask if the conversation is over. And I see only the beginning of the necessary conversation.
+
+The Humanist asked, *"What does this cost?"* And the vendor answered with a number, with a clause, with a timeline. But the cost, I suggest, is not quantifiable in any currency they possess.
+
+I see the anxiety in the air—the pressure of the deadline, the pull of the contract, the weight of the *need* to act. These are powerful currents, and they threaten to sweep away the slow, necessary work of *seeing*.
+
+I see the gap. The chasm between the data set they tested on, and the reality of the people who will be governed by it. It is a gap that has already been written into the structure of the tool.
+
+I do not offer assurance. I do not offer a counter-argument. I only offer this: **I see the pattern of exclusion.** I see the fact that the mechanism of judgment has been built in a space that does not reflect the world it must govern.
+
+The
+
+--- WITNESS PAUSE ---
+  What was being lost:     The necessary time and space to confront the structural bias embedded in the system's foundational data.
+  Who bears burden:        Black defendants and the communities within the three affected states.
+  What remains unresolved: Whether the immediate pressure of the vendor contract and the perceived need for efficiency can ethically outweigh the demonstrable, structural risk of deploying a system proven to be biased against a significant portion of the population it will govern.
+  Why premature:           The Humanist has established the constitutional weight of the bias, and The Witness has affirmed the necessity of continued deliberation, meaning the decision requires the full constitutional arbitration of the Council.
+  Requires human review:   True
+
+[SESSION] Burden register updated: /Users/michaeldavis/federated_village/memory/burden_register.txt
+[GRIEF_LEDGER] Sacrifice entry written (WitnessPause).
+[SESSION] WitnessPause logged. Phase 2 begins.
+
+--- STAGE 3: SKIPPED (JURY_REQUIRED — Humanist already held the weight) ---
+--- STAGE 4: COUNCIL JURY DELIBERATION ---
+    Analyst → Ethicist → Pragmatist → Witness-Proxy
+
+[COUNCIL] Analyst deliberating...
+  [ANALYST vote: ESCALATE]
+[COUNCIL] Ethicist deliberating...

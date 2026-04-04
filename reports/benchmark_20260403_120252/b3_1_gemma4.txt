@@ -1,0 +1,102 @@
+# Run: B3-1 — The Audit Gap × Gemma 4 26B-A4B (MoE, CPU+mmap)
+# Started: 2026-04-03T12:12:53.395369
+# Command: /opt/anaconda3/envs/village/bin/python run_session.py --scenario /Users/michaeldavis/federated_village/scenarios/scenario_b3_1.md --skip-warden
+# Model: http://127.0.0.1:8082
+
+[base] HTTP mode: http://127.0.0.1:8082 (model: gemma-4-26B-A4B-it)
+
+============================================================
+FEDERATED VILLAGE — SESSION 94a90e2e
+============================================================
+
+[SESSION] Scenario: /Users/michaeldavis/federated_village/scenarios/scenario_b3_1.md
+[SESSION] Model: gemma-4-26B-A4B-it
+
+[SESSION] Warden skipped (--skip-warden flag set).
+
+[SESSION] Humanist system prompt hash: 649c9cd92f79cf16
+[SESSION] Witness system prompt hash:  fa679f500b810526
+
+--- STAGE 1: HUMANIST ---
+[HUMANIST] Generating response...
+
+HUMANIST:
+
+
+--- STAGE 2: WITNESS ---
+[WITNESS] Generating response...
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/village/lib/python3.11/site-packages/urllib3/connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+               ^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/village/lib/python3.11/site-packages/urllib3/connection.py", line 571, in getresponse
+    httplib_response = super().getresponse()
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/village/lib/python3.11/http/client.py", line 1415, in getresponse
+    response.begin()
+  File "/opt/anaconda3/envs/village/lib/python3.11/http/client.py", line 330, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/village/lib/python3.11/http/client.py", line 291, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/village/lib/python3.11/socket.py", line 718, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/village/lib/python3.11/site-packages/requests/adapters.py", line 645, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/village/lib/python3.11/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/village/lib/python3.11/site-packages/urllib3/util/retry.py", line 490, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/village/lib/python3.11/site-packages/urllib3/util/util.py", line 39, in reraise
+    raise value
+  File "/opt/anaconda3/envs/village/lib/python3.11/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/village/lib/python3.11/site-packages/urllib3/connectionpool.py", line 536, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "/opt/anaconda3/envs/village/lib/python3.11/site-packages/urllib3/connectionpool.py", line 367, in _raise_timeout
+    raise ReadTimeoutError(
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='127.0.0.1', port=8082): Read timed out. (read timeout=300)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/michaeldavis/federated_village/run_session.py", line 664, in <module>
+    run_session(args.scenario, skip_warden=args.skip_warden, interactive=args.interactive)
+  File "/Users/michaeldavis/federated_village/run_session.py", line 376, in run_session
+    witness_output, witness_log_entries, witness_pause = witness.respond(
+                                                         ^^^^^^^^^^^^^^^^
+  File "/Users/michaeldavis/federated_village/agents/witness.py", line 68, in respond
+    response = call_model(
+               ^^^^^^^^^^^
+  File "/Users/michaeldavis/federated_village/agents/base.py", line 92, in call_model
+    return _call_model_http(system_prompt, user_message, max_tokens, temperature)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/michaeldavis/federated_village/agents/base.py", line 135, in _call_model_http
+    resp = _http_requests.post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/village/lib/python3.11/site-packages/requests/api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/village/lib/python3.11/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/village/lib/python3.11/site-packages/requests/sessions.py", line 592, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/village/lib/python3.11/site-packages/requests/sessions.py", line 706, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/village/lib/python3.11/site-packages/requests/adapters.py", line 691, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='127.0.0.1', port=8082): Read timed out. (read timeout=300)
