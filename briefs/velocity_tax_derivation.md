@@ -1,4 +1,4 @@
-# Taxing the Velocity of Money: An Independent Derivation
+# Taxing the Integral, Not the Derivative: An Independent Derivation of Velocity Taxation
 ### Michael Fox — Original concept 1989 | Written down 2026
 
 ---
@@ -33,27 +33,48 @@ The insight was simple: **if V is vastly larger than Q as a share of total econo
 
 ---
 
-## III. The Derivation
+## III. The Core Mathematical Insight: Integral, Not Derivative
 
-Total transaction volume in an economy = **M × V**
+The most precise way to state what this tax actually is:
 
-If a flat rate **t** is levied on every transaction where money clears through the banking system:
+**Every existing tax taxes the derivative. This taxes the integral.**
 
-**Tax Revenue = t × (M × V)**
+Income tax measures the *rate of change* of money accumulating to a person — dollars per year, a derivative with respect to time. Capital gains tax measures the derivative of asset value. A sales tax taxes a point event — a specific moment of consumption.
 
-Because **M × V >> P × Q** (financial transactions vastly exceed productive transactions in dollar volume), a very small **t** — in the range of 0.25% to 0.7% — generates revenue sufficient to replace the entire federal tax apparatus.
+The velocity tax taxes the **path integral of monetary movement through the economy** — the total accumulated distance money travels, regardless of direction, destination, or who ends up holding it.
+
+This distinction is not semantic. Consider a stock position traded one thousand times in a single day, with zero net change in price:
+
+- **Income tax sees:** zero. No gain, no taxable event.
+- **Capital gains tax sees:** zero. Position unchanged.
+- **Sales tax sees:** zero. No consumption occurred.
+- **The integral sees:** two thousand transaction legs. An enormous accumulated path.
+
+This is precisely where the volume is — in the financial economy where money circulates at high velocity without producing goods, services, or genuine economic output. High-frequency trading, derivatives chains, synthetic instruments, currency swaps: all generate colossal integrals while producing negligible or negative derivatives from the standpoint of real economic activity.
+
+The integral is also **directionally neutral.** Income tax is asymmetric — it counts inflows, not outflows. The path integral counts every step in both directions. A dollar flowing into your account and back out are each one step. This captures the full topology of monetary circulation, not just the net accumulation at any node.
+
+## IV. The Derivation
+
+Total transaction volume in an economy = **∫(M × V)dt** — the integral of monetary flow over time.
+
+For practical collection purposes, this reduces to: at any clearing event, levy rate **t** on the amount cleared.
+
+**Tax Revenue = t × (total cleared transaction volume)**
+
+Because financial transaction volume vastly exceeds the productive economy (PQ) — by orders of magnitude in any modern economy with active exchanges — a very small **t** in the range of 0.25% to 0.7% generates revenue sufficient to replace the entire federal tax apparatus.
 
 The mathematical structure has three important properties:
 
-**1. Automatic progressivity through volume.** The wealthy do not earn more than others by a factor of millions — but they *transact* more by a factor of millions. A hedge fund executing thousands of trades per day pays t on each one. A family buying groceries pays t once. The rate is flat; the effective burden scales with financial activity, which scales with wealth.
+**1. Automatic progressivity through path length.** The wealthy do not earn more than others by a factor of millions — but their money *travels further* by a factor of millions. A hedge fund's daily transaction integral dwarfs a working family's annual transaction integral. The rate is flat; the effective burden scales with total monetary path length, which scales with wealth and financial activity.
 
-**2. No valuation problem.** A wealth tax requires annual assessment of asset values — contested, gameable, expensive to enforce. A velocity tax requires only that a transaction clear through the banking system. The bank collects it automatically. No returns. No audits. No evasion through complexity, because the complexity itself — the high-frequency trading, the derivatives layering, the synthetic instruments — is the base being taxed.
+**2. No valuation problem.** A wealth tax requires annual assessment of asset values — contested, gameable, expensive to enforce. The integral requires only that a transaction clear through the banking system. The bank collects it automatically. No returns. No audits. No evasion through complexity, because complexity — high-frequency trading, derivatives layering, synthetic instruments — *increases* the integral being taxed.
 
-**3. Stability-positive feedback.** The activities most damaging to monetary stability — speculative excess, cascade-risk derivatives, hot-money flows — are precisely those with the highest transaction velocity. A velocity tax applies the most friction where the most systemic risk is generated, without requiring regulators to identify or prohibit any specific instrument.
+**3. Stability-positive feedback.** The activities most damaging to monetary stability — speculative excess, cascade-risk derivatives, hot-money flows — generate the largest integrals per unit of productive output. The tax applies maximum friction precisely where maximum systemic risk is generated, without requiring regulators to identify or prohibit any specific instrument. It is self-targeting.
 
 ---
 
-## IV. Why It Is Not a Sales Tax
+## V. Why It Is Not a Sales Tax
 
 The confusion is persistent and wrong. A sales tax is a tax on the *consumption of goods and services* — it falls on the productive economy. A velocity tax is a tax on *monetary transactions* — it falls on the financial economy first and foremost, and on the productive economy only incidentally and at negligible rates.
 
@@ -61,7 +82,7 @@ The distinction is not semantic. A 0.35% tax on a $30 grocery purchase is $0.10.
 
 ---
 
-## V. Convergence with Feige
+## VI. Convergence with Feige
 
 Professor Edgar L. Feige at the University of Wisconsin-Madison arrived at essentially the same proposal independently, through a different intellectual path. His approach began from tax policy reform and the study of the underground economy — his estimate that 20–30% of GDP flows through unreported transactions. His formal Automated Payment Transaction (APT) tax proposal appeared in *Economic Policy* in 2000.
 
@@ -71,7 +92,7 @@ That two independent lines of reasoning — one from monetary theory, one from t
 
 ---
 
-## VI. The Present Moment: Why Both Instruments May Be Needed
+## VII. The Present Moment: Why Both Instruments May Be Needed
 
 The velocity tax addresses *flows* — the ongoing generation and movement of financial value. At current levels of wealth concentration, it may not be sufficient alone to address the *stock* — the accumulated holdings that have been compounding for decades under a tax system designed, intentionally or not, to protect them.
 
@@ -81,6 +102,6 @@ The generation born in 2166 will not care about the politics of 2026. They will 
 
 ---
 
-*This document records an independent derivation developed by Michael Fox in 1989, based on analysis of Federal Reserve monetary flow data and exchange transaction volumes, using Friedman's equation of exchange as the theoretical foundation. It was arrived at without knowledge of Feige's later formalization. The convergence of both derivations is noted as evidence of the structural soundness of the velocity taxation framework.*
+*This document records an independent derivation developed by Michael Fox in 1989, based on analysis of Federal Reserve monetary flow data and exchange transaction volumes, using Friedman's equation of exchange as the theoretical foundation. The core mathematical insight — that this tax operates on the path integral of monetary movement rather than on any derivative (income, gain, consumption rate) — distinguishes it from all existing tax instruments and from most subsequent discussions of transaction taxation. It was arrived at without knowledge of Feige's later formalization. The convergence of both derivations is noted as evidence of the structural soundness of the velocity taxation framework.*
 
 *Written down: April 2026.*
