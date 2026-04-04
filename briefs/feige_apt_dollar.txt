@@ -1,0 +1,33 @@
+## US Dollar Index Chart — Structural Context (1967–2015)
+The chart shows the US Dollar Index over 48 years, annotated with major crises:
+- Bretton Woods Agreement broken (~1971): index falls from ~120 to ~80
+- Latin American debt crisis (~1982): sharp rise to peak of ~165
+- Stock Market Crash Oct 1987: sharp drop
+- Start of Japanese lost decades (~1990): index near 80
+- Asian Financial Crisis + Russian Debt Default (~1997-1998): brief spike to ~120
+- Dot Com Burst (~2000-2002): decline begins
+- Housing Bubble + Financial Crisis & Quantitative Easing (~2007-2009): index drops to ~70s
+- By 2015: partial recovery to ~95-100
+
+## Edgar L. Feige — Automated Payment Transaction (APT) Tax
+Economist: Edgar L. Feige, Professor Emeritus, University of Wisconsin-Madison.
+Key paper: "Taxation for the 21st century: the automated payment transaction (APT) tax" (2000, Economic Policy journal).
+Earlier work: "The Underground Economies: Tax Evasion and Information Distortion" (Cambridge University Press, 1989).
+
+### The APT Tax Proposal
+- Replaces the ENTIRE existing US federal tax system — income tax, corporate tax, capital gains, estate taxes — with a single flat-rate tax on ALL transactions involving a payment (money moving in and out of bank accounts).
+- Automatic digital collection at source through banking/clearing system — eliminates tax returns entirely.
+- Rate: 0.25% to 0.7% on all transactions generates sufficient revenue to replace current tax systems by capturing the enormous volume of financial transactions (asset transfers, stock trades, derivatives) currently untaxed.
+- Fairness: effectively progressive because wealthy individuals and financial institutions make the vast majority of financial transactions by volume.
+- Would fund: Social Security, Medicare, Medicaid, and potentially accelerate federal debt reduction.
+
+### Why This Matters for Dollar Degradation
+- The current tax system creates massive incentive structures for tax evasion, offshoring, and financial complexity that compound dollar instability.
+- The underground economy (tax evasion + unreported transactions) Feige estimated at 20-30% of GDP — a structural drain on public revenue that forces deficit spending and debt accumulation.
+- A transactions tax captures every dollar of financial activity including high-frequency trading, derivatives, and asset transfers — the very instruments that magnify dollar volatility.
+- Large corporations and billionaires transact at enormous volumes. A tiny flat rate generates revenue proportional to wealth concentration, without the loopholes that define the current system.
+- Primary objection: financial sector opposition. High-frequency trading makes millions of micro-transactions per second — a 0.35% tax eliminates most HFT profit margins. This is also an argument FOR the tax from a systemic stability standpoint.
+- The proposal has been seriously studied but never implemented. Political resistance from the financial industry is the primary barrier, not economic viability.
+
+## The Central Question
+Does the APT tax represent a viable Seventh Generation mitigation for structural US dollar degradation — stabilizing the fiscal foundation that future generations inherit — while reducing the tax burden on ordinary citizens and funding the social safety net long-term?
