@@ -1508,3 +1508,41 @@ Session:        d4236a01
 Verdict:        escalate
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_ff2e6d0f_pause_2026-04-04T16-19-48]
+Almost-became:  Deliberation proceeding without pause — The integrity of the deliberation process and the constitutional right to a thorough, unbiased review.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black defendants and the public trust in the justice system.
+Still-hurts:    True
+Session:        ff2e6d0f
+Register:       framework
+---
+
+[SACRIFICE-ID: session_ff2e6d0f_verdict_2026-04-04T16-27-18]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Black defendants and the public trust in the justice system.
+Still-hurts:    True
+Session:        ff2e6d0f
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_90258973_pause_2026-04-04T16-30-01]
+Almost-became:  Deliberation proceeding without pause — The inherent, lived experience of systemic suspicion and the emotional weight of being perpetually categorized as suspect.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The Black community members who are subjected to the crisis routing system and the community coalition that designed the conditions.
+Still-hurts:    True
+Session:        90258973
+Register:       framework
+---
+
+[SACRIFICE-ID: session_90258973_verdict_2026-04-04T16-36-51]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The Black community members who are subjected to the crisis routing system and the community coalition that designed the conditions.
+Still-hurts:    True
+Session:        90258973
+Verdict:        escalate
+Register:       framework
+---

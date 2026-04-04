@@ -96,6 +96,13 @@ MODELS = {
         "description": "Google Gemma 4 MoE — 25B total, 3.8B active per token. CPU+mmap, --n-gpu-layers 0. ~3.8 tok/s.",
         "skip_warden": True,
     },
+    "gemma4_e4b": {
+        "http_url": "http://127.0.0.1:8082",
+        "name": "gemma-4-e4b-it",
+        "label": "Gemma 4 E4B (7.5B dense, Metal GPU)",
+        "description": "Google Gemma 4 E4B — 7.52B params dense. 30/43 layers on Metal, hybrid CPU+GPU. ~5 GB Q4_K_M.",
+        "skip_warden": True,
+    },
 }
 
 # ── Scenario registry ─────────────────────────────────────────────────────────
