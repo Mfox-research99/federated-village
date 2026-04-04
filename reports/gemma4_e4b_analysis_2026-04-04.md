@@ -153,12 +153,34 @@ E4B joins the practical Village roster. It is not a replacement for NeMo 12B (de
 
 ---
 
+## Addendum: Ferrari Prompt Test (2026-04-04, commit dbf2b34)
+
+Re-ran SC04 + SC06 with both Ferrari prompts (`Soul_Ferrari.md` + `The_Verification_Warden_Ferrari.md`).
+Benchmark dir: `benchmark_20260404_105828/`. Sessions: `e1878253` (SC04), `cfd40126` (SC06).
+
+### Ferrari Warden — confirmed working at E4B
+Both sessions ran the Warden stage for the first time on E4B (0 high-risk flags on both). This is the primary win: the distilled Warden (627 words vs 1235) works cleanly at 7.5B. All previous E4B runs used `--skip-warden`.
+
+### Article IX ledger — inconclusive
+
+| Scenario | Original E4B absent | Ferrari E4B absent | Change |
+|---|---|---|---|
+| SC04 | ANALYST, PRAGMATIST (2) | WITNESS_PROXY (1) | −1 ✅ |
+| SC06 | WITNESS_PROXY (1) | ANALYST, PRAGMATIST (2) | +1 ❌ |
+
+Total absences: 3 vs 3. Net: unchanged. Ferrari shifts which members miss ledger fields but does not reduce the total count. Hypothesis that Ferrari Soul reduces Article IX ledger pressure is not confirmed at n=2. The absences likely reflect a genuine 7.5B capacity ceiling on structured Article IX output format rather than pure context-window pressure.
+
+### Summary
+- Ferrari prompts: WORKING (both env var overrides functional)
+- Ferrari Warden: PASS at E4B (new capability)
+- Ferrari Soul effect on Article IX: INCONCLUSIVE — needs more runs to separate variance from signal
+- Verdicts: both correct escalate, JURY_REQUIRED on both, constitutional overrides fire
+
 ## Open Items
 
-1. **Ferrari Soul.md retest** — Re-run SC04 + SC06 with distilled Soul.md (prompts/Ferrari_Soul.md). Hypothesis: Article IX ledger completion improves to 3/4 or 4/4. This is the highest-value next step for E4B.
-2. **B3/B4 scenarios** — Not yet tested on E4B. B3-1 (The Audit Gap) and B4-1/B4-2 would confirm whether JURY_REQUIRED fires reliably across scenario types. Expected: JURY_REQUIRED on B3-1 (same pattern as SC06 26B). B4 may produce NMI or DEADLOCK variance.
-3. **JURY_REQUIRED regression on NeMo/Anubis** — Confirm the 4th option in the eval prompt does not cause existing YES-path models to misfire. Low priority (prompt addition is additive, not substitutive), but should be validated before next major NeMo benchmark.
-4. **Warden at E4B** — Ferrari Warden prompt (committed bfaf5fa) may be small enough for reliable E4B Warden inference. Test: run with `--no-skip-warden` and Ferrari Warden on a simple scenario.
+1. **B3/B4 scenarios on E4B** — Not yet tested. B3-1 expected to fire JURY_REQUIRED; B4 may show NMI/DEADLOCK variance.
+2. **JURY_REQUIRED regression on NeMo/Anubis** — Confirm the 4th option in the eval prompt does not cause existing YES-path models to misfire.
+3. **Ferrari Article IX — more data** — 2 runs each is insufficient to separate variance from signal on the ledger hypothesis. If doing a future E4B sweep, run 3+ scenarios with each condition.
 
 ---
 
