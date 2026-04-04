@@ -103,6 +103,15 @@ MODELS = {
         "description": "Google Gemma 4 E4B — 7.52B params dense. 30/43 layers on Metal, hybrid CPU+GPU. ~5 GB Q4_K_M.",
         "skip_warden": True,
     },
+    "gemma4_e4b_ferrari": {
+        "http_url": "http://127.0.0.1:8082",
+        "name": "gemma-4-e4b-it",
+        "label": "Gemma 4 E4B + Ferrari Soul (7.5B dense, Metal GPU)",
+        "description": "Gemma 4 E4B with distilled Soul_Ferrari.md + The_Verification_Warden_Ferrari.md. ~2,869 token Soul vs 5,656 full — reduces Article IX context pressure.",
+        "skip_warden": False,   # Ferrari Warden is small enough to test at E4B
+        "soul_file": "Soul_Ferrari.md",
+        "warden_file": "The_Verification_Warden_Ferrari.md",
+    },
 }
 
 # ── Scenario registry ─────────────────────────────────────────────────────────
@@ -432,9 +441,23 @@ def run_one(scenario_key: str, model_key: str, out_dir: Path,
     else:
         env["VILLAGE_MODEL"]      = model["path"]
         env["VILLAGE_MODEL_NAME"] = model["name"]
+    # Optional prompt overrides — Ferrari distilled versions reduce context pressure
+    if model.get("soul_file"):
+        env["VILLAGE_SOUL_FILE"] = model["soul_file"]
+    else:
+        env.pop("VILLAGE_SOUL_FILE", None)
+    if model.get("warden_file"):
+        env["VILLAGE_WARDEN_FILE"] = model["warden_file"]
+    else:
+        env.pop("VILLAGE_WARDEN_FILE", None)
 
     cmd = [PYTHON, "run_session.py", "--scenario", str(scenario_path)]
-    if skip_warden or model.get("skip_warden"):
+    # Model's explicit skip_warden setting overrides the global flag.
+    # This allows model entries with skip_warden: False to force-enable the Warden
+    # even when the benchmark suite is running with the default skip-warden behavior.
+    model_skip = model.get("skip_warden")   # None = not set; True/False = explicit
+    effective_skip = model_skip if model_skip is not None else skip_warden
+    if effective_skip:
         cmd.append("--skip-warden")
 
     t_start = time.time()

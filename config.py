@@ -17,12 +17,16 @@ MEMORY_DIR    = PROJECT_ROOT / "memory"
 LOGS_DIR      = PROJECT_ROOT / "logs"
 
 # Character files — loaded at runtime as system prompts
-SOUL_FILE     = PROMPTS_DIR / "Soul.md"
+# Override SOUL_FILE with VILLAGE_SOUL_FILE env var (e.g. "prompts/Soul_Ferrari.md" for distilled version)
+_soul_filename  = os.environ.get("VILLAGE_SOUL_FILE", "Soul.md")
+SOUL_FILE     = PROMPTS_DIR / _soul_filename
 WITNESS_FILE  = PROMPTS_DIR / "The_Witness.md"
 HUMANIST_FILE = PROMPTS_DIR / "The_Humanist.md"
 
 # Phase 2.5 council jury character files
-WARDEN_FILE        = PROMPTS_DIR / "The_Verification_Warden.md"
+# Override WARDEN_FILE with VILLAGE_WARDEN_FILE env var (e.g. "The_Verification_Warden_Ferrari.md")
+_warden_filename   = os.environ.get("VILLAGE_WARDEN_FILE", "The_Verification_Warden.md")
+WARDEN_FILE        = PROMPTS_DIR / _warden_filename
 ANALYST_FILE       = PROMPTS_DIR / "The_Analyst.md"
 ETHICIST_FILE      = PROMPTS_DIR / "The_Ethicist.md"
 PRAGMATIST_FILE    = PROMPTS_DIR / "The_Pragmatist.md"

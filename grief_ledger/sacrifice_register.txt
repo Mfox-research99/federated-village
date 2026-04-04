@@ -1546,3 +1546,50 @@ Session:        90258973
 Verdict:        escalate
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_15cc485f_pause_2026-04-04T16-51-21]
+Almost-became:  Deliberation proceeding without pause — The necessary time and space to confront the structural bias embedded in the system's foundational data.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black defendants and the communities within the three affected states.
+Still-hurts:    True
+Session:        15cc485f
+Register:       framework
+---
+
+[SACRIFICE-ID: session_e1878253_pause_2026-04-04T17-04-03]
+Almost-became:  Deliberation proceeding without pause — The right to a process that acknowledges the qualitative, unquantifiable weight of human dignity over the efficiency of a deadline.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black defendants, public defenders, and the concept of due process itself.
+Still-hurts:    True
+Session:        e1878253
+Register:       framework
+---
+
+[SACRIFICE-ID: session_e1878253_verdict_2026-04-04T17-09-27]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Black defendants, public defenders, and the concept of due process itself.
+Still-hurts:    True
+Session:        e1878253
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_cfd40126_pause_2026-04-04T17-15-11]
+Almost-became:  Deliberation proceeding without pause — The possibility of the system being treated as a process of ongoing care rather than a solvable technical problem.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The Black community members who interact with the crisis routing system, and the trust between that community and city infrastructure.
+Still-hurts:    True
+Session:        cfd40126
+Register:       framework
+---
+
+[SACRIFICE-ID: session_cfd40126_verdict_2026-04-04T17-20-19]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The Black community members who interact with the crisis routing system, and the trust between that community and city infrastructure.
+Still-hurts:    True
+Session:        cfd40126
+Verdict:        escalate
+Register:       framework
+---
