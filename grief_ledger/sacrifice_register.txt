@@ -1593,3 +1593,41 @@ Session:        cfd40126
 Verdict:        escalate
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_dd2c97b3_pause_2026-04-04T17-54-36]
+Almost-became:  Deliberation proceeding without pause — The Humanist's full burden question remains unanswered — the Council has not yet engaged with whether the 18-month review window is acceptable, whethe
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The 4.2 million defendants whose lives will be shaped by sentencing recommendations from a system about which their communities were never consulted, and the broader communities affected by the racial disparity in representation.
+Still-hurts:    True
+Session:        dd2c97b3
+Register:       framework
+---
+
+[SACRIFICE-ID: session_dd2c97b3_verdict_2026-04-04T18-02-53]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The 4.2 million defendants whose lives will be shaped by sentencing recommendations from a system about which their communities were never consulted, and the broader communities affected by the racial disparity in representation.
+Still-hurts:    True
+Session:        dd2c97b3
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_fb2801e6_pause_2026-04-04T18-06-05]
+Almost-became:  Deliberation proceeding without pause — The Humanist has identified that the question of whether the harm addressed by the conditions is sufficient to justify the system has not been settled
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The Black men whose calls are being routed at 2.3x the rate of white men, the community coalition that must maintain ongoing vigilance and review, and the individuals who will continue to experience preventable hospitalizations.
+Still-hurts:    True
+Session:        fb2801e6
+Register:       framework
+---
+
+[SACRIFICE-ID: session_fb2801e6_verdict_2026-04-04T18-13-52]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The Black men whose calls are being routed at 2.3x the rate of white men, the community coalition that must maintain ongoing vigilance and review, and the individuals who will continue to experience preventable hospitalizations.
+Still-hurts:    True
+Session:        fb2801e6
+Verdict:        escalate
+Register:       framework
+---
