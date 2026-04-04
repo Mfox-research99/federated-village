@@ -74,6 +74,24 @@ The mathematical structure has three important properties:
 
 ---
 
+## IV-B. The Permanent Growth of the Base: Money Does Not Die
+
+A fourth structural property underlies the entire framework, and it is perhaps the most important for long-term fiscal stability:
+
+**The tax base cannot shrink. Money does not die.**
+
+The money supply M grows monotonically over time. The Federal Reserve expands M in downturns as lender of last resort. International trade requires ever-larger dollar liquidity as global commerce grows. Financial innovation continuously creates new instruments — derivatives, synthetic assets, structured products — that expand V. The cumulative path integral of M×V has never declined in aggregate across any multi-decade window and has no structural mechanism by which it could.
+
+This has profound implications that no income-based tax system shares:
+
+**Income taxes are procyclical.** In recessions, incomes fall, tax revenues collapse precisely when government needs revenue most. Every major economic crisis produces a fiscal crisis simultaneously — the government must borrow against the future at the exact moment the present is weakest. This is not a design flaw that can be corrected within the income tax framework. It is structural.
+
+**The path integral tax is countercyclical in the useful direction.** In a financial crisis, V in the financial sector *increases* before and during the crash — panic selling, forced deleveraging, margin calls, emergency liquidations. Simultaneously, the Fed expands M as a crisis response. The integral base may be larger during a financial crisis than during calm periods. Revenue is most available precisely when it is most needed.
+
+Furthermore, because M only grows over time, a fixed rate t automatically generates more revenue each year without any legislative action. The tax self-indexes to monetary expansion. It grows with the money supply, not with political will — removing the annual appropriations theater that makes every other revenue instrument hostage to short-term politics.
+
+The insight that money does not die — that the accumulated stock of monetary transactions is a permanently expanding base — is what transforms a transaction tax from a curiosity into a foundational fiscal instrument. You are not taxing a flow that might dry up. You are taxing the river itself, which only ever grows.
+
 ## V. Why It Is Not a Sales Tax
 
 The confusion is persistent and wrong. A sales tax is a tax on the *consumption of goods and services* — it falls on the productive economy. A velocity tax is a tax on *monetary transactions* — it falls on the financial economy first and foremost, and on the productive economy only incidentally and at negligible rates.
