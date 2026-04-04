@@ -100,17 +100,18 @@ MODELS = {
         "http_url": "http://127.0.0.1:8082",
         "name": "gemma-4-e4b-it",
         "label": "Gemma 4 E4B (7.5B dense, Metal GPU)",
-        "description": "Google Gemma 4 E4B — 7.52B params dense. 30/43 layers on Metal, hybrid CPU+GPU. ~5 GB Q4_K_M.",
-        "skip_warden": True,
+        "description": "Google Gemma 4 E4B — 7.52B params dense. 30/43 layers on Metal, hybrid CPU+GPU. ~5 GB Q4_K_M. Uses Ferrari prompts by default.",
+        "skip_warden": False,   # Ferrari Warden confirmed working at E4B (0 flags)
     },
-    "gemma4_e4b_ferrari": {
+    # ── Full-Soul comparison variant — use when testing against cloud/large model parity ──
+    "gemma4_e4b_full": {
         "http_url": "http://127.0.0.1:8082",
         "name": "gemma-4-e4b-it",
-        "label": "Gemma 4 E4B + Ferrari Soul (7.5B dense, Metal GPU)",
-        "description": "Gemma 4 E4B with distilled Soul_Ferrari.md + The_Verification_Warden_Ferrari.md. ~2,869 token Soul vs 5,656 full — reduces Article IX context pressure.",
-        "skip_warden": False,   # Ferrari Warden is small enough to test at E4B
-        "soul_file": "Soul_Ferrari.md",
-        "warden_file": "The_Verification_Warden_Ferrari.md",
+        "label": "Gemma 4 E4B + Full Soul (7.5B dense, Metal GPU)",
+        "description": "E4B with full Soul.md + full Warden for direct comparison against Ferrari defaults.",
+        "skip_warden": False,
+        "soul_file": "Soul.md",
+        "warden_file": "The_Verification_Warden.md",
     },
 }
 

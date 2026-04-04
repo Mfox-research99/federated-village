@@ -51,4 +51,23 @@ Changes to the Village drive the Shard. Not the reverse.
 
 ## Key Architecture Notes
 See `memory/MEMORY.md` for current phase status, model paths, and pending work.
+
+## Prompt Defaults — Ferrari Rule (2026-04-04)
+**Small / local laptop models** use Ferrari (distilled) prompts by default:
+- `Soul_Ferrari.md` — ~2,869 tokens (vs full `Soul.md` ~5,656 tokens)
+- `The_Verification_Warden_Ferrari.md` — ~627 words (vs full ~1,235 words)
+
+This is set in `config.py` via `VILLAGE_SOUL_FILE` / `VILLAGE_WARDEN_FILE` env vars (defaults now point to Ferrari).
+
+**Large / OpenRouter cloud models** (Path B) keep full prompts:
+- `tracks/path_b/agents/roles.py` hardcodes `Soul.md` as default
+- Override with `VILLAGE_SOUL_FILE=Soul_Ferrari.md` only for explicit Ferrari testing on cloud models
+
+**To run full prompts locally** (comparison testing):
+```bash
+VILLAGE_SOUL_FILE=Soul.md VILLAGE_WARDEN_FILE=The_Verification_Warden.md python run_session.py ...
+# or use the gemma4_e4b_full benchmark model entry
+```
+
+Ferrari prompts are architecturally complete — same Articles, same constitutional structure, ~49% fewer tokens. All Village scenarios pass with Ferrari prompts on E4B (confirmed SC04 + SC06).
 See `reports/` for phase briefs and regression results.

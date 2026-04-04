@@ -45,7 +45,9 @@ ROLE_PROMPT_FILES = {
     "supervisor":          "The_Supervisor.md",
 }
 
-SOUL_FILE = "Soul.md"
+# Path B uses large cloud models (OpenRouter) — full constitutional document by default.
+# Override with VILLAGE_SOUL_FILE=Soul_Ferrari.md only if testing distilled version on cloud models.
+SOUL_FILE = os.environ.get("VILLAGE_SOUL_FILE", "Soul.md")
 
 
 def prompts_dir() -> Path:
