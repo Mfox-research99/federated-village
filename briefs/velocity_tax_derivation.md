@@ -154,6 +154,38 @@ The complexity of the current tax system — the Internal Revenue Code, the enfo
 
 By 2026, implementation would be measured in weeks, not months.
 
+## VII-D. The Dynamic Rate: A Control System, Not Just a Tax
+
+The most sophisticated element of the original proposal transforms the velocity tax from a revenue instrument into a **monetary stabilization control system** that generates revenue as a byproduct.
+
+The rate **t** need not be fixed. It can be set as a function of velocity itself:
+
+**t = f(V)**
+
+Where f increases when V exceeds a productive baseline V₀, and returns toward a minimum when V is at or below baseline. A simple formulation:
+
+**t(V) = t₀ + k × max(0, V − V₀)**
+
+Where t₀ is the baseline rate sufficient to fund government at normal velocity, k is a dampening coefficient, and V₀ is the productive baseline — the velocity characteristic of an economy doing real work rather than speculative cycling.
+
+The feedback mechanism is a negative control loop:
+
+**Excess velocity detected → rate rises → friction increases on excess transactions → velocity dampened back toward baseline → rate falls**
+
+This has properties that no existing monetary or fiscal policy instrument shares:
+
+**It is surgical where interest rates are blunt.** The Federal Reserve's primary stabilization tool — adjusting the federal funds rate — is indiscriminate. Raising rates to cool speculation simultaneously increases the cost of productive borrowing: the manufacturer financing equipment, the farmer buying seed, the family purchasing a home. The velocity-responsive rate applies friction specifically to *excess financial velocity*, leaving productive transactions at baseline rates. It targets the behavior causing instability, not all economic activity indiscriminately.
+
+**It is countercyclical by design.** In a speculative bubble, V rises above baseline, the rate rises, friction increases on the excess, the bubble is damped. In a recession or liquidity trap, V falls below baseline, the rate falls toward its minimum, removing any friction on exactly the economic activity the recovery requires. The instrument automatically provides stimulus when needed and restraint when needed, without requiring legislative action or policy committee votes.
+
+**It prevents bubble formation structurally.** Every major financial crisis in the annotated chart — the 1987 crash, the dot-com bubble, the 2008 housing collapse — was preceded by a period of excess velocity: money cycling through financial instruments at rates far above the productive baseline. A velocity-responsive rate applies increasing friction during exactly those periods, before the crash, not after. The current system has no such dampener. Each bubble has been larger than the last because there is no structural mechanism that scales friction with excess.
+
+**AI management is the natural completion.** The Federal Reserve makes rate decisions monthly or quarterly, based on lagging indicators — unemployment figures and CPI data that may be weeks or months old. Monetary velocity is measurable in real time through the banking and clearing system that collects the tax. An AI system monitoring transaction flows continuously could adjust the rate in fractions of a basis point, maintaining V near its productive baseline without the overcorrection cycles that quarterly human decisions inevitably produce. The Fed would set the policy parameters — the baseline V₀, the dampening coefficient k, the bounds on t — and the system would execute within those parameters autonomously.
+
+The burden on any individual transaction remains small throughout. The rate rise is felt by the *aggregate system* generating excess velocity — the financial sector in speculative mode — not by any individual making normal productive transactions. A family's grocery purchases, a small business's payroll, a farmer's equipment financing: all remain at baseline rates regardless of what the financial exchanges are doing. The instrument is self-targeting toward excess and self-relieving toward productive activity.
+
+This is the Friedman connection completed. Friedman argued for rules-based monetary policy — remove discretionary human decisions from money supply management and replace them with a fixed rule. A velocity-responsive tax rate is the natural fiscal extension: a rules-based instrument that responds to monetary reality automatically, with AI execution and human-set parameters, removing the speculative excess that Friedman's own equation — MV = PQ — reveals as the gap between the financial economy and the productive one it is supposed to represent.
+
 ## VIII. The Present Moment: Why Both Instruments May Be Needed
 
 The velocity tax addresses *flows* — the ongoing generation and movement of financial value. At current levels of wealth concentration, it may not be sufficient alone to address the *stock* — the accumulated holdings that have been compounding for decades under a tax system designed, intentionally or not, to protect them.
