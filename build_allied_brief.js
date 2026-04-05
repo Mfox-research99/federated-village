@@ -355,7 +355,7 @@ const doc = new Document({
           ),
           redlineRow(
             "\u2018Rebate instead of rate reduction\u2019 as carve-out substitute",
-            "The conditional rebate IS available to high-frequency trading firms, hedge funds, and private equity \u2014 on exactly the same terms as any other financial institution. They pay the full rate. They get 5\u201310% back if they deploy into qualifying productive investment through a designated separate account with independent certification and criminal liability for misuse. This is not a carve-out. It is a productive investment incentive open to any entity willing to put capital to work in the real economy. If a financial institution asks for a rebate without the productive investment condition, that is a carve-out. Reject it."
+            "The conditional rebate is open to any entity that remits velocity tax \u2014 HFT firms, hedge funds, manufacturers, agricultural companies, regional banks, or any other participant. They pay the full rate. They get 5\u201310% back if they deploy into qualifying productive investment through a designated separate account with independent certification and full audit trail. Criminal liability for misuse applies to every rebate recipient without exception \u2014 there is no entity category that escapes the liability clause. This is not a carve-out. It is a productive investment incentive with real teeth. If any entity asks for a rebate without the productive investment condition and without the liability clause, that is a carve-out. Reject it."
           ),
         ]
       }),
