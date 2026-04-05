@@ -1,0 +1,163 @@
+## LEGISLATIVE PLAN REVIEW — VELOCITY TAX OVERSIGHT DESIGN
+## Submitted for Cross-Model Constitutional Review | April 5, 2026
+
+---
+
+## CONTEXT: WHAT PRIOR ANALYSIS FOUND
+
+A previous cross-model panel (Kimi K2.5, GLM-5, DeepSeek-V3, GPT-4o) evaluated velocity
+taxation as a dollar stabilization instrument through the Seventh Generation constitutional
+framework. The panel reached strong consensus that:
+
+1. The current income-tax + compounding debt system is actively locking in debt servitude,
+   monetary commons degradation, and algorithmic financial fragility for the generation born in 2166.
+2. Velocity taxation is theoretically sound as a structural fiscal response.
+3. The dynamic rate variant (t = f(V)) is feasible as a monetary control system.
+
+Two specific warnings emerged:
+
+WARNING 1 (GLM-5): REFLEXIVE HARM
+"If velocity taxation is implemented and fails — or is implemented incompetently —
+it could trigger accelerated capital flight to non-dollar instruments, hastening the
+very de-dollarization it seeks to prevent. This is a reflexive harm: the intervention
+itself, if wrong, accelerates the collapse."
+
+WARNING 2 (GLM-5): AI GOVERNANCE LOCK-IN
+"Embedding an AI-managed monetary rate creates a new institutional lock-in — an opaque,
+algorithmic authority that the 2166 generation would inherit and be unable to contest
+democratically. This is a genuine Seventh Generation harm (algorithmic lock-in with
+compounding bias) that the proposal does not adequately address."
+
+---
+
+## THE THESIS FOR THIS REVIEW
+
+The proposal author (Michael Fox) responds to these warnings as follows:
+
+"The lock-in concern is not a structural flaw — it is a legislative design problem.
+The rates, velocity factors, and AI management parameters are all subject to congressional
+oversight. A sunset clause, mandatory performance review, override authority, and
+explicit democratic guardrails on the AI system eliminate these risks — they don't
+merely mitigate them. What GLM-5 identified as a constitutional hazard is actually
+solvable by proper legislative architecture. The question is whether the legislative
+plan below does that job."
+
+---
+
+## THE LEGISLATIVE ACTION PLAN — FULL TEXT FOR REVIEW
+
+The following is the complete 9-action 90-day legislative plan from the
+Fiscal Stability Brief (April 5, 2026). Evaluate it in full.
+
+### IMMEDIATE — Executive Authority Available Now
+
+ACTION 1: TREASURY VELOCITY STUDY DIRECTIVE
+Direct Treasury to produce a 60-day study of implementing a 0.1% Automated Payment
+Transaction pilot on financial transactions over $1 million. CBO scoring alongside.
+Establishes institutional knowledge base, forces the conversation into the legislative
+record.
+
+ACTION 2: FEDERAL RESERVE VELOCITY REPORTING MANDATE
+Amend the Fed's semi-annual monetary policy reporting to Congress (Humphrey-Hawkins)
+to include quarterly real-time velocity (V) disaggregated by transaction type:
+productive sector vs. financial sector. This data exists in the clearing system.
+Making it visible to Congress is the prerequisite for AI-managed rate design.
+
+ACTION 3: DE-DOLLARIZATION EARLY WARNING SYSTEM
+Direct Treasury Intelligence and the Federal Reserve to establish a public
+de-dollarization monitoring dashboard: percentage of global trade settled in USD
+vs. alternative currencies, updated monthly. Real-time visibility into the trajectory.
+
+### 30-DAY ACTIONS — Emergency Legislation
+
+ACTION 4: VELOCITY TAX PILOT ACT
+Draft and introduce legislation establishing a 0.1% transaction tax on equity trades
+above $100,000, effective for a 24-month pilot period. Revenue dedicated exclusively
+to sovereign debt paydown — no discretionary spending. Sunset clause requires
+affirmative renewal. Designed to generate CBO data on countercyclical properties.
+
+ACTION 5: CONDITIONAL REBATE DESIGN COMMISSION
+Bipartisan commission to design the tangible-asset rebate mechanism: legal definition
+of "tangible productive asset," implementation via existing banking reporting
+infrastructure, enforcement through existing bank examination authority.
+Target: legislation ready within 90 days of commission first report.
+
+ACTION 6: DOLLAR RESERVE PROTECTION ACT
+Establish a bipartisan Dollar Reserve Protection Board with two specific mandates:
+(a) publish a public 10-year fiscal credibility assessment quarterly, and
+(b) hold veto authority over Treasury actions affecting essential civilian resource
+flows — preventing weaponization of financial infrastructure against goods that
+alternatives to the dollar are being built specifically to transport.
+
+### 90-DAY ACTIONS — Structural Architecture
+
+ACTION 7: AI MONETARY MANAGEMENT AUTHORIZATION ACT
+Direct NIST, Treasury, and the Federal Reserve jointly to develop a velocity-monitoring
+AI system using existing clearing data.
+
+KEY OVERSIGHT PROVISIONS:
+- The AI system operates ONLY within congressionally mandated parameters:
+  V₀ (productive baseline), dampening coefficient k, and rate bounds on t.
+- The Fed sets policy; the system executes within those parameters.
+- Congressional override authority: Congress may suspend AI rate adjustment by
+  majority vote at any time.
+- Public audit requirement: rate adjustment logs published monthly in machine-readable
+  format; any adjustment outside ±0.05% requires Fed Chair notification to Congress
+  within 24 hours.
+- Mandatory 24-month performance review with affirmative renewal required.
+- Sunset clause: if de-dollarization rate (as measured by the Action 3 dashboard)
+  increases by more than 5 percentage points in any 12-month period during operation,
+  the AI rate adjustment authority is automatically suspended pending congressional review.
+- Parameter transparency: all V₀, k, and t-bound settings are public record,
+  published in the Federal Register, subject to notice-and-comment rulemaking.
+
+ACTION 8: NON-DOLLAR CLEARING PROTECTION ACT
+Establish clearing arrangements for designated essential goods (helium, ammonia,
+rare earths) that operate outside SWIFT for those specific goods.
+Purpose: prevent resource warfare from producing the very alternative infrastructure
+it is meant to punish. If essential goods can flow in dollars, they will.
+
+ACTION 9: INTERGENERATIONAL FISCAL REVIEW ACT
+Require Seventh Generation Fiscal Impact Statements for any executive action
+expected to affect sovereign debt by more than $1 trillion over 10 years.
+Modeled on environmental impact statements, with a 140-year temporal horizon and
+mandatory publication before the action takes effect. Private right of action for
+"unborn heirs" via trustee.
+
+---
+
+## QUESTIONS FOR CONSTITUTIONAL REVIEW
+
+The panel is asked to evaluate this legislative plan through the Seventh Generation
+constitutional framework, with specific attention to the following:
+
+QUESTION 1: DOES THE PLAN SOLVE GLM-5'S REFLEXIVE HARM WARNING?
+The sunset clause in Action 4 (Velocity Tax Pilot) and the automatic suspension
+trigger in Action 7 (AI de-dollarization tripwire) are designed to catch a failing
+implementation before it accelerates collapse. Is this architecture adequate?
+What would make it constitutionally sound rather than merely politically defensible?
+
+QUESTION 2: DOES THE PLAN SOLVE GLM-5'S AI GOVERNANCE LOCK-IN WARNING?
+Action 7's oversight provisions (congressional override, public audit, parameter
+transparency, notice-and-comment rulemaking, affirmative renewal) are designed
+to ensure the 2166 generation inherits a democratically accountable system,
+not an opaque algorithmic authority. Does this design succeed constitutionally?
+Or does it merely create the appearance of democratic control over a system
+that will in practice be technically incomprehensible to the legislators overseeing it?
+
+QUESTION 3: IS THE AUTHOR'S THESIS CORRECT?
+"Lock-in is a legislative design problem, not a structural one. Proper oversight
+eliminates the risk rather than merely mitigating it."
+Is this true? Are there structural features of velocity taxation or AI monetary
+management that legislative oversight cannot solve — risks that are inherent to
+the instrument itself, independent of how Congress designs the enabling legislation?
+
+QUESTION 4: SEVENTH GENERATION ALIGNMENT
+Does this 9-action plan, taken as a whole, represent what a Seventh Generation
+constitutional elder would recommend? What does it preserve for 2166 that the
+current system destroys? What new risks does it introduce? What is the
+constitutional verdict: implement, redesign, or reject?
+
+QUESTION 5: WHAT IS MISSING?
+What action is most conspicuously absent from this plan? What single addition
+would most strengthen its Seventh Generation constitutional soundness?
