@@ -349,6 +349,14 @@ const doc = new Document({
             "IRS enforcement retained",
             "The velocity tax is self-collecting at the clearing layer. There is no returns-based enforcement function. Retaining IRS enforcement infrastructure for the velocity tax is the mechanism through which audit-based avoidance strategies are later permitted. The transformation of the IRS from enforcement to economic development must be concurrent with implementation, not deferred."
           ),
+          redlineRow(
+            "Financial sector carve-out requests of any kind",
+            "The political answer is simple and must be stated publicly: the federal government\u2019s own transactions are subject to this rate. State and local government transactions are subject to this rate. No public entity \u2014 Congress, the Pentagon, the Treasury \u2014 receives an exemption. When the financial sector requests a carve-out, the answer on the floor is: explain why you deserve a privilege that the United States government itself does not receive. This framing makes a carve-out vote politically toxic. Use it."
+          ),
+          redlineRow(
+            "\u2018Rebate instead of rate reduction\u2019 as carve-out substitute",
+            "The conditional rebate IS available to high-frequency trading firms, hedge funds, and private equity \u2014 on exactly the same terms as any other financial institution. They pay the full rate. They get 5\u201310% back if they deploy into qualifying productive investment through a designated separate account with independent certification and criminal liability for misuse. This is not a carve-out. It is a productive investment incentive open to any entity willing to put capital to work in the real economy. If a financial institution asks for a rebate without the productive investment condition, that is a carve-out. Reject it."
+          ),
         ]
       }),
 

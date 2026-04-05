@@ -250,6 +250,12 @@ bullet("Who pays more: high-frequency traders, private equity, hedge funds \u201
 bullet("Who pays far less: every American business producing goods and services. Apple saves ~$33B. Amazon ~$16.5B. A 5-employee small business saves $72,475 per year \u2014 a 97% reduction."),
 sp(80),
 callout(
+  "NO CARVE-OUTS \u2014 FOR ANYONE",
+  "The federal government\u2019s own transactions are subject to this rate. State and local government transactions are subject to this rate. Congress, the Pentagon, the Treasury \u2014 all pay. No public or private entity receives an exemption the United States government itself does not receive. When the financial sector requests a carve-out, the answer is: explain why you deserve a privilege that the US government does not have. That is a public floor vote no one wants to take.",
+  LGOLD, GOLD
+),
+sp(80),
+callout(
   "CONSTITUTIONAL BASIS: NO AMENDMENT REQUIRED",
   "The velocity tax is an excise tax under Article I, Section 8. Congress has plenary authority. The Sixteenth Amendment is irrelevant \u2014 it authorizes income taxes; this instrument has no income measurement, no adjusted gross income, no returns. Historical precedent: documentary stamp taxes, securities transaction taxes, telephone excise tax \u2014 all constitutional without amendment. Someone will file suit. The excise doctrine defeats it.",
   LNAVY, NAVY
@@ -354,7 +360,7 @@ actionBlock("4","Velocity Tax Pilot Act","30-Day Legislation","Introduce legisla
 sp(40),
 actionBlock("5","Dollar Reserve Protection Board","30-Day Legislation","Establish a bipartisan Dollar Reserve Protection Board with veto authority over Treasury actions affecting essential civilian resource flows \u2014 specifically helium, ammonia/fertilizer precursors, rare earths, and pharmaceutical inputs. Prevents weaponization of financial infrastructure against the goods alternative settlement systems are being built specifically to transport. If essential goods can flow in dollars, they will."),
 sp(40),
-actionBlock("6","Conditional Rebate \u2014 Productive Investment","30-Day Legislation","Return 5\u201310% of velocity tax revenue to financial institutions conditioned on deployment into tangible productive assets: manufacturing, infrastructure, agricultural capital, domestic helium recovery infrastructure, domestic ammonia production capacity, energy systems, housing. Creates a private-sector investment channel toward the supply chain vulnerabilities exposed by the Strait of Hormuz closure."),
+actionBlock("6","Conditional Rebate \u2014 Productive Investment","30-Day Legislation","Return 5\u201310% of velocity tax revenue to financial institutions \u2014 including high-frequency trading firms, hedge funds, and private equity \u2014 conditioned on deployment into tangible productive assets: manufacturing, infrastructure, agricultural capital, domestic helium recovery infrastructure, domestic ammonia production capacity, energy systems, housing. Participation requires a designated separate account, independent certification of deployment, and full audit trail. Misuse carries criminal liability. This is not a rate carve-out: every participant pays the full flat rate. The rebate is a productive investment incentive open to any entity willing to put capital to work in the real economy."),
 sp(40),
 actionBlock("7","AI Monetary Management Authorization Act","90-Day Legislation","Authorize AI-managed dynamic rate adjustment operating on real-time clearing data, within parameters set by Congress and the Seventh Generation Oversight Commission. Rate formula: t(V) = t\u2080 + k \u00d7 max(0, V \u2212 V\u2080). Three-mode counter-cyclical design: Mode 1 (prosperity) builds reserves; Mode 2 (volatility) reduces friction; Mode 3 (crisis circuit breaker) applies a universal rate ceiling to all transactions \u2014 no transaction classification required, triggered by 2% de-dollarization or Fed systemic certification. Congressional override, full parameter transparency, and financial sector exclusion from oversight are mandatory provisions."),
 sp(40),
