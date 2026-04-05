@@ -28,12 +28,12 @@ const doc = new Document({
   styles:{default:{document:{run:{font:"Arial",size:22,color:BLACK}}},paragraphStyles:[{id:"Heading1",name:"Heading 1",basedOn:"Normal",next:"Normal",quickFormat:true,run:{size:28,bold:true,font:"Arial",color:NAVY},paragraph:{spacing:{before:300,after:80},outlineLevel:0}}]},
   sections:[{
     properties:{page:{size:{width:12240,height:15840},margin:{top:1080,right:1260,bottom:1080,left:1260}}},
-    headers:{default:new Header({children:[new Paragraph({tabStops:[{type:TabStopType.RIGHT,position:TabStopPosition.MAX}],border:{bottom:{style:BorderStyle.SINGLE,size:6,color:GOLD}},spacing:{before:0,after:80},children:[new TextRun({text:"AMERICAN PRODUCTIVITY TAX REFORM  |  LEGISLATIVE BRIEF",color:NAVY,size:16,font:"Arial"}),new TextRun({text:"\t"}),new TextRun({text:"Page ",color:MGREY,size:16,font:"Arial"}),new TextRun({children:[PageNumber.CURRENT],color:MGREY,size:16,font:"Arial"}),new TextRun({text:" of ",color:MGREY,size:16,font:"Arial"}),new TextRun({children:[PageNumber.TOTAL_PAGES],color:MGREY,size:16,font:"Arial"})]})]}),},
-    footers:{default:new Footer({children:[new Paragraph({border:{top:{style:BorderStyle.SINGLE,size:4,color:NAVY}},children:[]}),new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:80},children:[new TextRun({text:"American Productivity Tax Reform  \u2022  Legislative Brief  \u2022  April 5, 2026",color:MGREY,size:16,font:"Arial",italics:true})]})]})},
+    headers:{default:new Header({children:[new Paragraph({tabStops:[{type:TabStopType.RIGHT,position:TabStopPosition.MAX}],border:{bottom:{style:BorderStyle.SINGLE,size:6,color:GOLD}},spacing:{before:0,after:80},children:[new TextRun({text:"AMERICAN PRODUCTIVITY TAX REFORM ACT OF 2026",color:NAVY,size:16,font:"Arial"}),new TextRun({text:"\t"}),new TextRun({text:"Page ",color:MGREY,size:16,font:"Arial"}),new TextRun({children:[PageNumber.CURRENT],color:MGREY,size:16,font:"Arial"}),new TextRun({text:" of ",color:MGREY,size:16,font:"Arial"}),new TextRun({children:[PageNumber.TOTAL_PAGES],color:MGREY,size:16,font:"Arial"})]})]}),},
+    footers:{default:new Footer({children:[new Paragraph({border:{top:{style:BorderStyle.SINGLE,size:4,color:NAVY}},children:[]}),new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:80},children:[new TextRun({text:"American Productivity Tax Reform Act of 2026  \u2022  April 5, 2026",color:MGREY,size:16,font:"Arial",italics:true})]})]})},
     children:[
 
 // Title
-new Table({width:{size:9720,type:WidthType.DXA},columnWidths:[9720],rows:[new TableRow({children:[new TableCell({borders:noBorders,shading:{fill:NAVY,type:ShadingType.CLEAR},margins:{top:320,bottom:320,left:480,right:480},width:{size:9720,type:WidthType.DXA},children:[new Paragraph({alignment:AlignmentType.CENTER,children:[new TextRun({text:"AMERICAN PRODUCTIVITY TAX REFORM",color:GOLD,bold:true,size:22,font:"Arial"})]}),new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:80},children:[new TextRun({text:"A Single Rate That Replaces Them All",color:WHITE,bold:true,size:36,font:"Arial"})]}),new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:60},children:[new TextRun({text:"A Legislative Brief for the United States Congress",color:WHITE,size:22,font:"Arial"})]}),new Paragraph({alignment:AlignmentType.CENTER,border:{top:{style:BorderStyle.SINGLE,size:4,color:GOLD}},spacing:{before:80},children:[new TextRun({text:"April 5, 2026",color:GOLD,size:18,font:"Arial",italics:true})]})]})]})]}),
+new Table({width:{size:9720,type:WidthType.DXA},columnWidths:[9720],rows:[new TableRow({children:[new TableCell({borders:noBorders,shading:{fill:NAVY,type:ShadingType.CLEAR},margins:{top:320,bottom:320,left:480,right:480},width:{size:9720,type:WidthType.DXA},children:[new Paragraph({alignment:AlignmentType.CENTER,children:[new TextRun({text:"AN ACT",color:GOLD,bold:true,size:22,font:"Arial"})]}),new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:80},children:[new TextRun({text:"American Productivity Tax Reform Act of 2026",color:WHITE,bold:true,size:36,font:"Arial"})]}),new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:60},children:[new TextRun({text:"To replace the federal tax system with a single transaction excise and establish the American Productivity Dividend",color:WHITE,size:22,font:"Arial"})]}),new Paragraph({alignment:AlignmentType.CENTER,border:{top:{style:BorderStyle.SINGLE,size:4,color:GOLD}},spacing:{before:80},children:[new TextRun({text:"Introduced in the United States Congress  \u2022  April 5, 2026",color:GOLD,size:18,font:"Arial",italics:true})]})]})]})]}),
 sp(160),
 
 // Panel verdict banner
@@ -215,6 +215,7 @@ new Paragraph({spacing:{before:60},children:[new TextRun({text:"Velocity tax der
 ]}]});
 
 Packer.toBuffer(doc).then(buf=>{
-  fs.writeFileSync("reports/american_productivity_tax_reform_2026-04-05.docx",buf);
-  console.log("Written: reports/american_productivity_tax_reform_2026-04-05.docx");
+  const outPath = "/Users/michaeldavis/Michael Fox Politics/American_Productivity_Tax_Reform_Act_2026.docx";
+  fs.writeFileSync(outPath,buf);
+  console.log("Written: "+outPath);
 }).catch(e=>{console.error(e);process.exit(1);});

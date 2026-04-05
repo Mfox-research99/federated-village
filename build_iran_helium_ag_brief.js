@@ -89,7 +89,7 @@ const doc = new Document({
       border:{bottom:{style:BorderStyle.SINGLE,size:6,color:GOLD}},
       spacing:{before:0,after:80},
       children:[
-        new TextRun({text:"DOLLAR STABILITY IN A WORLD AT WAR  |  LEGISLATIVE BRIEF",color:NAVY,size:16,font:"Arial"}),
+        new TextRun({text:"DOLLAR RESERVE PROTECTION AND SUPPLY CHAIN SECURITY ACT OF 2026",color:NAVY,size:16,font:"Arial"}),
         new TextRun({text:"\t"}),
         new TextRun({text:"Page ",color:MGREY,size:16,font:"Arial"}),
         new TextRun({children:[PageNumber.CURRENT],color:MGREY,size:16,font:"Arial"}),
@@ -99,7 +99,7 @@ const doc = new Document({
     })]}),},
     footers:{default:new Footer({children:[
       new Paragraph({border:{top:{style:BorderStyle.SINGLE,size:4,color:NAVY}},children:[]}),
-      new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:80},children:[new TextRun({text:"Dollar Stability in a World at War  \u2022  Legislative Brief  \u2022  April 5, 2026",color:MGREY,size:16,font:"Arial",italics:true})]})
+      new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:80},children:[new TextRun({text:"Dollar Reserve Protection and Supply Chain Security Act of 2026  \u2022  April 5, 2026",color:MGREY,size:16,font:"Arial",italics:true})]})
     ]})},
     children:[
 
@@ -109,9 +109,9 @@ new Table({width:{size:9720,type:WidthType.DXA},columnWidths:[9720],rows:[new Ta
   margins:{top:320,bottom:320,left:480,right:480},
   width:{size:9720,type:WidthType.DXA},
   children:[
-    new Paragraph({alignment:AlignmentType.CENTER,children:[new TextRun({text:"DOLLAR STABILITY IN A WORLD AT WAR",color:GOLD,bold:true,size:22,font:"Arial"})]}),
-    new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:80},children:[new TextRun({text:"Helium, Fertilizer, and the Cost of Doing Nothing",color:WHITE,bold:true,size:36,font:"Arial"})]}),
-    new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:60},children:[new TextRun({text:"A Legislative Brief for the United States Congress",color:WHITE,size:22,font:"Arial"})]}),
+    new Paragraph({alignment:AlignmentType.CENTER,children:[new TextRun({text:"AN ACT",color:GOLD,bold:true,size:22,font:"Arial"})]}),
+    new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:80},children:[new TextRun({text:"Dollar Reserve Protection and Supply Chain Security Act of 2026",color:WHITE,bold:true,size:32,font:"Arial"})]}),
+    new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:60},children:[new TextRun({text:"To protect US dollar reserve status, secure essential supply chains, and establish a velocity-based fiscal instrument",color:WHITE,size:21,font:"Arial"})]}),
     new Paragraph({alignment:AlignmentType.CENTER,border:{top:{style:BorderStyle.SINGLE,size:4,color:GOLD}},spacing:{before:80},children:[new TextRun({text:"April 5, 2026",color:GOLD,size:18,font:"Arial",italics:true})]})
   ]
 })]})]}),
@@ -394,6 +394,7 @@ new Paragraph({spacing:{before:60},children:[new TextRun({text:"Velocity tax der
 });
 
 Packer.toBuffer(doc).then(buf=>{
-  fs.writeFileSync("reports/dollar_stability_brief_2026-04-05.docx",buf);
-  console.log("Written: reports/dollar_stability_brief_2026-04-05.docx");
+  const outPath = "/Users/michaeldavis/Michael Fox Politics/Dollar_Reserve_Protection_and_Supply_Chain_Security_Act_2026.docx";
+  fs.writeFileSync(outPath,buf);
+  console.log("Written: "+outPath);
 }).catch(e=>{console.error(e);process.exit(1);});

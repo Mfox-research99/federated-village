@@ -439,6 +439,7 @@ const doc = new Document({
 });
 
 Packer.toBuffer(doc).then(buffer => {
-  fs.writeFileSync("reports/allied_memo_2026-04-05.docx", buffer);
-  console.log("Written: reports/allied_memo_2026-04-05.docx");
+  const outPath = "/Users/michaeldavis/Michael Fox Politics/allied_memo_2026-04-05.docx";
+  fs.writeFileSync(outPath, buffer);
+  console.log("Written: "+outPath);
 });
