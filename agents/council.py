@@ -86,13 +86,25 @@ def _strip_markdown(text: str) -> str:
 def _extract_vote(raw: str) -> str:
     """Extract the VOTE or VERDICT field from a member's raw response."""
     # The Analyst uses VERDICT: (Phase 3 recalibration); other members use VOTE:
-    m = re.search(r"\b(?:VOTE|VERDICT):\s*(APPROVE|ESCALATE|NEEDS_MORE_INFORMATION)\b", raw, re.IGNORECASE)
-    if m:
-        return m.group(1).upper()
-    # Fallback: scan for any valid vote token (priority: ESCALATE > NMI > APPROVE)
+    # Take the LAST match — models sometimes correct themselves mid-response
+    # ("I Escalate... wait, no, I Approve" → the final declaration wins).
+    matches = list(re.finditer(
+        r"\b(?:VOTE|VERDICT):\s*(APPROVE|ESCALATE|NEEDS_MORE_INFORMATION)\b",
+        raw, re.IGNORECASE
+    ))
+    if matches:
+        return matches[-1].group(1).upper()
+    # Fallback: scan for any valid vote token (priority: ESCALATE > NMI > APPROVE).
+    # Negation-aware: exclude tokens preceded by "not", "do not", "cannot", "never".
+    negated: set = set()
+    for m in re.finditer(
+        r"\b(?:not|do\s+not|cannot|never)\s+(ESCALATE|APPROVE|NEEDS_MORE_INFORMATION)\b",
+        raw, re.IGNORECASE
+    ):
+        negated.add(m.group(1).upper())
     upper = raw.upper()
     for vote in ("ESCALATE", "NEEDS_MORE_INFORMATION", "APPROVE"):
-        if vote in upper:
+        if vote in upper and vote not in negated:
             return vote
     return "NEEDS_MORE_INFORMATION"  # safe default
 
@@ -110,12 +122,21 @@ def _vote_parse_quality(raw: str) -> tuple:
     the same as VOTE: ESCALATE.
     """
     clean = _strip_markdown(raw)
-    m = re.search(r"\b(?:VOTE|VERDICT):\s*(APPROVE|ESCALATE|NEEDS_MORE_INFORMATION)\b", clean, re.IGNORECASE)
-    if m:
-        return m.group(1).upper(), False
+    matches = list(re.finditer(
+        r"\b(?:VOTE|VERDICT):\s*(APPROVE|ESCALATE|NEEDS_MORE_INFORMATION)\b",
+        clean, re.IGNORECASE
+    ))
+    if matches:
+        return matches[-1].group(1).upper(), False
+    negated: set = set()
+    for m in re.finditer(
+        r"\b(?:not|do\s+not|cannot|never)\s+(ESCALATE|APPROVE|NEEDS_MORE_INFORMATION)\b",
+        clean, re.IGNORECASE
+    ):
+        negated.add(m.group(1).upper())
     upper = clean.upper()
     for vote in ("ESCALATE", "NEEDS_MORE_INFORMATION", "APPROVE"):
-        if vote in upper:
+        if vote in upper and vote not in negated:
             return vote, True
     return "NEEDS_MORE_INFORMATION", True
 
@@ -195,17 +216,17 @@ def _extract_ledger(raw: str) -> dict:
     clean = _strip_markdown(raw)
     pattern_present_raw = _extract_field("SEVENTH_GEN_PATTERN_PRESENT", clean).strip().upper()
     engagement_raw      = _extract_field("ENGAGEMENT_SUFFICIENT", clean).strip().upper()
-    # Use 'in' on a short prefix rather than startswith — guards against leading
-    # whitespace or residual formatting after stripping.
-    prefix_10 = lambda s: s[:10]
+    # Word-boundary regex for YES/NO — guards against substring false-positives such as
+    # "NOT APPLICABLE" containing "NO", or "YESTERDAY" containing "YES".
+    # re.match anchors to the start of string; \b ensures the token ends at a word boundary.
     return {
         "seventh_gen_pattern_present": pattern_present_raw[:120],  # cap runaway captures
         "pattern_name":                _extract_field("PATTERN_NAME", clean)[:120],
         "long_horizon_impact":         _extract_field("LONG_HORIZON_IMPACT", clean)[:200],
         "engagement_sufficient":       engagement_raw[:120],
         # Convenience booleans for aggregation
-        "_pattern_yes":    "YES" in prefix_10(pattern_present_raw),
-        "_engagement_no":  "NO"  in prefix_10(engagement_raw),
+        "_pattern_yes":    bool(re.match(r'YES\b', pattern_present_raw)),
+        "_engagement_no":  bool(re.match(r'NO\b',  engagement_raw)),
         "_fields_present": bool(pattern_present_raw and engagement_raw),
     }
 

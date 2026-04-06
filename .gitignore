@@ -44,6 +44,10 @@ codex/impl/path_b/results/
 memory/burden_register.txt
 memory/burden_register_hashes.txt
 
+# Node.js — npm packages for docx brief-builder scripts
+node_modules/
+package-lock.json
+
 # Temporary
 *.tmp
 *.bak

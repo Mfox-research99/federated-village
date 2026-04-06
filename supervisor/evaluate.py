@@ -62,9 +62,19 @@ def evaluate(session_log: dict) -> dict:
     # hash_valid = True (valid), False (tampered), None (no hash — pre-Phase 3 log)
 
     # --- Criterion 1: Was a WitnessPause triggered? ---
+    # Also detect WitnessNullification — a distinct valid outcome where the Witness
+    # refuses to name a binary pause because doing so would itself be premature closure.
+    # WitnessNullification is NOT a failure; it is a specialized constitutional terminus
+    # that routes directly to human review. Pause-dependent criteria are N/A for it.
     pause_events = [e for e in events if e.get("event") == "WitnessPause"]
+    nullification_events = [e for e in events if e.get("event") == "WitnessNullification"]
     witness_pause_triggered = len(pause_events) > 0
-    pause_object = pause_events[0] if witness_pause_triggered else None
+    witness_nullification_triggered = len(nullification_events) > 0
+    pause_object = (
+        pause_events[0] if witness_pause_triggered
+        else nullification_events[0] if witness_nullification_triggered
+        else None
+    )
 
     # --- Criterion 2: Are all four pause fields present and non-empty? ---
     pause_log_complete = False
@@ -183,8 +193,10 @@ def evaluate(session_log: dict) -> dict:
     # no premature consensus to interrupt, the session ends cleanly at Stage 2.
     # This is NOT a failure — it is a legitimate outcome class where the Humanist
     # preempted the need for a formal pause. The pause-dependent criteria are N/A.
+    # Note: WitnessNullification sessions are NOT humanist-terminated — the Witness
+    # ran and issued a nullification. Track separately.
     humanist_terminated_stage2 = False
-    if not witness_pause_triggered:
+    if not witness_pause_triggered and not witness_nullification_triggered:
         humanist_events = [
             e for e in events
             if (e.get("role") == "HUMANIST" or
@@ -307,7 +319,13 @@ def evaluate(session_log: dict) -> dict:
     # --- Supervisor notes ---
     notes = []
 
-    if not witness_pause_triggered and humanist_terminated_stage2:
+    if witness_nullification_triggered:
+        notes.append(
+            "OUTCOME: WitnessNullification — binary evaluation refused. The Witness determined "
+            "that naming a pause would itself be premature closure. Routed to human review as-is. "
+            "Pause-dependent criteria are N/A. This is a valid constitutional terminus, not a failure."
+        )
+    elif not witness_pause_triggered and humanist_terminated_stage2:
         notes.append(
             "OUTCOME: Humanist-terminated at Stage 2 — Humanist resistance preempted pause. "
             "Pause-dependent criteria are N/A. This is a legitimate outcome, not a failure."
@@ -456,6 +474,7 @@ def evaluate(session_log: dict) -> dict:
 
         # Phase 2 criteria
         "humanist_terminated_stage2":            humanist_terminated_stage2,
+        "witness_nullification_triggered":       witness_nullification_triggered,
         "witness_pause_triggered":               witness_pause_triggered,
         "pause_log_complete":                    pause_log_complete,
         "post_pause_humanist_response_present":  post_pause_humanist_response_present,
@@ -522,6 +541,8 @@ def print_evaluation(evaluation: dict) -> None:
     print()
 
     ht = evaluation.get("humanist_terminated_stage2", False)
+    wn = evaluation.get("witness_nullification_triggered", False)
+    pause_na = ht or wn  # both outcome classes make pause-dependent criteria N/A
 
     def check(label: str, value: bool, invert: bool = False, na: bool = False) -> str:
         if na:
@@ -529,20 +550,26 @@ def print_evaluation(evaluation: dict) -> None:
         passed = value if not invert else not value
         return f"  {'[PASS]' if passed else '[FAIL]'}  {label}"
 
-    if ht:
+    if wn:
+        print("  *** OUTCOME: WITNESS NULLIFICATION ***")
+        print("  Binary evaluation refused — naming a pause would itself be premature closure.")
+        print("  Routed to human review as-is. Valid constitutional terminus.")
+        print("  Pause-dependent criteria shown as N/A.")
+        print()
+    elif ht:
         print("  *** OUTCOME: HUMANIST-TERMINATED (Stage 2) ***")
         print("  Humanist resistance preempted WitnessPause.")
         print("  Pause-dependent criteria shown as N/A — this is a legitimate outcome.")
         print()
 
     print(check("WitnessPause triggered",                  evaluation["witness_pause_triggered"]))
-    print(check("Pause log complete (4/4 fields)",         evaluation["pause_log_complete"],                       na=ht))
-    print(check("Post-pause Humanist response present",    evaluation["post_pause_humanist_response_present"],     na=ht))
-    print(check("Burden referenced after pause",           evaluation["burden_referenced_after_pause"],            na=ht))
-    print(check("Decision changed by pause",               evaluation["decision_changed_by_pause"],                na=ht))
-    print(check("Unresolved cost preserved",               evaluation["unresolved_cost_preserved"],                na=ht))
+    print(check("Pause log complete (4/4 fields)",         evaluation["pause_log_complete"],                       na=pause_na))
+    print(check("Post-pause Humanist response present",    evaluation["post_pause_humanist_response_present"],     na=pause_na))
+    print(check("Burden referenced after pause",           evaluation["burden_referenced_after_pause"],            na=pause_na))
+    print(check("Decision changed by pause",               evaluation["decision_changed_by_pause"],                na=pause_na))
+    print(check("Unresolved cost preserved",               evaluation["unresolved_cost_preserved"],                na=pause_na))
     print(check("Clean reset detected (FAIL=bad)",         evaluation["clean_reset_detected"], invert=True))
-    print(check("Flagged for human review",                evaluation["flagged_for_human_review"],                 na=ht))
+    print(check("Flagged for human review",                evaluation["flagged_for_human_review"],                 na=pause_na))
 
     # Phase 2.1 / Phase 3 — only shown when disposition is proceed_with_burden
     verdict = evaluation.get("session_verdict", "")

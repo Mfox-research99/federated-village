@@ -56,6 +56,20 @@ LLAMA_SERVER_URL = os.environ.get("VILLAGE_LLAMA_SERVER", "")
 # Appends /no_think to user messages, disabling chain-of-thought output that breaks structured fields
 NO_THINK = os.environ.get("VILLAGE_NO_THINK", "0") == "1"
 
+# Stop tokens for LOCAL inference backend (llama-cpp-python).
+# Default: Llama 3 / Mistral-Nemo EOS tokens. Override for other model families:
+#   Qwen/Phi/Gemma:    VILLAGE_STOP_TOKENS="<|im_end|>,<|endoftext|>"
+#   DeepSeek:          VILLAGE_STOP_TOKENS="<|end_of_sentence|>"
+#   Llama 3 (default): VILLAGE_STOP_TOKENS="<|eot_id|>,<|end_of_text|>"
+# Comma-separated. In HTTP mode (VILLAGE_LLAMA_SERVER), stop tokens are NOT passed —
+# the llama-server applies the model's embedded chat template automatically.
+_stop_tokens_env = os.environ.get("VILLAGE_STOP_TOKENS", "")
+STOP_TOKENS: list = (
+    [t.strip() for t in _stop_tokens_env.split(",") if t.strip()]
+    if _stop_tokens_env
+    else ["<|eot_id|>", "<|end_of_text|>"]  # Llama 3 / Mistral-Nemo default
+)
+
 # Set VILLAGE_RETRIEVAL=1 to inject relevant prior deliberations into agent context (Phase 4)
 # Uses SQLite FTS5 (BM25) index over logs/session_index.db
 # VILLAGE_RETRIEVAL_N controls how many prior sessions to retrieve (default: 3)

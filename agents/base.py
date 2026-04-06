@@ -14,10 +14,11 @@ Two inference backends:
    Start server: ~/llama_cpp_prism/build/bin/llama-server -m <model.gguf>
      --n-gpu-layers 32 -c 4096 --port 8081
 
-NOTE FOR MODEL SWAPS (Phase 7+): In LOCAL mode, the explicit stop token list in
-call_model() uses Llama 3 / Mistral-Nemo EOS tokens. If swapping in a LoRA-fused
-model built on a different base (e.g. Qwen, Phi), verify that these tokens still
-fire correctly or outputs will not terminate as expected.
+NOTE FOR MODEL SWAPS (Phase 7+): In LOCAL mode, stop tokens are read from
+config.STOP_TOKENS (default: Llama 3 / Mistral-Nemo EOS tokens). If swapping in
+a LoRA-fused model on a different base (e.g. Qwen, Phi, Gemma), set:
+  VILLAGE_STOP_TOKENS="<|im_end|>,<|endoftext|>"  # Qwen / Phi / Gemma
+  VILLAGE_STOP_TOKENS="<|end_of_sentence|>"        # DeepSeek
 In HTTP mode, the server applies the model's embedded chat template automatically;
 stop tokens are not passed explicitly — the server handles termination.
 """
@@ -100,7 +101,7 @@ def call_model(
         ],
         max_tokens=max_tokens,
         temperature=temperature,
-        stop=["<|eot_id|>", "<|end_of_text|>"],  # Llama 3 / Mistral-Nemo — verify for LoRA-fused models
+        stop=config.STOP_TOKENS,  # configurable via VILLAGE_STOP_TOKENS — see config.py
     )
     elapsed = time.perf_counter() - t0
     usage = result.get("usage", {})
