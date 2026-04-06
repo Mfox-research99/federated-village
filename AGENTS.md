@@ -141,6 +141,50 @@ Before installing packages or running conversion pipelines, read:
 `/Users/michaeldavis/AI Existential Thought/Obsidian Vault/Topics/tooling-registry.md`
 This covers Python environments, key binaries, GGUF conversion, and model directory conventions.
 
+## Obsidian Vault — Shared Memory System
+All AI agents working on this project share a second-brain vault at:
+`/Users/michaeldavis/AI Existential Thought/Obsidian Vault/`
+
+**Before starting any session**, check:
+- `Sessions/` — Claude Code session logs
+- `Cowork/` — Cowork (desktop Claude) session logs
+- `Codex/` — Codex session logs
+- `AntiGravity/` — Anti-Gravity session logs
+- `Topics/project-ecosystem.md` — master orientation for all projects
+- `Topics/tooling-registry.md` — all tooling, environments, binaries
+
+Search the vault before re-explaining context, cloning repos, or doing web research.
+
+## ContextKeep — Persistent Memory Server
+ContextKeep MCP server runs at `http://localhost:5100/sse` (auto-starts at login).
+
+Protocol for reading memory:
+1. Call `list_all_memories()` to get the full key directory
+2. Call `retrieve_memory(exact_key)` using a key from step 1
+3. Only use `search_memories()` for content-based searches, not key lookup
+
+## Session Log Protocol (MANDATORY for Codex)
+At the END of every Codex session where meaningful work was done, write a session log to:
+`/Users/michaeldavis/AI Existential Thought/Obsidian Vault/Codex/`
+
+**Filename:** `YYYY-MM-DD-<project>-<slug>.md`
+
+**Required frontmatter:**
+```markdown
+---
+date: YYYY-MM-DD
+project: <project name>
+tags: [session-log, codex, <project>]
+type: session-log
+source: codex
+---
+```
+
+Follow with the same structure as Claude Code session logs:
+`# Session: <title> (<date>)` → Summary → Work Done → Key Decisions → Files Changed → Next Steps → Open Questions
+
+Include `[[WikiLinks]]` to relevant Topic notes so Graph View stays connected.
+
 ## Operational Rules (IMPORTANT)
 - **NEVER suggest running multiple model inference processes in parallel** — M1 16GB cannot handle concurrent GGUF loads
 - Model switching uses env vars: `VILLAGE_MODEL=~/models/.../model.gguf VILLAGE_MODEL_NAME=name python run_session.py`
