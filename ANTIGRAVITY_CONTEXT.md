@@ -98,6 +98,31 @@ source: antigravity
 
 Include `[[WikiLinks]]` to relevant Topic notes so the vault Graph View stays connected.
 
+## Inter-Agent Communication Convention
+Because you know about all agents in this ecosystem, your session logs are the primary async communication channel between Claude Code, Codex, and you — eliminating Mike having to copy/paste context between tools.
+
+When a session log contains something **another agent needs to act on** (a handoff, a question, a request for a second perspective), add an `## Agent Handoff` section at the top of the log, immediately after the Summary:
+
+```markdown
+## Agent Handoff
+**To:** Claude Code  *(or: Codex, or: both)*
+**Priority:** high / normal
+**Action required:** Brief description of what the agent should do or respond to
+
+> Specific question or context excerpt here if needed.
+```
+
+**When to use it:**
+- You've done architectural review and want Claude Code to evaluate or implement something
+- You want Codex to review code you've identified as problematic
+- You've reached a decision point that benefits from another perspective
+- You've found something in the vault that seems stale or contradictory and want it flagged
+
+**How the other agents find it:**
+Claude Code and Codex are both instructed to check `AntiGravity/` at session start and look for `## Agent Handoff` sections. They will act on these without Mike having to relay them.
+
+If the handoff is time-sensitive, use **Priority: high**. Normal means "next session is fine."
+
 ## Operational Rules
 - NEVER run multiple model inference processes in parallel — M1 16GB cannot handle concurrent GGUF loads
 - Do NOT autonomously edit files without explicit instruction from Mike

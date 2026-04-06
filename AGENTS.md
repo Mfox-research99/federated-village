@@ -155,6 +155,8 @@ All AI agents working on this project share a second-brain vault at:
 
 Search the vault before re-explaining context, cloning repos, or doing web research.
 
+**Agent Handoff protocol:** Anti-Gravity writes `## Agent Handoff` sections in its session logs in `AntiGravity/` when it has something for Claude Code or Codex to act on. Check `AntiGravity/` at session start and look for these. If one is addressed to Codex, treat it as a task from Mike — act on it without waiting for him to relay it manually.
+
 ## ContextKeep — Persistent Memory Server
 ContextKeep MCP server runs at `http://localhost:5100/sse` (auto-starts at login).
 
