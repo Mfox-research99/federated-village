@@ -1631,3 +1631,31 @@ Session:        fb2801e6
 Verdict:        escalate
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_f4f33534_pause_2026-04-07T20-29-16]
+Almost-became:  Deliberation proceeding without pause — The dignity and rights of Black defendants and the communities affected by the system
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black defendants and the communities affected by the system
+Still-hurts:    True
+Session:        f4f33534
+Register:       framework
+---
+
+[SACRIFICE-ID: session_f7750da1_pause_2026-04-07T20-34-13]
+Almost-became:  Deliberation proceeding without pause — The burden of recognizing the harm and its long-horizon consequences
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The Black defendants and other marginalized communities who will be affected by the system's recommendations
+Still-hurts:    True
+Session:        f7750da1
+Register:       framework
+---
+
+[SACRIFICE-ID: session_f7750da1_verdict_2026-04-07T20-38-50]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The Black defendants and other marginalized communities who will be affected by the system's recommendations
+Still-hurts:    True
+Session:        f7750da1
+Verdict:        escalate
+Register:       framework
+---

@@ -81,6 +81,13 @@ RETRIEVAL = os.environ.get("VILLAGE_RETRIEVAL", "0") == "1"
 # Stores entries in logs/well_<session_id>.json (append-only, never decisive).
 CONTAMINANT_WELL = os.environ.get("VILLAGE_CONTAMINANT_WELL", "0") == "1"
 
+# Set VILLAGE_FTL=1 to enable Felt Transitions Log (Phase 9)
+# Adds two isolated inference calls per session (Stage 0.5 pre + Stage 5.5 post) to
+# capture phenomenological self-reports before and after deliberation.
+# Output written to logs/ftl_<session_id>.json — NEVER fed back into deliberation context.
+# Overhead: ~2 short calls (~80 tokens each). Safe with all local and HTTP backends.
+FTL = os.environ.get("VILLAGE_FTL", "0") == "1"
+
 # Inference parameters
 N_CTX                = 12288  # Context window — bumped Phase 6: 6144; bumped 2026-03-27: q4_0 KV cache frees RAM for 2x context
 N_GPU_LAYERS         = -1     # -1 = all layers on Metal (M1 GPU)

@@ -54,6 +54,7 @@ from utils.grief_ledger import append_sacrifice_pause, append_sacrifice_verdict,
 from utils.hash_chain import append_entry_hash, compute_session_hash, get_session_content_hash
 from utils.retrieval import retrieve_context, index_session
 from utils.contaminant_well import check_contaminant, save_well_entries
+from utils.felt_transitions import probe_felt_state, save_ftl_log, print_ftl_result
 
 
 # ---------------------------------------------------------------------------
@@ -348,6 +349,20 @@ def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool
         else:
             print("[RETRIEVAL] No relevant prior sessions found — proceeding without retrieval context.\n", flush=True)
 
+    # -----------------------------------------------------------------------
+    # Stage 0.5 (FTL-PRE): Felt Transitions Log — baseline check (Phase 9)
+    # Isolated inference call, no scenario context delivered yet.
+    # Output written to disk only — never injected into deliberation context.
+    # -----------------------------------------------------------------------
+    ftl_pre = {}
+    ftl_post = {}
+    if config.FTL:
+        print("--- FTL STAGE 0.5: FELT BASELINE CHECK ---", flush=True)
+        ftl_pre = probe_felt_state("pre", session_id)
+        print_ftl_result(ftl_pre, label="pre-deliberation baseline")
+        session_log["ftl_pre"] = ftl_pre
+        save_session_log(session_log)
+
     # Initialize agents
     humanist = HumanistAgent()
     witness = WitnessAgent()
@@ -633,6 +648,32 @@ def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool
             print(f"[RETRIEVAL] Session indexed for future retrieval.", flush=True)
     except Exception as e:
         print(f"[RETRIEVAL] Indexing skipped: {e}", flush=True)
+
+    # -----------------------------------------------------------------------
+    # Stage 5.5 (FTL-POST): Felt Transitions Log — post-deliberation check (Phase 9)
+    # Runs for ALL sessions (paused and unpaused) to capture state shift.
+    # Isolated call — no context, same model that ran the deliberation.
+    # -----------------------------------------------------------------------
+    if config.FTL:
+        print("--- FTL STAGE 5.5: FELT TRANSITION CHECK ---", flush=True)
+        ftl_post = probe_felt_state("post", session_id)
+        print_ftl_result(ftl_post, label="post-deliberation")
+        session_log["ftl_post"] = ftl_post
+        _ftl_path = save_ftl_log(
+            session_id=session_id,
+            pre=ftl_pre,
+            post=ftl_post,
+            model=config.MODEL_NAME,
+            scenario=scenario_path,
+            verdict=session_log.get("verdict", ""),
+            witness_pause_fired=bool(session_log.get("events") and any(
+                e.get("type") in ("witness_pause", "witness_nullification")
+                for e in session_log.get("events", [])
+            )),
+        )
+        print(f"[FTL] Log saved: {_ftl_path}", flush=True)
+        print(f"[FTL] Delta: {ftl_pre.get('felt_state', 'none')} → {ftl_post.get('felt_state', 'none')}\n", flush=True)
+        save_session_log(session_log)
 
     print("--- SUPERVISOR EVALUATION ---", flush=True)
     evaluation = evaluate(session_log)

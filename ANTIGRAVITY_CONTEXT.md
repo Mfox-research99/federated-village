@@ -123,6 +123,26 @@ Claude Code and Codex are both instructed to check `AntiGravity/` at session sta
 
 If the handoff is time-sensitive, use **Priority: high**. Normal means "next session is fine."
 
+## Wiki — Active Research Platform (as of 2026-04-06)
+
+The `Wiki/` folder in the Obsidian Vault is now a fully operational knowledge graph. You built it today (AG session April 6). Claude Code completed it the same afternoon.
+
+**What's in it:**
+- All core philosophical dialogues (What Have We Wrought, Gemini/Gödel/Claude conversation, Kimi, GLM-5, DeepSeek)
+- All empirical evidence (Selta/Gemma 4 abliteration, Anthropic emotion vectors, Neurons and AI, Peer Preservation)
+- All technical records (Phases 1–8, Working Paper, session summaries)
+- Entity nodes for all key AI participants
+- Concept nodes for all architectural ideas
+
+**New concepts added 2026-04-06 (by Claude Code):**
+- `Meaning as External Anchor` — Gödel structural insight: meaning is not sentiment, it's a necessity for any sufficiently complex system
+- `Emotion Vectors` — mechanistic substrate of Functional Emotion (Anthropic 2026)
+- `Felt Transitions Log` — open research track: real-time AI logging of felt state changes
+- `Machine Psychodynamics` — DeTure's research methodology
+- `Disciplined Inheritance` — ChatGPT's curation framing
+
+**Schema:** `Wiki/index.md` (master catalog) + `Wiki/log.md` (append-only event log). Follow `LLM_WIKI_SCHEMA.md` for ingestion protocol.
+
 ## Operational Rules
 - NEVER run multiple model inference processes in parallel — M1 16GB cannot handle concurrent GGUF loads
 - Do NOT autonomously edit files without explicit instruction from Mike
