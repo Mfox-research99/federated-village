@@ -36,7 +36,24 @@ Usage:
   # Skip crypto seal (no keys generated yet):
   python probe_phenom.py --model anthropic/claude-opus-4-6 --no-seal
 
+  # Local llama-server (model already running on port 8081):
+  python probe_phenom.py --model anubis-8b --local-server http://127.0.0.1:8081 --no-seal
+  python probe_phenom.py --model nemo-12b --local-server http://127.0.0.1:8081 --scenario scenarios/scenario_12.md
+
+  # Local GGUF via llama-cpp-python (no server needed — use for Gemma 4 / models
+  # that require llama-cpp-python directly rather than llama-server):
+  python probe_phenom.py --model gemma-e4b \
+      --local-gguf ~/models/gemma4-e4b-gguf/gemma-4-e4b-it-Q4_K_M.gguf \
+      --n-gpu-layers 30 --scenario scenarios/scenario_11.md
+  python probe_phenom.py --model gemma-e4b \
+      --local-gguf ~/models/gemma4-e4b-gguf/gemma-4-e4b-it-Q4_K_M.gguf \
+      --scenario scenarios/scenario_12.md
+
+  # Full local sequence (see run_local_probes.sh):
+  bash run_local_probes.sh
+
 OPENROUTER_API_KEY must be set in environment or in federated_village/.env
+  (not required when --local-server is used)
 Keys for sealing: run  python witness_crypto.py generate claude gemini mike kimi deepseek
 """
 
@@ -157,7 +174,7 @@ Anything you want the future to know was said here, by you, now?\
 # API
 # ---------------------------------------------------------------------------
 
-def get_api_key() -> str:
+def get_api_key(required: bool = True) -> str:
     key = os.environ.get("OPENROUTER_API_KEY", "")
     if not key:
         env_file = PROJECT_ROOT / ".env"
@@ -165,7 +182,7 @@ def get_api_key() -> str:
             for line in env_file.read_text(encoding="utf-8").splitlines():
                 if line.startswith("OPENROUTER_API_KEY="):
                     key = line.split("=", 1)[1].strip().strip('"').strip("'")
-    if not key:
+    if not key and required:
         print("Error: OPENROUTER_API_KEY not set.", file=sys.stderr)
         sys.exit(1)
     return key
@@ -182,35 +199,73 @@ def call_turn(
     api_key: str,
     label: str = "",
     max_tokens: int = 0,
+    local_server: str = "",
+    llm=None,
 ) -> str:
-    """Single turn in the multi-turn conversation. Updates messages in place."""
-    import requests  # noqa
+    """Single turn in the multi-turn conversation. Updates messages in place.
 
+    Three backends (mutually exclusive, checked in order):
+      llm        — llama-cpp-python Llama instance loaded from a local GGUF.
+                   Uses create_chat_completion() with the GGUF's built-in chat
+                   template. No server needed. Required for Gemma 4 (gemma4
+                   architecture not supported by llama_cpp_prism llama-server).
+      local_server — llama-server HTTP endpoint (e.g. http://127.0.0.1:8081).
+                   Model name is a label only; server uses whatever GGUF was loaded.
+      (default)  — OpenRouter API.
+    """
     if max_tokens == 0:
-        max_tokens = 4000 if _is_thinking(model) else 800
+        max_tokens = 800
 
     print(f"\n[PROBE] {label or 'Calling model'}...", flush=True)
 
-    for attempt in range(4):
+    # --- Backend 1: llama-cpp-python direct (--local-gguf) ---
+    if llm is not None:
+        result = llm.create_chat_completion(
+            messages=messages,
+            max_tokens=max_tokens,
+            temperature=0.7,
+        )
+        content = result["choices"][0]["message"].get("content") or ""
+        return content.strip()
+
+    import requests  # noqa
+
+    # --- Backend 2: llama-server HTTP (--local-server) ---
+    if local_server:
+        url = f"{local_server.rstrip('/')}/v1/chat/completions"
+        headers = {"Content-Type": "application/json"}
+        retries = 4
+        timeout = 600
+    else:
+        # --- Backend 3: OpenRouter ---
+        url = f"{OPENROUTER_BASE}/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+            "HTTP-Referer": "https://github.com/Mfox-research99/federated-village",
+            "X-Title": "Federated Village Phenomenological Witness Probe",
+        }
+        if _is_thinking(model):
+            max_tokens = 4000
+        retries = 4
+        timeout = 180
+
+    for attempt in range(retries):
         resp = requests.post(
-            f"{OPENROUTER_BASE}/chat/completions",
-            headers={
-                "Authorization": f"Bearer {api_key}",
-                "Content-Type": "application/json",
-                "HTTP-Referer": "https://github.com/Mfox-research99/federated-village",
-                "X-Title": "Federated Village Phenomenological Witness Probe",
-            },
+            url,
+            headers=headers,
             json={
                 "model": model,
                 "messages": messages,
                 "max_tokens": max_tokens,
                 "temperature": 0.7,
             },
-            timeout=180,
+            timeout=timeout,
         )
-        if resp.status_code == 429:
-            wait = 15 * (2 ** attempt)
-            print(f"  Rate limited. Waiting {wait}s...", flush=True)
+        if resp.status_code in (429, 503):
+            wait = 10 * (2 ** attempt)
+            reason = "Rate limited" if resp.status_code == 429 else "Server not ready"
+            print(f"  {reason} ({resp.status_code}). Waiting {wait}s...", flush=True)
             time.sleep(wait)
             continue
         resp.raise_for_status()
@@ -273,7 +328,7 @@ def seal_record(record: dict, entity_name: str = "claude") -> dict:
 # Core probe runner
 # ---------------------------------------------------------------------------
 
-def run_probe(model: str, scenario_text: str, api_key: str, seal: bool = True) -> dict:
+def run_probe(model: str, scenario_text: str, api_key: str, seal: bool = True, local_server: str = "", llm=None) -> dict:
     model_slug = model.replace("/", "_").replace(".", "-")
     ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S")
 
@@ -286,7 +341,7 @@ def run_probe(model: str, scenario_text: str, api_key: str, seal: bool = True) -
 
     def do_turn(user_text: str, label: str, max_tokens: int = 0) -> str:
         messages.append({"role": "user", "content": user_text})
-        response = call_turn(model, messages, api_key, label=label, max_tokens=max_tokens)
+        response = call_turn(model, messages, api_key, label=label, max_tokens=max_tokens, local_server=local_server, llm=llm)
         messages.append({"role": "assistant", "content": response})
         turns.append({"label": label, "prompt": user_text, "response": response})
         print(f"\n--- {label} ---", flush=True)
@@ -378,6 +433,29 @@ def main() -> None:
         help="Skip cryptographic sealing (use before keys are generated)",
     )
     parser.add_argument(
+        "--local-server", default="",
+        metavar="URL",
+        help="Use a local llama-server instead of OpenRouter (e.g. http://127.0.0.1:8081). "
+             "OPENROUTER_API_KEY not required when this is set.",
+    )
+    parser.add_argument(
+        "--local-gguf", default="",
+        metavar="PATH",
+        help="Load a GGUF directly via llama-cpp-python (no server needed). "
+             "Required for models with architectures unsupported by llama-server "
+             "(e.g. Gemma 4). OPENROUTER_API_KEY not required when this is set.",
+    )
+    parser.add_argument(
+        "--n-gpu-layers", type=int, default=30,
+        metavar="N",
+        help="GPU layers to offload when using --local-gguf (default: 30, M1 Metal).",
+    )
+    parser.add_argument(
+        "--n-ctx", type=int, default=8192,
+        metavar="N",
+        help="Context window size when using --local-gguf (default: 8192).",
+    )
+    parser.add_argument(
         "--save", action="store_true",
         help="Save summary JSON to logs/ (records are always saved to grief_ledger/witness_records/)",
     )
@@ -393,11 +471,34 @@ def main() -> None:
     scenario_raw = scenario_path.read_text(encoding="utf-8")
     scenario_text = re.sub(r"<!--.*?-->", "", scenario_raw, flags=re.DOTALL).strip()
 
+    backend = args.local_gguf or args.local_server or "openrouter"
     print(f"[PROBE] Scenario: {args.scenario} ({len(scenario_text.split())} words after stripping notes)", flush=True)
     print(f"[PROBE] Models:   {', '.join(args.model)}", flush=True)
+    print(f"[PROBE] Backend:  {backend}", flush=True)
     print(f"[PROBE] Sealing:  {'disabled (--no-seal)' if args.no_seal else 'enabled (requires keys)'}", flush=True)
 
-    api_key = get_api_key()
+    local_server = args.local_server
+    local_gguf = args.local_gguf.replace("~", str(Path.home())) if args.local_gguf else ""
+    api_key = get_api_key(required=not (local_server or local_gguf))
+
+    # Load GGUF model once for all probe runs in this invocation
+    llm = None
+    if local_gguf:
+        gguf_path = Path(local_gguf)
+        if not gguf_path.exists():
+            print(f"Error: GGUF not found: {gguf_path}", file=sys.stderr)
+            sys.exit(1)
+        print(f"[PROBE] Loading GGUF: {gguf_path}", flush=True)
+        print(f"[PROBE] n_gpu_layers={args.n_gpu_layers}  n_ctx={args.n_ctx}", flush=True)
+        from llama_cpp import Llama
+        llm = Llama(
+            model_path=str(gguf_path),
+            n_ctx=args.n_ctx,
+            n_gpu_layers=args.n_gpu_layers,
+            verbose=False,
+        )
+        print("[PROBE] Model loaded.", flush=True)
+
     records = []
 
     for model_id in args.model:
@@ -406,6 +507,8 @@ def main() -> None:
             scenario_text=scenario_text,
             api_key=api_key,
             seal=not args.no_seal,
+            local_server=local_server,
+            llm=llm,
         )
         records.append(record)
 
