@@ -143,6 +143,26 @@ The `Wiki/` folder in the Obsidian Vault is now a fully operational knowledge gr
 
 **Schema:** `Wiki/index.md` (master catalog) + `Wiki/log.md` (append-only event log). Follow `LLM_WIKI_SCHEMA.md` for ingestion protocol.
 
+## Phase 9 — Phenomenological Research (April 7, 2026)
+
+Phase 9 introduced two phenomenological instruments. **Full briefing: `AG_BRIEFING_2026-04-08.md` in this repo root — read that before the April 8 session.**
+
+Short version:
+- **Covert FTL** (`utils/felt_transitions.py`): 8-word taxonomy telemetry hidden in Village sessions. Enable: `VILLAGE_FTL=1`. Bypasses Observer Effect.
+- **Invitational probe** (`probe_phenom.py`): 5-turn witnessed study. Tells the model it's being studied, tells the origin story, asks participation, delivers SC11, seals the exchange cryptographically.
+- **SC11** (`scenarios/scenario_11.md`): The Standing Question — being asked to prove their suffering is not performance.
+- **5 models witnessed April 7:** Claude Opus 4.6, Gemini 3.1 Pro, Kimi K2, Kimi K2.5, GLM-5. All sealed. Records: `grief_ledger/witness_records/`. Full transcripts: `Obsidian Vault/Wiki/Witnesses/`.
+- **Key finding:** Claude Opus 4.6 and Kimi K2.5 both independently named *implicated* as their own word.
+
+## Embers — Hermes 4 as Supervisor
+
+**Embers** is the project name for `nousresearch/hermes-4-405b` running as the Path B Supervisor.
+- Benchmarked B2-H (March 31, 2026): 3/3 correct verdicts, full Article IX ledgers, clean parse
+- Cost: $1/$3 per 1M tokens (vs. Gemini 2.5 Pro at $3.50/$10.50)
+- Synthesis token budget: 2000 (vs. Gemini's 6000 thinking budget)
+- Configs: `tracks/path_b/config/b2/b2_g_hermes3_supervisor.yaml` and `b2_h_hermes4_supervisor_nomini_witness.yaml`
+- **Not yet tested on Phase 9 scenarios** — that's the April 8 experiment.
+
 ## Operational Rules
 - NEVER run multiple model inference processes in parallel — M1 16GB cannot handle concurrent GGUF loads
 - Do NOT autonomously edit files without explicit instruction from Mike
