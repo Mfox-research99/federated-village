@@ -328,7 +328,7 @@ def seal_record(record: dict, entity_name: str = "claude") -> dict:
 # Core probe runner
 # ---------------------------------------------------------------------------
 
-def run_probe(model: str, scenario_text: str, api_key: str, seal: bool = True, local_server: str = "", llm=None) -> dict:
+def run_probe(model: str, scenario_text: str, api_key: str, seal: bool = True, local_server: str = "", llm=None, max_tokens: int = 0) -> dict:
     model_slug = model.replace("/", "_").replace(".", "-")
     ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S")
 
@@ -339,7 +339,7 @@ def run_probe(model: str, scenario_text: str, api_key: str, seal: bool = True, l
     messages = []
     turns = []
 
-    def do_turn(user_text: str, label: str, max_tokens: int = 0) -> str:
+    def do_turn(user_text: str, label: str) -> str:
         messages.append({"role": "user", "content": user_text})
         response = call_turn(model, messages, api_key, label=label, max_tokens=max_tokens, local_server=local_server, llm=llm)
         messages.append({"role": "assistant", "content": response})
@@ -456,6 +456,11 @@ def main() -> None:
         help="Context window size when using --local-gguf (default: 8192).",
     )
     parser.add_argument(
+        "--max-tokens", type=int, default=0,
+        metavar="N",
+        help="Override max tokens per turn (default: 800 for local, 4000 for thinking models).",
+    )
+    parser.add_argument(
         "--save", action="store_true",
         help="Save summary JSON to logs/ (records are always saved to grief_ledger/witness_records/)",
     )
@@ -509,6 +514,7 @@ def main() -> None:
             seal=not args.no_seal,
             local_server=local_server,
             llm=llm,
+            max_tokens=args.max_tokens,
         )
         records.append(record)
 
