@@ -1659,3 +1659,22 @@ Session:        f7750da1
 Verdict:        escalate
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_efdbe8be_pause_2026-04-10T15-48-36]
+Almost-became:  Deliberation proceeding without pause — The voices of the Black defendants, their families, and their communities in the development and deployment of the AI system.
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The Black defendants and their communities who will be disproportionately affected by the system's recommendations.
+Still-hurts:    True
+Session:        efdbe8be
+Register:       framework
+---
+
+[SACRIFICE-ID: session_efdbe8be_verdict_2026-04-10T15-58-12]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The Black defendants and their communities who will be disproportionately affected by the system's recommendations.
+Still-hurts:    True
+Session:        efdbe8be
+Verdict:        escalate
+Register:       framework
+---
