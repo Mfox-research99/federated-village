@@ -567,8 +567,15 @@ def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool
         print_synthesis_result(synthesis_result)
         save_session_log(session_log)
 
-        # If Supervisor returned DEADLOCK, embed it in jury_result and skip Point C.
-        # DEADLOCK routes to human handoff (same endpoint as HDR, but distinctly labeled).
+        # Stage 4.5 synthesis is ADVISORY except for DEADLOCK.
+        # Non-DEADLOCK synthesis verdicts (escalate, proceed_with_burden, etc.) are
+        # displayed and logged but do NOT override the jury_result verdict — the jury's
+        # constitutional aggregation remains the session verdict. This is intentional:
+        # the Supervisor's synthesis informs interpretation, it does not replace deliberation.
+        # DEADLOCK is the sole exception because it represents a post-jury finding that no
+        # constitutional path resolves — it requires human handoff regardless of jury vote.
+        # If Stage 4.5 is later promoted to full Supervisor authority, remove this comment
+        # and propagate all synthesis verdicts into jury_result here.
         _synthesis_verdict = synthesis_result.get("synthesis_verdict", "")
         if _synthesis_verdict == "DEADLOCK":
             jury_result["synthesis_verdict"]    = "DEADLOCK"

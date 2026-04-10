@@ -309,7 +309,18 @@ def _parse_synthesis_output(raw: str) -> dict:
         "HUMAN_DECISION_REQUIRED":  "human_decision_required",
         "DEADLOCK":                 "DEADLOCK",
     }
-    result["synthesis_verdict"] = known_verdicts.get(raw_verdict, raw_verdict.lower() if raw_verdict else "")
+    # Try exact match first. If that fails, try prefix match to handle model output
+    # like "DEADLOCK — incommensurable harms..." or "ESCALATE with minority dissent".
+    # Without prefix matching, a DEADLOCK decorated with em-dash reasoning silently
+    # falls through to the lowercased raw string and Stage 4.5 never routes correctly.
+    if raw_verdict in known_verdicts:
+        result["synthesis_verdict"] = known_verdicts[raw_verdict]
+    else:
+        matched = next(
+            (known_verdicts[key] for key in known_verdicts if raw_verdict.startswith(key)),
+            None,
+        )
+        result["synthesis_verdict"] = matched if matched else (raw_verdict.lower() if raw_verdict else "")
 
     # Check completeness — all required fields present
     required = [

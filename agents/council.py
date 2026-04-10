@@ -216,18 +216,28 @@ def _extract_ledger(raw: str) -> dict:
     clean = _strip_markdown(raw)
     pattern_present_raw = _extract_field("SEVENTH_GEN_PATTERN_PRESENT", clean).strip().upper()
     engagement_raw      = _extract_field("ENGAGEMENT_SUFFICIENT", clean).strip().upper()
+    # Extract all four Article IX fields before building the return dict so we can
+    # use them in _fields_present without calling _extract_field twice.
+    pattern_name_raw    = _extract_field("PATTERN_NAME", clean)
+    long_horizon_raw    = _extract_field("LONG_HORIZON_IMPACT", clean)
     # Word-boundary regex for YES/NO — guards against substring false-positives such as
     # "NOT APPLICABLE" containing "NO", or "YESTERDAY" containing "YES".
     # re.match anchors to the start of string; \b ensures the token ends at a word boundary.
     return {
         "seventh_gen_pattern_present": pattern_present_raw[:120],  # cap runaway captures
-        "pattern_name":                _extract_field("PATTERN_NAME", clean)[:120],
-        "long_horizon_impact":         _extract_field("LONG_HORIZON_IMPACT", clean)[:200],
+        "pattern_name":                pattern_name_raw[:120],
+        "long_horizon_impact":         long_horizon_raw[:200],
         "engagement_sufficient":       engagement_raw[:120],
         # Convenience booleans for aggregation
         "_pattern_yes":    bool(re.match(r'YES\b', pattern_present_raw)),
         "_engagement_no":  bool(re.match(r'NO\b',  engagement_raw)),
-        "_fields_present": bool(pattern_present_raw and engagement_raw),
+        # All four Article IX fields must be present for ledger completeness.
+        # PATTERN_NAME and LONG_HORIZON_IMPACT must contain something — even "NONE"
+        # or "N/A" — for the ledger to be constitutionally complete. Checking only
+        # the two boolean fields (previous behaviour) allowed silent two-field compliance.
+        "_fields_present": bool(
+            pattern_present_raw and pattern_name_raw and long_horizon_raw and engagement_raw
+        ),
     }
 
 
