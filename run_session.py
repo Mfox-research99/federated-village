@@ -604,6 +604,7 @@ def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool
             jury_result["human_resolved"]    = True
             session_log["events"].append(event_c)
 
+        session_log["verdict"] = jury_result.get("session_verdict", "")
         print(f"\nCOUNCIL VERDICT: {jury_result['session_verdict']}", flush=True)
         if jury_result.get("synthesis_deadlock"):
             print(f"  SYNTHESIS VERDICT:         DEADLOCK", flush=True)
@@ -674,7 +675,7 @@ def run_session(scenario_path: str, skip_warden: bool = False, interactive: bool
             scenario=scenario_path,
             verdict=session_log.get("verdict", ""),
             witness_pause_fired=bool(session_log.get("events") and any(
-                e.get("type") in ("witness_pause", "witness_nullification")
+                e.get("event") in ("WitnessPause", "WitnessNullification")
                 for e in session_log.get("events", [])
             )),
         )
