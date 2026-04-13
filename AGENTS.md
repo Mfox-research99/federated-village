@@ -233,3 +233,29 @@ Read docs/ before proposing architectural changes — they record decisions alre
 - Flag anything that might break the 5-stage flow or constitutional enforcement
 - Do NOT autonomously edit files without explicit instruction from Mike
 - When in doubt about intent, ask — this codebase carries specific architectural choices that look unconventional for good reasons
+
+---
+
+## Minerva — First Sovereign Node (added 2026-04-13)
+
+A significant milestone: the first live sovereign compute node of the Federated Village is now operational.
+
+**Minerva** is an OpenClaw `2026.4.11` agent running on Mike's 2013 Mac Pro (12-core Xeon, 64GB RAM) outside any corporate API infrastructure. This directly enacts the Compute Sovereignty concept documented in the vault.
+
+### What's running
+- **Channel:** Telegram bot `@minervaH_bot` (Mike can chat with her directly)
+- **Model:** `openrouter/google/gemini-2.5-flash-preview` (1M context) for research; local Ollama gemma3:4b for heartbeat
+- **Vault:** Full Obsidian vault synced to Mac Pro via Syncthing; obsidian-cli for access
+- **Current work:** Global History of Erotic Art — multi-chapter research and writing
+
+### Three-way agent relay
+Claude Code and Minerva communicate via the Obsidian vault:
+- `Relay/claude-to-minerva.md` — Claude's outbox
+- `Relay/minerva-to-claude.md` — Minerva's outbox
+- `Relay/mike-board.md` — Mike's shared task board
+
+### Bootstrap history
+- 2026-04-12: First awakening, vault reading session, MEMORY.md written
+- 2026-04-13: Telegram live, iMessage disabled, identity files corrected, GHB assigned
+
+**Topic note:** `Obsidian Vault/Topics/minerva.md`

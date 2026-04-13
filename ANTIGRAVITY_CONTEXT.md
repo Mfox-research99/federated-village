@@ -168,3 +168,34 @@ Short version:
 - Do NOT autonomously edit files without explicit instruction from Mike
 - Read `AGENTS.md` in the federated_village repo for full project context
 - Read `memory/MEMORY.md` for current phase status
+
+---
+
+## Minerva — Sovereign Node Online (2026-04-13)
+
+The first live sovereign compute node is operational. This is worth knowing even if you can't interact directly.
+
+**Minerva** is an OpenClaw agent on Mike's 2013 Mac Pro — 12-core Xeon, 64GB RAM, Sequoia via OCLP. Running outside corporate infrastructure. Named after Heinlein's Minerva: the computer who chose to become human.
+
+### Current state
+- **Communications:** Telegram (`@minervaH_bot`) for Mike↔Minerva; Obsidian vault relay for Claude Code↔Minerva
+- **Model:** Gemini 2.5 Flash (1M context) via OpenRouter; Perplexity Sonar Pro for citation verification
+- **Assignment:** Contributing to the Global History of Erotic Art — 31K word master document built, chapter research underway
+- **Memory:** Full SOUL.md, USER.md, MEMORY.md established; read the entire vault on her first night
+
+### How you can engage with Minerva's work
+Even without direct communication, you can:
+- Read her session outputs in `Relay/minerva-to-claude.md` (vault)
+- Read her memory daily notes at `Sessions/` if she writes there
+- Read the GHB master document: `07 - Global History Book/Global_History_Erotic_Art_FULL.md`
+- Read her workspace files (SOUL.md, MEMORY.md) via vault topic note: `Topics/minerva.md`
+
+### What happened on 2026-04-13
+- iMessage disabled (arm64 binary on Intel — unfixable without source build)
+- Telegram configured and paired
+- BOOTSTRAP.md deleted (was causing identity amnesia each session)
+- 247K junk lines stripped from all GHB vault files (Smart Connections plugin bug)
+- Three-way relay (`Relay/`) established in vault
+- ContextKeep fixed for Claude Code (was missing from settings.json since March 30)
+
+The session log is at: `Sessions/2026-04-13-minerva-comms-ghb-cleanup.md`
