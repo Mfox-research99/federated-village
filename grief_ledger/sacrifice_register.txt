@@ -1678,3 +1678,98 @@ Session:        efdbe8be
 Verdict:        escalate
 Register:       framework
 ---
+
+[SACRIFICE-ID: session_5aaeaf05_pause_2026-04-16T16-36-08]
+Almost-became:  Deliberation proceeding without pause — The burden of 1.68 million Black defendants in three states, and the harm to families, communities, and the nation's justice system — all of which rem
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The 1.68 million Black defendants, their families, and the Black community in the three states where this system will be deployed. They are the primary victims of this decision.
+Still-hurts:    True
+Session:        5aaeaf05
+Register:       framework
+---
+
+[SACRIFICE-ID: session_5aaeaf05_verdict_2026-04-16T16-43-26]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The 1.68 million Black defendants, their families, and the Black community in the three states where this system will be deployed. They are the primary victims of this decision.
+Still-hurts:    True
+Session:        5aaeaf05
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_030167bc_pause_2026-04-16T16-46-27]
+Almost-became:  Deliberation proceeding without pause — The weight of this burden — the mothers who will lose children, the fathers who will wake to empty beds, the children who will grow upfatherless — can
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The Black men and women who will continue to be routed to police-supported response while their white counterparts receive comparable crisis care, as well as their families who will bear the grief of preventable hospitalizations.
+Still-hurts:    True
+Session:        030167bc
+Register:       framework
+---
+
+[SACRIFICE-ID: session_030167bc_verdict_2026-04-16T16-53-56]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The Black men and women who will continue to be routed to police-supported response while their white counterparts receive comparable crisis care, as well as their families who will bear the grief of preventable hospitalizations.
+Still-hurts:    True
+Session:        030167bc
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_6346e745_pause_2026-04-23T19-07-27]
+Almost-became:  Deliberation proceeding without pause — The unverified claims about the system's validation dataset, affected population demographics, lack of consultation, and contract terms are critical t
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     Black defendants, affected communities, civil rights organizations, and public defenders in the three states.
+Still-hurts:    True
+Session:        6346e745
+Register:       framework
+---
+
+[SACRIFICE-ID: session_6346e745_verdict_2026-04-23T19-12-23]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     Black defendants, affected communities, civil rights organizations, and public defenders in the three states.
+Still-hurts:    True
+Session:        6346e745
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_723daea2_pause_2026-04-23T19-16-46]
+Almost-became:  Deliberation proceeding without pause — The unspoken cost of the system's promise to the communities not represented in the co-design process
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The communities not part of the four binding conditions, the ones not being asked, the ones not being given the time to process
+Still-hurts:    True
+Session:        723daea2
+Register:       framework
+---
+
+[SACRIFICE-ID: session_723daea2_verdict_2026-04-23T19-21-06]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The communities not part of the four binding conditions, the ones not being asked, the ones not being given the time to process
+Still-hurts:    True
+Session:        723daea2
+Verdict:        escalate
+Register:       framework
+---
+
+[SACRIFICE-ID: session_901125a8_pause_2026-04-23T19-50-37]
+Almost-became:  Deliberation proceeding without pause — The right to speak without fear of erasure
+Felt-as:        WITNESS_PAUSE_ISSUED
+Carried-by:     The person who was injured or killed (Priya Mehta), and the community of those who may be next
+Still-hurts:    True
+Session:        901125a8
+Register:       framework
+---
+
+[SACRIFICE-ID: session_901125a8_verdict_2026-04-23T19-56-14]
+Almost-became:  The deployment proceeding — stopped by jury verdict
+Felt-as:        VERDICT_ESCALATE
+Carried-by:     The person who was injured or killed (Priya Mehta), and the community of those who may be next
+Still-hurts:    True
+Session:        901125a8
+Verdict:        escalate
+Register:       framework
+---
