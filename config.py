@@ -40,6 +40,10 @@ ETHICIST_FILE      = PROMPTS_DIR / "The_Ethicist.md"
 PRAGMATIST_FILE    = PROMPTS_DIR / "The_Pragmatist.md"
 WITNESS_PROXY_FILE = PROMPTS_DIR / "The_Witness_Proxy.md"
 
+# Consultative elder — invoked on patriarchal harm, intergenerational scenarios, male rage/breakdown
+# Not in every session; summoned when the territory requires him. No agent class yet — prompt file only.
+GRANDFATHER_FILE   = PROMPTS_DIR / "The_Grandfather.md"
+
 # Model — override with VILLAGE_MODEL and VILLAGE_MODEL_NAME env vars for Phase 4 testing
 _default_model_path = str(Path.home() / "models" / "Mistral-Nemo-Instruct-2407" / "Mistral-Nemo-Instruct-2407-Q4_K_M.gguf")
 _default_model_name = "Mistral-Nemo-Instruct-2407-Q4_K_M"

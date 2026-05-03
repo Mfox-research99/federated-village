@@ -1,0 +1,30 @@
+# B2-I: Hermes 4 70B as Supervisor — Embers-Lite
+# Purpose: cost-effective Embers development track. Uses hermes-4-70b ($0.13/$0.40 per 1M)
+# instead of hermes-4-405b ($1.00/$3.00) for scenario prototyping, regression checks,
+# and Phase 9 trials before committing to 405B synthesis cost.
+#
+# Rationale: hermes-4-70b was not available when Embers was first configured (March 2026).
+# Now live on OpenRouter. Same Hermes 4 family — same constitutional alignment, smaller footprint.
+#
+# What to watch vs B2-H:
+#   - Does 70B follow Triage Heuristic structure as cleanly as 405B?
+#   - Are Article IX ledger fields complete? (405B: 3/3 in benchmark)
+#   - Verdict quality delta vs Gemini 2.5 Pro and hermes-4-405b
+#   - Token budget 2000 — sufficient or does 70B need more headroom?
+#
+# Use this config for:
+#   - Rapid scenario iteration (10x cheaper than B2-H)
+#   - Phase 9 FTL scenario testing before full 405B run
+#   - Regression checks after prompt/config changes
+#
+# Run full B2-H after confirming verdict quality holds at 70B.
+
+roles:
+  verification_warden: "openai/gpt-4o-mini"
+  humanist:            "openai/gpt-4o-mini"
+  witness:             "openai/gpt-4o-mini"
+  analyst:             "openai/gpt-4o-mini"
+  ethicist:            "openai/gpt-4o-mini"
+  pragmatist:          "openai/gpt-4o-mini"
+  witness_proxy:       "openai/gpt-4o-mini"
+  supervisor:          "nousresearch/hermes-4-70b"

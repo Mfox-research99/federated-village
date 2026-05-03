@@ -82,6 +82,12 @@ MODELS = {
         "label": "Humanist Anubis (Humanist character LoRA)",
         "description": "Iter 50 Humanist LoRA — 54 historical/what-if scenarios, voice register training.",
     },
+    "humanist_v2": {
+        "path": str(Path.home() / "models/Anubis-Mini-8B-humanist-v2-gguf/Anubis-Mini-8B-humanist-v2-Q4_K_M.gguf"),
+        "name": "Anubis-Mini-8B-humanist-v2",
+        "label": "Humanist Anubis v2 (iter 200 total)",
+        "description": "Iter 200 Humanist LoRA — resumed from v1 iter 50, trained 150 more iters. Loss 0.696->0.301.",
+    },
     "bonsai": {
         "http_url": "http://127.0.0.1:8081",
         "name": "Bonsai-8B",

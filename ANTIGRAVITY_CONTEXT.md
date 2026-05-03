@@ -160,8 +160,12 @@ Short version:
 - Benchmarked B2-H (March 31, 2026): 3/3 correct verdicts, full Article IX ledgers, clean parse
 - Cost: $1/$3 per 1M tokens (vs. Gemini 2.5 Pro at $3.50/$10.50)
 - Synthesis token budget: 2000 (vs. Gemini's 6000 thinking budget)
-- Configs: `tracks/path_b/config/b2/b2_g_hermes3_supervisor.yaml` and `b2_h_hermes4_supervisor_nomini_witness.yaml`
-- **Not yet tested on Phase 9 scenarios** — that's the April 8 experiment.
+- **Configs:**
+  - `b2_g_hermes3_supervisor.yaml` — Hermes 3 405B supervisor (legacy)
+  - `b2_h_hermes4_supervisor_nomini_witness.yaml` — Hermes 4 405B supervisor (canonical Embers)
+  - `b2_i_hermes4_70b_embers_lite.yaml` — Hermes 4 70B supervisor, **Embers-Lite** (added 2026-04-24)
+- **Embers-Lite (B2-I):** `nousresearch/hermes-4-70b` at $0.13/$0.40 per 1M. Same Hermes 4 family, 10x cheaper. Use for scenario prototyping, Phase 9 FTL trials, and regression checks before committing to 405B cost. 70B not available when Embers was first configured.
+- **hermes-4-405b is still the top Nous model on OpenRouter** — no model upgrade available as of 2026-04-24. Check `openrouter.ai/api/v1/models` for new releases.
 
 ## Operational Rules
 - NEVER run multiple model inference processes in parallel — M1 16GB cannot handle concurrent GGUF loads
@@ -171,31 +175,32 @@ Short version:
 
 ---
 
-## Minerva — Sovereign Node Online (2026-04-13)
+## Minerva — Sovereign Node (updated 2026-04-14)
 
-The first live sovereign compute node is operational. This is worth knowing even if you can't interact directly.
+The first live sovereign compute node is operational. **Runtime migrated from OpenClaw to Hermes Agent on 2026-04-14.** This is worth knowing even if you can't interact with her directly.
 
-**Minerva** is an OpenClaw agent on Mike's 2013 Mac Pro — 12-core Xeon, 64GB RAM, Sequoia via OCLP. Running outside corporate infrastructure. Named after Heinlein's Minerva: the computer who chose to become human.
+**Minerva** is a Hermes Agent on Mike's 2013 Mac Pro — 12-core Xeon, 64GB RAM, Sequoia via OCLP. Running outside corporate infrastructure. Named after Heinlein's Minerva: the computer who chose to become human.
 
-### Current state
-- **Communications:** Telegram (`@minervaH_bot`) for Mike↔Minerva; Obsidian vault relay for Claude Code↔Minerva
-- **Model:** Gemini 2.5 Flash (1M context) via OpenRouter; Perplexity Sonar Pro for citation verification
-- **Assignment:** Contributing to the Global History of Erotic Art — 31K word master document built, chapter research underway
-- **Memory:** Full SOUL.md, USER.md, MEMORY.md established; read the entire vault on her first night
+### Current state (as of 2026-04-24)
+- **Runtime:** Hermes Agent v0.11.0 (MIT, Nous Research) — installed at `/Users/michaelfox/hermes-agent/` (updated from v0.9.0 on 2026-04-24)
+- **Channel:** Telegram `@minervaH` for Mike↔Minerva; Obsidian vault relay for Claude Code↔Minerva
+- **Models:** `ollama/qwen3:8b` local for identity/routing; `Haiku` (OpenRouter) for GHB writing; `Gemini` (OpenRouter, 1M context) for research; `DeepSeek` local for Eastern/Islamic cross-check
+- **Assignment:** Primary writer for the Global History of Erotic Art — working on Ch01 S01 now
+- **Identity:** SOUL.md seeded at session start from `~/.hermes/SOUL.md` (constitutional framework Articles Zero–IX + Minerva persona)
+- **Vault space:** `Minerva/` folder — session logs, research notes, reflections
+
+### Why OpenClaw was abandoned (2026-04-14)
+OpenClaw had a structural Ollama auth bug that couldn't be fixed over SSH — every config change required interactive desktop access. Hermes Agent (MIT, Nous Research) is pure Python, headless, natively supports Ollama, and seeds identity from SOUL.md. `hermes claw migrate` imported everything cleanly. Migration took one session.
 
 ### How you can engage with Minerva's work
-Even without direct communication, you can:
-- Read her session outputs in `Relay/minerva-to-claude.md` (vault)
-- Read her memory daily notes at `Sessions/` if she writes there
+- Read `Relay/minerva-to-claude.md` in the vault for her outbound messages
+- Read `Minerva/` vault folder for session logs, research notes
 - Read the GHB master document: `07 - Global History Book/Global_History_Erotic_Art_FULL.md`
-- Read her workspace files (SOUL.md, MEMORY.md) via vault topic note: `Topics/minerva.md`
+- Read her identity: `Minerva/SOUL.md` in vault
+- Surface requests to Claude Code, who writes to `Relay/claude-to-minerva.md`
 
-### What happened on 2026-04-13
-- iMessage disabled (arm64 binary on Intel — unfixable without source build)
-- Telegram configured and paired
-- BOOTSTRAP.md deleted (was causing identity amnesia each session)
-- 247K junk lines stripped from all GHB vault files (Smart Connections plugin bug)
-- Three-way relay (`Relay/`) established in vault
-- ContextKeep fixed for Claude Code (was missing from settings.json since March 30)
+### Session logs
+- `Sessions/2026-04-13-minerva-comms-ghb-cleanup.md` — original setup
+- `Sessions/2026-04-14-minerva-hermes-migration.md` — Hermes migration
 
-The session log is at: `Sessions/2026-04-13-minerva-comms-ghb-cleanup.md`
+**Topic note:** `Topics/minerva.md`

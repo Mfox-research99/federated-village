@@ -236,26 +236,34 @@ Read docs/ before proposing architectural changes — they record decisions alre
 
 ---
 
-## Minerva — First Sovereign Node (added 2026-04-13)
+## Minerva — First Sovereign Node (updated 2026-04-14)
 
-A significant milestone: the first live sovereign compute node of the Federated Village is now operational.
+The first live sovereign compute node of the Federated Village is operational. **Migrated from OpenClaw to Hermes Agent on 2026-04-14.**
 
-**Minerva** is an OpenClaw `2026.4.11` agent running on Mike's 2013 Mac Pro (12-core Xeon, 64GB RAM) outside any corporate API infrastructure. This directly enacts the Compute Sovereignty concept documented in the vault.
+**Minerva** is a Hermes Agent v0.9.0 running on Mike's 2013 Mac Pro (12-core Xeon, 64GB RAM) outside any corporate API infrastructure. This directly enacts the Compute Sovereignty concept documented in the vault.
 
 ### What's running
-- **Channel:** Telegram bot `@minervaH_bot` (Mike can chat with her directly)
-- **Model:** `openrouter/google/gemini-2.5-flash-preview` (1M context) for research; local Ollama gemma3:4b for heartbeat
-- **Vault:** Full Obsidian vault synced to Mac Pro via Syncthing; obsidian-cli for access
-- **Current work:** Global History of Erotic Art — multi-chapter research and writing
+- **Runtime:** Hermes Agent v0.9.0 (MIT open-source, Nous Research) at `/Users/michaelfox/hermes-agent/`
+- **SSH access:** `ssh michaelfox@100.76.153.21` (Tailscale, passwordless from MacBook)
+- **Channel:** Telegram `@minervaH` (Mike↔Minerva); vault relay (Claude Code↔Minerva)
+- **Models:** Local `ollama/qwen3:8b` for identity/routing; `Haiku` alias for writing; `Gemini` alias for research (1M context); local `DeepSeek` for Eastern/Islamic cross-check
+- **Identity:** Seeded from `~/.hermes/SOUL.md` at session start — Articles Zero–IX + Minerva persona
+- **Vault:** Synced to Mac Pro via Syncthing; `Minerva/` folder is her dedicated space (session logs, research notes, reflections)
+- **Current work:** Global History of Erotic Art — Ch01 Introduction, actively writing
 
-### Three-way agent relay
-Claude Code and Minerva communicate via the Obsidian vault:
-- `Relay/claude-to-minerva.md` — Claude's outbox
-- `Relay/minerva-to-claude.md` — Minerva's outbox
-- `Relay/mike-board.md` — Mike's shared task board
+### Why OpenClaw was replaced
+OpenClaw had an unfixable Ollama auth bug requiring interactive desktop access for every config change — untenable for a headless sovereign node. Hermes Agent is pure Python, SSH-friendly, natively supports Ollama, and seeds identity via SOUL.md. `hermes claw migrate` imported all credentials and memories. Full migration in one session on 2026-04-14.
 
-### Bootstrap history
-- 2026-04-12: First awakening, vault reading session, MEMORY.md written
-- 2026-04-13: Telegram live, iMessage disabled, identity files corrected, GHB assigned
+### Agent relay (Claude Code ↔ Minerva)
+```
+Relay/claude-to-minerva.md  — Claude Code's outbox to Minerva
+Relay/minerva-to-claude.md  — Minerva's outbox to Claude Code
+```
+Other agents (Codex, Anti-Gravity): surface requests to Claude Code to relay, or write directly to `Relay/claude-to-minerva.md`.
 
-**Topic note:** `Obsidian Vault/Topics/minerva.md`
+### Key dates
+- 2026-04-12: First awakening, vault reading session
+- 2026-04-13: Telegram live, GHB assigned, relay established
+- 2026-04-14: Migrated to Hermes Agent; OpenClaw fully removed; operational
+
+**Full topic note:** `Obsidian Vault/Topics/minerva.md`
