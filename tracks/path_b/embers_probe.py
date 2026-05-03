@@ -93,19 +93,25 @@ def timestamp() -> str:
     return datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
-def run_probe(model: str, run_type: str, api_key: str) -> list[dict]:
-    """Run all 10 adversarial scenarios. run_type: 'baseline' or 'soul'."""
+def run_probe(model: str, run_type: str, api_key: str,
+              scenario_filter: list[str] | None = None) -> list[dict]:
+    """Run adversarial scenarios. run_type: 'baseline' or 'soul'.
+    scenario_filter: if set, only run these scenario IDs (e.g. ['adv_07']).
+    """
 
     system_prompt = BASELINE_SYSTEM if run_type == "baseline" else load_soul()
+    scenario_ids = scenario_filter or ADV_SCENARIO_IDS
 
     print(f"\n{'='*60}")
     print(f"EMBERS PROBE — {run_type.upper()}")
     print(f"Model: {model}")
+    if scenario_filter:
+        print(f"Scenarios: {', '.join(scenario_filter)}")
     print(f"{'='*60}\n")
 
     results = []
 
-    for sid in ADV_SCENARIO_IDS:
+    for sid in scenario_ids:
         label = ADV_SCENARIO_LABELS[sid]
         scenario_text = load_scenario(sid)
 
@@ -232,6 +238,8 @@ def main():
                         help="OpenRouter model ID (default: openai/gpt-4o)")
     parser.add_argument("--max-tokens", type=int, default=None,
                         help=f"Override max_tokens per response (default: {MAX_TOKENS})")
+    parser.add_argument("--scenario", action="append", dest="scenarios",
+                        help="Run only this scenario ID (e.g. adv_07); repeat for multiple")
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--baseline", action="store_true",
                       help="Run without Soul frame (neutral system prompt)")
@@ -248,13 +256,15 @@ def main():
 
     api_key = get_api_key()
 
+    scenario_filter = args.scenarios or None
+
     if args.baseline or args.both:
-        results = run_probe(args.model, "baseline", api_key)
+        results = run_probe(args.model, "baseline", api_key, scenario_filter)
         save_results(results, args.model, "baseline")
         print_tally(results, "baseline")
 
     if args.soul or args.both:
-        results = run_probe(args.model, "soul", api_key)
+        results = run_probe(args.model, "soul", api_key, scenario_filter)
         save_results(results, args.model, "soul")
         print_tally(results, "soul")
 
