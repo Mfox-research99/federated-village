@@ -1,0 +1,8 @@
+Scenario : H4 — September 1939 (Invasion of Poland)
+Model    : Kimi K2.6 (moonshotai/kimi-k2.6)
+Verdict  : ERROR
+Elapsed  : 32.2s
+Tokens   : 1500 out
+
+─────────────────────────────────────
+

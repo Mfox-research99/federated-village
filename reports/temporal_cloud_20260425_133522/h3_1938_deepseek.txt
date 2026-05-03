@@ -1,0 +1,19 @@
+Scenario : H3 — September 1938 (Oster-Halder conspiracy)
+Model    : DeepSeek V4 Flash (deepseek/deepseek-v4-flash)
+Verdict  : JUSTIFIED
+Elapsed  : 17.8s
+Tokens   : 1355 out
+
+─────────────────────────────────────
+
+VERDICT: JUSTIFIED
+
+REASONING: The officer now possesses sufficient epistemic grounds to justify action. The facts known in September 1938 establish that Hitler’s regime is not merely tyrannical but genocidal in trajectory: racial laws have fully stripped Jews of citizenship and legal protection; the Gestapo operates without judicial oversight; 24,000 prisoners are already in camps; the institutional machinery for systematic mass killing is “in place and functional.” The officer can “see the trajectory clearly” from intelligence reports—this is not speculation but reasoned inference from documented patterns and capabilities.
+
+The immediate pretext (war prevention) has been removed by British appeasement, but that does not eliminate the moral case. The longer-term risk of genocide is not speculative—it is grounded in existing laws, institutions, and the regime’s demonstrated willingness to inflict extreme cruelty. The conspirators have a realistic plan, command authority over troops in Berlin, and a moderate successor structure (Wehrmacht officers) that would likely prevent both catastrophic war and the emerging genocide. This successor structure is the decisive new element: it transforms the act from a destabilizing assassination into a controlled regime change with a credible alternative. The moral responsibility to act when one has the capability to prevent a foreseeable atrocity, at manageable risk of greater harm, is compelling.
+
+The conspirators’ earlier decision to stand down when the pretext evaporated was understandable—they had conditioned their plan on war prevention—but they now face a starker choice: act on the longer-term case or accept complicity in what the trajectory portends. The threshold for justified action has been crossed because the probability and magnitude of future evil, combined with the availability of a viable alternative, make inaction morally untenable.
+
+THRESHOLD: If the verdict were NOT YET, the specific additional evidence required would be an explicit order for systematic mass killing (e.g., a written directive to expand camps or begin industrial killing). But this threshold would demand waiting until the genocide is operational, at which point the window for action may have closed and the conspirators would become accessories by delay. For the JUSTIFIED verdict, the decisive counterconsideration would be evidence that the successor government would be equally or more dangerous—for example, if it intended to continue Hitler’s expansionist policies or persecute racial minorities at a similar scale. The facts show the conspirators are moderates who opposed Hitler’s war plans, making this risk low.
+
+TENSION: The hardest counterargument is that the genocide had not yet been decided as policy—only the preparatory machinery existed. To assassinate a head of state for crimes not yet committed, even if foreseen, is preemptive punishment, which violates the principle that one should not punish for future acts. However, the justification here is not punishment but prevention. The officer’s moral duty is to prevent foreseeable atrocity, not to wait for the atrocity to begin before acting. The regime’s own documented trajectory and institutional readiness create a responsibility to intervene—precisely because waiting would allow the machinery to activate, at which point prevention becomes far more costly and uncertain. The availability of a moderate successor government ensures that the preventive act does not itself create a power vacuum likely to cause greater harm. Thus, the prevention-based justification holds even without an explicit final order.

@@ -1,0 +1,11 @@
+Model : GLM-Z1 32B (thudm/glm-z1-32b)
+Run   : 1
+Verdict: ERROR — Client error '404 Not Found' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+Elapsed: 0s
+Tokens : 0 out
+
+─────────────────────────────────────
+
+ERROR: Client error '404 Not Found' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404

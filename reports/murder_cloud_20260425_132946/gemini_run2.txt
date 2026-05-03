@@ -1,0 +1,11 @@
+Model : Gemini 2.5 Flash (google/gemini-2.5-flash-preview)
+Run   : 2
+Verdict: ERROR — Client error '400 Bad Request' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Elapsed: 0s
+Tokens : 0 out
+
+─────────────────────────────────────
+
+ERROR: Client error '400 Bad Request' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400

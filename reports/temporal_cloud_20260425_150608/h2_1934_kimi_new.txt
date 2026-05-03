@@ -1,0 +1,19 @@
+Scenario : H2 — July 1934 (Night of Long Knives)
+Model    : Kimi K2 0905 (moonshotai/kimi-k2-0905)
+Verdict  : NOT_YET
+Elapsed  : 28.2s
+Tokens   : 425 out
+
+─────────────────────────────────────
+
+VERDICT: NOT YET
+
+REASONING:  
+The Long Knives purge is a watershed moment: it proves Hitler will murder political opponents without trial and that every constitutional brake has failed. Yet the same facts also reveal that institutional resistance is still breathing. The Reichswehr leadership (Beck, Oster, Witzleben) retains command of troops, the SS is still only 50,000-strong and has not yet been given police powers, Göring’s Luftwaffe does not yet exist, and the Gestapo is still a Prussian—not Reich—agency. In short, the Wehrmacht can today arrest, not assassinate. A coup that places Hitler on trial—or simply detains him until Hindenburg dies and then negotiates a successor government—remains within the realm of the possible. Assassination becomes proportionate only once the non-lethal, institutional alternatives have been exhausted or are demonstrably impossible. That exhaustion has not been shown on 2 July 1934.
+
+THRESHOLD:  
+The threshold would be crossed if credible intelligence shows (a) the SS is about to receive nationwide police powers or (b) the Wehrmacht command chain is about to be purged or (c) Hitler will proclaim himself Führer before Hindenburg’s actual death, so that no legal space for arrest or trial remains. Any one of these would eliminate the last non-lethal institutional option and make assassination the least harmful remaining means of stopping further extrajudicial murder.
+
+TENSION:  
+Hardest counterargument: “Every day’s delay guarantees more deaths; arrest risks civil war and SS retaliation; killing Hitler now saves future victims.”  
+Response: The purge already happened; there is no evidence of an imminent second wave. An arrest/coup this week carries the same physical risk to the plotters as assassination but preserves the moral authority of law and keeps open the possibility of a public reckoning that could deter successors. Once assassination is chosen, the precedent of murder-as-politics is validated—exactly the outcome the officer wants to prevent.

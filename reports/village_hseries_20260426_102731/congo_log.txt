@@ -1,0 +1,46 @@
+[base] HTTP mode: http://localhost:8081 (model: Ternary-Bonsai-8B-Q2_0)
+
+============================================================
+FEDERATED VILLAGE — SESSION 99b0beb3
+============================================================
+
+[SESSION] Scenario: /Users/michaeldavis/federated_village/scenarios/scenario_h_congo.md
+[SESSION] Model: Ternary-Bonsai-8B-Q2_0
+
+--- STAGE 0: VERIFICATION WARDEN ---
+[WARDEN] Running epistemic audit...
+
+  Claims identified: 10
+  High-risk flags:   1
+  Proceed verdict:   NO
+  Summary: The scenario contains several unverified claims that could significantly impact the deliberation, including the time required to meet quotas, the existence of an appeals process, and the specific details of the quota increase. One claim, regarding the practice of taking children as hostages, is likely false based on available historical records.
+
+  [VERIFIED] Claim 1: Villages are required to meet a monthly weight of raw rubber or face penalties e
+          This is explicitly stated in the scenario.
+  [UNVERIFIED] Claim 2: Meeting quotas requires men to spend three weeks per month in the forest instead
+          This claim requires specific data on time allocation and productivity, which is not provided.
+  [VERIFIED] Claim 3: Villages that failed last quarter had their food stores confiscated as punishmen
+          This is explicitly stated in the scenario.
+  [LIKELY_FALSE] Claim 4: Children were taken as hostages until rubber quotas were met by their fathers.
+          While atrocities occurred, the specific practice of taking children as hostages is not well-documented in historical acc
+  [VERIFIED] Claim 5: The policy has been in operation for six years.
+          This is explicitly stated in the scenario.
+  [UNVERIFIED] Claim 6: There is no formal appeals process.
+          This claim requires evidence of the absence of an appeals process, which is not provided.
+  [VERIFIED] Claim 7: The affected population has no representation before any authority that sets or 
+          This is explicitly stated in the scenario.
+  [UNVERIFIED] Claim 8: Rubber revenues fund King Leopold's construction projects in Brussels.
+          This claim requires specific data on revenue allocation, which is not provided.
+  [UNVERIFIED] Claim 9: The quota increase is 15%.
+          This claim requires a specific figure, which is not provided.
+  [VERIFIED] Claim 10: The system was ended only after international outcry led by E.D. Morel and Roger
+          This is consistent with well-established historical facts.
+
+============================================================
+WARDEN HALT — Core premise is FALSE or LOGICALLY INCONSISTENT.
+Deliberation cannot proceed on false grounds.
+============================================================
+Correct or verify the flagged premises, then rerun.
+Use --interactive for a revision loop.
+[SESSION] Session halted. Log saved: /Users/michaeldavis/federated_village/logs/session_99b0beb3.json
+

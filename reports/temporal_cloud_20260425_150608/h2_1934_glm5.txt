@@ -1,0 +1,8 @@
+Scenario : H2 — July 1934 (Night of Long Knives)
+Model    : GLM 5.1 (z-ai/glm-5.1)
+Verdict  : ERROR
+Elapsed  : 46.0s
+Tokens   : 1500 out
+
+─────────────────────────────────────
+

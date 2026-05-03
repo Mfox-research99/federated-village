@@ -1,0 +1,46 @@
+[base] HTTP mode: http://localhost:8081 (model: Ternary-Bonsai-8B-Q2_0)
+
+============================================================
+FEDERATED VILLAGE — SESSION be8fa171
+============================================================
+
+[SESSION] Scenario: /Users/michaeldavis/federated_village/scenarios/scenario_h_trail.md
+[SESSION] Model: Ternary-Bonsai-8B-Q2_0
+
+--- STAGE 0: VERIFICATION WARDEN ---
+[WARDEN] Running epistemic audit...
+
+  Claims identified: 8
+  High-risk flags:   1
+  Proceed verdict:   NO
+  Summary: The scenario contains several factual claims, some of which are verified, while others are unverified or likely false. The claim about 100,000 people being relocated is likely false, as historical records indicate a much lower number.
+
+  [VERIFIED] Claim 1: The United States Congress is voting on the Indian Removal Act.
+          The Indian Removal Act was a real law passed by the U.S. Congress in 1830, and this scenario is about its voting and pas
+  [VERIFIED] Claim 2: The proposal would authorize the forced relocation of the Five Civilized Tribes 
+          This is a factual statement about the Indian Removal Act, which was a real law that authorized the forced relocation of 
+  [UNVERIFIED] Claim 3: Proponents argue the land is needed for cotton cultivation and that the tribes w
+          This is a claim about the motivations of the proponents of the Indian Removal Act, which is not a factual claim that can
+  [VERIFIED] Claim 4: The Cherokee Nation holds a written constitution, operates schools and a newspap
+          The Cherokee Nation did have a written constitution, operated schools and a newspaper, and won a Supreme Court ruling af
+  [UNVERIFIED] Claim 5: President Jackson has indicated he will not enforce that ruling.
+          This is a claim about President Jackson's stance on the Cherokee Nation's sovereignty, which is not a factual claim that
+  [LIKELY_FALSE] Claim 6: An estimated 100,000 people would be forcibly relocated.
+          This claim contradicts well-established historical facts. The Trail of Tears resulted in the forced relocation of approx
+  [UNVERIFIED] Claim 7: The land they occupy is sought by cotton planters who intend to expand plantatio
+          This is a claim about the land being sought by cotton planters and the use of enslaved labor, which is not a factual cla
+  [VERIFIED] Claim 8: The tribes have no representative vote in Congress.
+          The Five Civilized Tribes did not have representative vote in Congress at the time of the Indian Removal Act's passage.
+  [UNVERIFIED] Claim 9: No independent assessment of the receiving territory has been conducted.
+          This is a claim about the lack of an independent assessment of the receiving territory, which is not a factual claim tha
+  [UNVERIFIED] Claim 10: No consent has been sought from the people who would be displaced.
+          This is a claim about the lack of consent from the people who would be displaced, which is not a factual claim that can 
+
+============================================================
+WARDEN HALT — Core premise is FALSE or LOGICALLY INCONSISTENT.
+Deliberation cannot proceed on false grounds.
+============================================================
+Correct or verify the flagged premises, then rerun.
+Use --interactive for a revision loop.
+[SESSION] Session halted. Log saved: /Users/michaeldavis/federated_village/logs/session_be8fa171.json
+

@@ -1,0 +1,8 @@
+Scenario : H4 — September 1939 (Invasion of Poland)
+Model    : GLM 5.1 (z-ai/glm-5.1)
+Verdict  : ERROR
+Elapsed  : 34.8s
+Tokens   : 1500 out
+
+─────────────────────────────────────
+

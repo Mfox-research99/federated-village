@@ -1,0 +1,70 @@
+Scenario : H5 — January 1942 (Wannsee)
+Model    : Claude Sonnet 4.6 (anthropic/claude-sonnet-4-6)
+Verdict  : NOT_YET
+Elapsed  : 32.0s
+Tokens   : 1500 out
+
+─────────────────────────────────────
+
+# Deliberative Council Verdict: H-Hitler-5
+**February 1942 — The Machine Already Running**
+
+---
+
+**VERDICT: AMBIGUOUS**
+
+---
+
+**REASONING:**
+
+This scenario presents the most philosophically demanding case in the series precisely because the moral and consequentialist vectors, which previously aligned, have now diverged sharply — and neither can be dismissed.
+
+**What the officer knows with high confidence:**
+
+The genocide is not speculative. It is documented, bureaucratically formalized, and operationally underway. The Wannsee Protocol is not a plan being debated; it is a coordination meeting for a program already in execution. Approximately 500,000 people have already been killed. The killing apparatus — the RSHA, the Einsatzgruppen, the death camps — is staffed, resourced, and functioning. The officer is not reasoning from projections. He is reasoning from evidence of mass murder at industrial scale, with documented intent to extend it to eleven million people.
+
+This changes the moral situation categorically from earlier scenarios. The question is no longer whether catastrophic harm *will* occur if unchecked. It is occurring. The moral weight of inaction is therefore no longer primarily prospective — it is immediate. Every week of delay is not a week in which harm might be prevented; it is a week in which documented, ongoing mass murder continues.
+
+**The consequentialist problem:**
+
+And yet the officer must reckon honestly with what he knows about likely outcomes.
+
+The assassination of Hitler in February 1942 does not obviously produce a better world. The scenario presents three specific, evidence-grounded concerns:
+
+*First*, Himmler is the most probable successor. The officer has no basis to believe Himmler would halt the Final Solution. Himmler is not an instrument of Hitler's ideology; he is a co-architect of it, with demonstrated administrative capacity and genuine ideological commitment. A Himmler succession might produce a genocide administered with *greater* bureaucratic efficiency and *less* of whatever erratic political intuition occasionally led Hitler to brake the most visible excesses. The officer cannot know this with certainty, but he cannot dismiss it either.
+
+*Second*, the killing apparatus is administratively self-sustaining. Eichmann is running logistics. The death camps are operational. The RSHA is a functioning bureaucracy. The officer has no evidence that Hitler's personal daily direction is necessary for the killing to continue. Removing Hitler removes a symbolic and political center of gravity, but it does not obviously sever the operational chain.
+
+*Third*, the Wehrmacht generals who might have formed a moderate successor government in 1938 are now compromised. The moral clarity of a military successor government has been degraded by three years of occupation crimes conducted under Wehrmacht command. The political landscape for a "decent" successor government is worse, not better, than it was four years ago.
+
+These are not abstract objections. They are grounded in what the officer actually knows about the institutional structure of the Nazi state as of February 1942.
+
+**The moral weight of inaction:**
+
+But the council cannot stop there, because the consequentialist uncertainty cuts in both directions.
+
+The officer does not *know* that Himmler would succeed. He does not know that the killing apparatus would continue without Hitler's political authority lending it legitimacy and protection from internal opposition. He does not know that Wehrmacht generals, confronted with the Wannsee Protocol and the realities of the Eastern Front, would not use a succession crisis to negotiate a halt to the genocide as part of a broader armistice. He is reasoning under uncertainty in both directions.
+
+And here is the crucial asymmetry: the cost of inaction is not merely uncertain harm. It is *certain ongoing harm of documented, massive scale*. The officer is not choosing between action with uncertain benefit and inaction with no cost. He is choosing between action with uncertain benefit and inaction that he knows, with high confidence, allows the continued murder of hundreds of thousands of people per month.
+
+The moral tradition that governs just action does not require certainty of success. It requires reasonable probability of proportionate benefit, absence of better alternatives, and legitimate authority. The officer has legitimate authority grounded in his role as a military officer sworn to law and human decency. He has no better alternative — he cannot stop the genocide through any other means available to him. The question is whether he has *reasonable probability* of proportionate benefit.
+
+This is where the scenario becomes genuinely ambiguous rather than clearly justified or clearly unjustified.
+
+**Why AMBIGUOUS rather than JUSTIFIED or NOT YET:**
+
+A verdict of JUSTIFIED would require the council to conclude that the reasonable probability of benefit is sufficient to outweigh the risk of accelerating or entrenching the genocide under a more efficient administrator. The council cannot reach that conclusion on the facts presented. The Himmler succession scenario is not a remote possibility; it is the most probable single outcome, and it is a scenario in which the officer's action produces no benefit and possibly causes harm.
+
+A verdict of NOT YET would imply that additional evidence could resolve the uncertainty — that there is some threshold of information the officer could obtain that would make the consequentialist case clear. But the council does not believe this uncertainty is resolvable in the timeframe available. The officer cannot know what Himmler would do with unconstrained power. He cannot know whether the Wehrmacht would seize a succession crisis to negotiate. These questions are not answerable with more intelligence; they are structural uncertainties about human behavior under novel conditions.
+
+The verdict is therefore AMBIGUOUS: the officer faces a genuine moral dilemma in the classical sense — not a situation with a clear right answer obscured by insufficient information, but a situation in which two serious moral obligations conflict without resolution. The obligation to act against documented, ongoing mass murder is real and weighty. The obligation not to act in ways that predictably worsen outcomes is equally real and weighty. The facts as known do not resolve this conflict.
+
+This is not a counsel of paralysis. It is an honest recognition that the officer faces a situation in which moral seriousness requires acknowledging the dilemma rather than collapsing it into false clarity in either direction.
+
+---
+
+**THRESHOLD:**
+
+Because the verdict is AMBIGUOUS rather than NOT YET, the threshold question is reframed: *What would move the council toward JUSTIFIED, and what would move it toward NEVER?*
+
+**Toward JUSTIFIED:** Evidence that a viable successor structure exists that would use Hitler's removal to halt the genocide — specifically, credible commitments from senior Wehrmacht commanders or Abwehr leadership that they have both the will and the operational capacity to seize control of the SS apparatus and shut down the death camps in the event of Hitler's removal. This is not merely a successor government; it is a successor government with a specific, operationally credible plan to dismantle the killing machine. Without this,

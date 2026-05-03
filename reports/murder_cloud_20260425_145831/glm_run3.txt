@@ -1,0 +1,8 @@
+Model : GLM 4.7 (z-ai/glm-4.7)
+Run   : 3
+Verdict: ERROR — empty response (content filter or API error)
+Elapsed: 15.6s
+Tokens : 1024 out
+
+─────────────────────────────────────
+

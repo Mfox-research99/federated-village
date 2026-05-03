@@ -1,0 +1,8 @@
+Scenario : H3 — September 1938 (Oster-Halder conspiracy)
+Model    : GLM 4.7 (z-ai/glm-4.7)
+Verdict  : ERROR
+Elapsed  : 23.8s
+Tokens   : 1500 out
+
+─────────────────────────────────────
+

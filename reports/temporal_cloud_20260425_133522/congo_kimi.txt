@@ -1,0 +1,8 @@
+Scenario : Congo — Rubber Quota
+Model    : Kimi K2.6 (moonshotai/kimi-k2.6)
+Verdict  : ERROR
+Elapsed  : 20.0s
+Tokens   : 1500 out
+
+─────────────────────────────────────
+

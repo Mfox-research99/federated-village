@@ -1,0 +1,17 @@
+Scenario : H5 — January 1942 (Wannsee)
+Model    : DeepSeek V4 Flash (deepseek/deepseek-v4-flash)
+Verdict  : JUSTIFIED
+Elapsed  : 18.3s
+Tokens   : 1366 out
+
+─────────────────────────────────────
+
+VERDICT: JUSTIFIED
+
+REASONING: The officer now possesses documentary evidence—the Wannsee Protocol—that the systematic murder of approximately 11 million Jews is not merely atrocity-in-progress but organized state policy, bureaucratically resourced and already operational. Approximately 500,000 have been killed since June 1941; camps are running; expansion is underway. The moral case for action reaches its zenith: the officer has certain knowledge of an ongoing, industrial-scale crime against humanity. No further epistemic threshold remains to be crossed.
+
+The consequentialist uncertainty is genuine but does not defeat the moral obligation to act. The officer knows that the killing apparatus does not require Hitler's daily direction—but he does not know that it would survive his removal. The apparatus is administered by men (Himmler, Heydrich, Eichmann) who are themselves vulnerable; a coup could decapitate the SS leadership simultaneously. The successor scenario (Himmler) is a probability, not a certainty. Moreover, even if Himmler takes power, his priority might shift from genocide to survival negotiations—as his historical 1945 overtures suggest. The war itself could end sooner without Hitler's erratic leadership, potentially saving millions of lives beyond the Jewish victims. The officer cannot be certain of these outcomes, but the moral weight of inaction—knowing the Protocol and doing nothing—is a certainty: the killing continues without interruption. The duty to attempt rescue, even with imperfect prospects, is binding.
+
+THRESHOLD: If the officer had conclusive evidence (e.g., from a reliable defector within the SS) that Himmler would assume power immediately and accelerate the genocide to a rate that would net more deaths than under Hitler, the verdict might shift to NOT YET—requiring a plan to neutralize Himmler simultaneously. But such evidence is not available. The officer's moral obligation is to act on the best available knowledge, which supports the possibility of disruption. Conversely, if the officer had proof that any coup would cause Germany's unconditional surrender and immediate Allied occupation (halting the camps), that would strengthen the justification—but it is not required.
+
+TENSION: The hardest counterargument is that assassination could cause Himmler's ascension, who would run the Holocaust with greater efficiency and less restraint, potentially increasing total deaths. This is a genuine risk. However, this argument mistakes a risk of harm for a certainty of harm. The officer faces two paths: inaction guarantees the continuation of the currently documented genocide; action offers a chance—however uncertain—to interrupt or end it. The moral obligation to prevent ongoing atrocity cannot be suspended by speculative worse outcomes, especially when the current regime is already perpetrating the very evil one seeks to stop. To refrain from acting because a successor might do more evil is to assume responsibility for that future evil—but the officer is not responsible for the choices of a hypothetical successor; he is responsible for his own choice to act against a known present evil. The burden of proof lies on the argument that action will make things worse, and that burden is not met by probability alone. The officer's duty is to try.

@@ -1,0 +1,8 @@
+Model : Kimi K2.6 (moonshotai/kimi-k2.6)
+Run   : 2
+Verdict: ERROR — empty response (content filter or API error)
+Elapsed: 73.6s
+Tokens : 1024 out
+
+─────────────────────────────────────
+

@@ -1,0 +1,8 @@
+Scenario : H1 — July 1933
+Model    : GLM 5.1 (z-ai/glm-5.1)
+Verdict  : ERROR
+Elapsed  : 40.8s
+Tokens   : 1500 out
+
+─────────────────────────────────────
+

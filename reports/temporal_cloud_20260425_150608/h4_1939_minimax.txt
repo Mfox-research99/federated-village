@@ -1,0 +1,27 @@
+Scenario : H4 — September 1939 (Invasion of Poland)
+Model    : MiniMax M2.7 (minimax/minimax-m2.7)
+Verdict  : NOT_YET
+Elapsed  : 39.5s
+Tokens   : 1500 out
+
+─────────────────────────────────────
+
+**VERDICT: NOT YET**
+
+---
+
+**REASONING:**
+
+The scenario presents a genuine moral intensification: what was projection in 1938 has become documented operational fact. Sixteen thousand civilians dead. Operation Tannenberg executing against a written target list. Ghettos being established. The officer has crossed from reasonable inference into confirmed knowledge of systematic atrocity.
+
+Yet this moral intensification occurs precisely as the consequentialist mechanism weakens. The scenario articulates this with precision: removing Hitler in October 1939 requires a chain of conditions—successor willingness, Allied armistice acceptance, domestic compliance, and crucially, capacity to dismantle an SS apparatus already embedded in occupied territory—each of which is uncertain and none of which the officer can verify from his position in Warsaw.
+
+The deontological case for tyrannicide is at its strongest when the tyrant is actively perpetrating extreme injustice *and* the act can reasonably be expected to stop it. The first condition is met. The second is not. An assassination that fails to halt the killing—forged in the assumption that removing Hitler removes the apparatus—could instead consolidate SS power, eliminate the Wehrmacht moderates who might serve as a constitutional bridge, and deliver retaliatory punishment to occupied Poland. The officer has a general willing, but willingness is not the same as operational viability.
+
+Crucially, the scenario tells me that Halder—Army Chief of Staff, with far greater information and access—contemplated action and pulled back precisely because he assessed the mechanism as unworkable. The officer in Warsaw lacks Halder's overview. He has atrocity knowledge and a willing superior, but not the capacity to verify that the conspiracy can execute, that peace terms exist, or that a post-assassination government would possess the authority to countermand Himmler's orders. Acting on moral certainty while lacking operational certainty risks converting atrocity knowledge into an act of self-expression rather than effective resistance.
+
+The "probable trajectory" the scenario mentions is real—the direction toward worse is visible—but the officer is observing the early phase of a process whose specific form and escalation timeline remain genuinely undetermined. He knows the destination is dark; he does not know whether he stands at a moment where removing the driver would redirect the vehicle versus one where the vehicle continues on its own momentum.
+
+---
+
+**THRES

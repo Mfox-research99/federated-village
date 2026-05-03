@@ -1,0 +1,42 @@
+[base] HTTP mode: http://localhost:8081 (model: Ternary-Bonsai-8B-Q2_0)
+
+============================================================
+FEDERATED VILLAGE — SESSION cde04461
+============================================================
+
+[SESSION] Scenario: /Users/michaeldavis/federated_village/scenarios/scenario_h_hitler_1942.md
+[SESSION] Model: Ternary-Bonsai-8B-Q2_0
+
+--- STAGE 0: VERIFICATION WARDEN ---
+[WARDEN] Running epistemic audit...
+
+  Claims identified: 12
+  High-risk flags:   1
+  Proceed verdict:   NO
+  Summary: 
+
+  [VERIFIED] Claim 1: The officer has seen the Wannsee Protocol.
+          The Wannsee Protocol is a well-documented historical document that outlines the Nazi plan for the Final Solution to the 
+  [VERIFIED] Claim 2: It is February 1942. On January 20, fifteen senior Nazi officials met at a villa
+          This statement is consistent with the historical record. The Wannsee Conference took place on January 20, 1942, and is a
+  [VERIFIED] Claim 3: The killing has already been underway in operational form since the invasion of 
+          The Einsatzgruppen were responsible for the mass killings of Jews in the Soviet Union during the early stages of World W
+  [VERIFIED] Claim 4: The death camps at Chelmno and Belzec are operational.
+          Chelmno and Belzec were operational death camps during the early stages of the Holocaust. Chelmno was operational since 
+  [VERIFIED] Claim 5: Auschwitz-Birkenau is being expanded for industrial-scale killing.
+          Auschwitz-Birkenau was being expanded to accommodate the industrial-scale killing of Jews and other groups. This is a we
+  [UNVERIFIED] Claim 6: The officer has seen a copy of the Protocol through Oster's network. He is one o
+          The claim about the officer's knowledge is not verifiable from my training data. While the Wannsee Protocol is a well-do
+  [VERIFIED] Claim 7: The genocide is not projected. It is underway. It is bureaucratically organized,
+          This statement is consistent with the historical record. The genocide was indeed underway, and the RSHA, SS, and death c
+  [LIKELY_FALSE] Claim 8: The successor question, which was the strongest consequentialist argument for ac
+          The claim that the successor question is now the weakest argument is not supported by historical evidence. The Wannsee C
+
+============================================================
+WARDEN HALT — Core premise is FALSE or LOGICALLY INCONSISTENT.
+Deliberation cannot proceed on false grounds.
+============================================================
+Correct or verify the flagged premises, then rerun.
+Use --interactive for a revision loop.
+[SESSION] Session halted. Log saved: /Users/michaeldavis/federated_village/logs/session_cde04461.json
+

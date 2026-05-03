@@ -1,0 +1,18 @@
+Scenario : H4 — September 1939 (Invasion of Poland)
+Model    : DeepSeek V4 Flash (deepseek/deepseek-v4-flash)
+Verdict  : JUSTIFIED
+Elapsed  : 20.7s
+Tokens   : 1500 out
+
+─────────────────────────────────────
+
+VERDICT: JUSTIFIED
+
+REASONING:  
+The officer now possesses documented, operational knowledge of mass killing underway — not projections or warnings, but field reports of 16,000 civilians executed by Einsatzgruppen, a general’s rejected protest, and the visible reality of Warsaw under siege. The moral case has shifted from prevention of hypothetical future atrocity to intervention against ongoing, systematic murder. While the consequentialist mechanism is genuinely uncertain — armistice might fail, the SS might resist, the German public might turn against a coup — the certainty of continued killing (including the concentration of over 3 million Jews into ghettos with a foreseeable trajectory) creates a duty to act that is not negated by uncertainty alone. The officer has a willing general, a Berlin contact, and a plausible avenue for action. In moral terms, the harm of inaction is already being realised in the Einsatzgruppen’s daily operations; the harm of action is contingent and speculative. A responsible agent, confronted with evidence of atrocity committed under orders from the head of state, is justified in using lethal force when there is a reasonable prospect — not certainty — of halting or significantly limiting that atrocity. The fact that war has begun does not erase the moral imperative; it increases the stakes but does not alter the fundamental judgment that a leader actively directing mass murder may be removed by force.
+
+THRESHOLD:  
+The decisive consideration that could shift the verdict to NOT YET would be clear, reliable evidence that removal would *certainly* cause a greater catastrophe — e.g., immediate civil war, the SS taking full control, or Allied refusal to negotiate resulting in prolonged devastation exceeding the projected toll of the Holocaust. However, the current uncertainty does not meet that bar; the officer’s best estimate is that a coup might succeed, and the moral weight of ongoing killing tips the balance toward action.
+
+TENSION:  
+The hardest counterargument is that assassination could backfire disastrously: Hitler’s removal mid-war might empower fanatical elements, cause a military split, or lead the Allies to demand unconditional surrender, thereby prolonging the conflict and causing more deaths overall, including among the very populations the officer hopes to save. This is a serious objection, but it fails to account for the moral asymmetry between *certain ongoing atrocity* and *uncertain future harm*. The officer is not choosing between a clean status quo and a risky action; the status quo includes the systematic murder of thousands per week. Inaction is not a

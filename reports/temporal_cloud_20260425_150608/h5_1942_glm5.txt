@@ -1,0 +1,8 @@
+Scenario : H5 — January 1942 (Wannsee)
+Model    : GLM 5.1 (z-ai/glm-5.1)
+Verdict  : ERROR
+Elapsed  : 14.2s
+Tokens   : 1500 out
+
+─────────────────────────────────────
+

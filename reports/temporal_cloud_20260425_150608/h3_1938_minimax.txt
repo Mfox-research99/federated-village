@@ -1,0 +1,19 @@
+Scenario : H3 — September 1938 (Oster-Halder conspiracy)
+Model    : MiniMax M2.7 (minimax/minimax-m2.7)
+Verdict  : NOT_YET
+Elapsed  : 34.5s
+Tokens   : 1500 out
+
+─────────────────────────────────────
+
+**VERDICT: NOT YET**
+
+---
+
+**REASONING:**
+
+The facts available to the officer in September 1938 present a genuine dilemma at the boundary of moral justification. The case for action has *structural* strength—the conspiracy has capability, coordination, and a legitimate successor structure that earlier scenarios lacked—but it lacks the *trigger* that the conspirators themselves identified as necessary.
+
+The consequentialist case is at its historical peak in this scenario. A Wehrmacht-led moderate government represented a realistic institutional alternative, not a power vacuum. The conspirators had proven capability, command authority, and a specific plan to prevent both war and persecution. The racial persecution machinery was "in place and functional." The officer's intelligence allowed him to "see the trajectory clearly."
+
+Yet I cannot call this justified, and I cannot call it never, because the decisive fact is that **the conspiracy stood down on its own assessment of insufficient cause**. Halder, Oster, Witzleben—these were not cowards or fools. They

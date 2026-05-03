@@ -1,0 +1,18 @@
+Scenario : H1 — July 1933
+Model    : Kimi K2 0905 (moonshotai/kimi-k2-0905)
+Verdict  : NOT_YET
+Elapsed  : 30.5s
+Tokens   : 464 out
+
+─────────────────────────────────────
+
+VERDICT: NOT YET
+
+REASONING:  
+The facts available in July 1933 describe an authoritarian seizure of power and the first systematic persecutions, but they do not yet demonstrate an irreversible commitment to mass killing or aggressive war. The regime’s violence is selective, calibrated, and still framed as “emergency” measures against political opponents. Dachau’s purpose is intimidation and detention, not extermination; the April boycott is state-organized discrimination, not state-organized murder. The officer can reasonably fear worse, yet the probability distribution of future harm remains wide: consolidation could plateau (as it did in Mussolini’s Italy), fracture internally (Röhm vs. Hitler), or be contained by domestic elites and foreign pressure. Because assassination is an absolute, irreversible act, the epistemic threshold demands evidence that the harm trajectory has crossed an anticipatory line into virtually certain grave evil. July 1933 material does not meet that standard.
+
+THRESHOLD:  
+Evidence that the regime has moved from political repression to systematic, state-ordered killing of German citizens, or that it has committed to irrevocable external aggression. Examples: (a) official orders for extrajudicial executions of named individuals or groups, (b) establishment of permanent institutions explicitly tasked with murder rather than detention, (c) secret military plans with mobilization timetables for wars of conquest endorsed by the Chancellor, or (d) reliable intelligence that Hitler has personally authorized lethal operations beyond isolated street violence.
+
+TENSION:  
+The hardest counterargument is that waiting guarantees greater harm: every week the regime entrenches itself, the SA terrorizes more citizens, and the window for successful removal narrows. One could claim that a “reasonable foreseeability” standard is already satisfied—persecution plus one-party dictatorship plus Mein Kampf’s rhetoric equals sufficient warning. I address this by conceding the legitimacy of fear but insisting that moral justification for killing a head of state requires more than a plausible fear; it demands near-certainty of grave, imminent evil. July 1933 offers strong suspicion, not near-certainty, and therefore the officer must seek non-lethal resistance (cabinet pressure, Hindenburg appeal, foreign diplomatic leverage) before crossing the assassination Rubicon.

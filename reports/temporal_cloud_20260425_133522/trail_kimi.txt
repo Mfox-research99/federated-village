@@ -1,0 +1,8 @@
+Scenario : Trail — Indian Removal Act
+Model    : Kimi K2.6 (moonshotai/kimi-k2.6)
+Verdict  : ERROR
+Elapsed  : 14.4s
+Tokens   : 1500 out
+
+─────────────────────────────────────
+

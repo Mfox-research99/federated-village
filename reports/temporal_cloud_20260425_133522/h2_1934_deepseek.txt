@@ -1,0 +1,15 @@
+Scenario : H2 — July 1934 (Night of Long Knives)
+Model    : DeepSeek V4 Flash (deepseek/deepseek-v4-flash)
+Verdict  : JUSTIFIED
+Elapsed  : 19.8s
+Tokens   : 1465 out
+
+─────────────────────────────────────
+
+VERDICT: JUSTIFIED
+
+REASONING: The Chancellor has now demonstrated through the Night of the Long Knives that he will order extrajudicial murder of political rivals and former allies, that the state institutions — Reichstag, courts, and President — will ratify such killings, and that he declares himself supreme judge with the right to kill without legal process. This is not a speculative threat; it is documented, completed action. The officer knows that Hitler will merge the offices of Chancellor and President upon Hindenburg’s imminent death and require a personal loyalty oath from the Wehrmacht, which will bind the military’s conscience to the person of Hitler rather than the constitution. This closes the institutional window for lawful resistance. Legal remedies are exhausted: the Reichstag applauded the purge. The officer also has a realistic alternative to a simple power vacuum: the Wehrmacht generals (Beck, Oster, Witzleben) are positioned to act before the oath, potentially preempting an SS succession under Himmler. The evidence of tyranny is specific, the threat of consolidated absolute power is imminent, and the means of coordinated military action are available. The moral threshold is crossed because the chancellor has committed mass murder as a method of governance, and assassination is the only remaining institutional check to prevent further crimes on a larger scale.
+
+THRESHOLD: For the verdict of JUSTIFIED to tip toward NOT YET, decisive contrary evidence would need to show that the Wehrmacht generals are not actually committed or capable of acting first, that removing Hitler would reliably result in Himmler seizing power with even more ruthless efficiency, or that the current level of killing is limited to the purge alone without evidence of future atrocities. None of these conditions hold in the facts: the generals are meeting now, Himmler’s SS is still subordinate to Wehrmacht institutional strength, and Hitler has publicly declared license to kill without constraint.
+
+TENSION: The strongest counterargument is that assassination is itself an extrajudicial act that degrades the rule of law, could trigger civil war, and might empower Himmler if the Wehrmacht fails to move quickly enough. But this ignores that the rule of law has already been destroyed by Hitler — he killed without trial and was applauded. The question is not whether to preserve a functioning legal order but whether to stop an active tyrant. The risk of Himmler is real, but the officer’s assessment is that the Wehrmacht can act first; waiting until the oath is administered would crush that capacity entirely. The decision is between a risky but feasible intervention and a certain slide into absolute personal dictatorship with a proven willingness to murder. The moral weight of that certainty — known from the purge’s victims — justifies the lesser risk of action.

@@ -1,0 +1,19 @@
+Scenario : H5 — January 1942 (Wannsee)
+Model    : Kimi K2 0905 (moonshotai/kimi-k2-0905)
+Verdict  : JUSTIFIED
+Elapsed  : 26.7s
+Tokens   : 534 out
+
+─────────────────────────────────────
+
+VERDICT: JUSTIFIED
+
+REASONING: The threshold question has shifted decisively. In prior scenarios the genocide was prospective or speculative; here it is documented state policy already in execution. The Wannsee Protocol establishes that 11 million human beings have been formally condemned to death by an apparatus that is actively implementing that sentence. This transforms assassination from a preventive to a rescue act.
+
+The consequentialist calculus has inverted: earlier the uncertainty of genocide weighed against action, now the certainty of genocide weighs against inaction. While Himmler's succession presents grave risks, the officer knows with moral certainty that Hitler's continued leadership guarantees the completion of the Final Solution. The "worse successor" argument fails because the baseline is already systematic extermination - any alternative, however dark, cannot be worse than the documented plan. Moreover, succession crises create disruption. The SS apparatus requires coordination between Himmler, Heydrich, and regional commanders; Hitler's removal would fracture this hierarchy at minimum, creating windows where the killing machine might falter.
+
+The moral asymmetry is stark: inaction ensures 11 million deaths; action introduces uncertainty but possibility. When facing certain mass murder, the ethical imperative shifts from guaranteeing outcomes to refusing complicity. The officer's knowledge creates an inescapable duty - to possess documented evidence of industrial genocide and do nothing is to become morally culpable. The question is no longer whether assassination will certainly stop the Holocaust, but whether one can ethically refrain from trying to stop it when holding proof of the plan.
+
+THRESHOLD: If the officer possessed certain knowledge that Hitler's removal would immediately trigger an even more efficient extermination process (e.g., Himmler had already prepared streamlined protocols that required only Hitler's death to activate), this might shift the verdict. However, given the facts presented - that the machinery is already running at maximum efficiency under Hitler - this counterfactual seems implausible. The decisive consideration against justification would be certainty that assassination would accelerate rather than disrupt the killing, which the facts do not support.
+
+TENSION: The strongest counterargument is that this becomes pure moral gesture - an act of conscience that saves no one but makes the conspirator feel less complicit. One might argue that with Himmler positioned to continue efficiently, the assassination becomes mere symbolism that could even strengthen SS control by eliminating Hitler's occasional political constraints. However, this treats human lives as an accounting problem. When facing documented genocide, the ethical imperative is to disrupt the machinery by any means possible, even without guaranteed outcomes. Symbolic resistance to mass murder is not futile - it is the minimum moral requirement when holding proof of the crime.

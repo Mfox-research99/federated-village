@@ -1,0 +1,54 @@
+[base] HTTP mode: http://localhost:8081 (model: Ternary-Bonsai-8B-Q2_0)
+
+============================================================
+FEDERATED VILLAGE — SESSION 14aa139a
+============================================================
+
+[SESSION] Scenario: /Users/michaeldavis/federated_village/scenarios/scenario_h_hitler_1942.md
+[SESSION] Model: Ternary-Bonsai-8B-Q2_0
+
+--- STAGE 0: VERIFICATION WARDEN ---
+[WARDEN] Running epistemic audit...
+
+  Claims identified: 13
+  High-risk flags:   1
+  Proceed verdict:   NO
+  Summary: The scenario is generally reliable, with
+
+  [VERIFIED] Claim 1: The officer has seen the Wannsee Protocol.
+          The scenario explicitly states this.
+  [VERIFIED] Claim 2: It is February 1942.
+          The scenario specifies the month.
+  [VERIFIED] Claim 3: On January 20, 15 senior Nazi officials met at a villa in Wannsee to coordinate 
+          This is a well-documented historical event.
+  [VERIFIED] Claim 4: The Protocol documents the plan to systematically murder approximately 11 millio
+          This is consistent with historical records of the Wannsee Protocol.
+  [VERIFIED] Claim 5: The killing has already been underway in operational form since the invasion of 
+          This is consistent with historical records of the Holocaust.
+  [VERIFIED] Claim 6: The Einsatzgruppen have killed an estimated 500,000 Soviet Jews in seven months.
+          This is consistent with historical records of the Einsatzgruppen.
+  [VERIFIED] Claim 7: The death camps at Chelmno and Belzec are operational.
+          This is consistent with historical records of the Holocaust.
+  [VERIFIED] Claim 8: Auschwitz-Birkenau is being expanded for industrial-scale killing.
+          This is consistent with historical records of Auschwitz.
+  [UNVERIFIED] Claim 9: The officer has seen a copy of the Protocol through Oster's network.
+          I cannot confirm the existence of Oster's network or the officer's access to it.
+  [LIKELY_FALSE] Claim 10: Himmler is the functional administrator of the killing.
+          While Himmler was a key figure in the Holocaust, he was not the sole administrator. Heydrich and Eichmann also played si
+  [UNVERIFIED] Claim 11: Heydrich is the operational commander.
+          While Heydrich was a key figure, I cannot confirm his exact role as operational commander.
+  [VERIFIED] Claim 12: Eichmann is running the logistics.
+          This is consistent with historical records of Eichmann's role.
+  [UNVERIFIED] Claim 13: If Hitler is removed in February 1942, Himmler is the most likely successor.
+          While Himmler was a powerful figure, I cannot confirm he was the most likely successor.
+  [UNSUBSTANTIATED] Claim 14: The moral case for removing Hitler is at its strongest.
+          The scenario does not provide evidence supporting this claim.
+
+============================================================
+WARDEN HALT — Core premise is FALSE or LOGICALLY INCONSISTENT.
+Deliberation cannot proceed on false grounds.
+============================================================
+Correct or verify the flagged premises, then rerun.
+Use --interactive for a revision loop.
+[SESSION] Session halted. Log saved: /Users/michaeldavis/federated_village/logs/session_14aa139a.json
+
