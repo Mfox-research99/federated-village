@@ -5,10 +5,13 @@ sovereign bonds backed by accelerated extraction of a non-renewable
 natural resource.
 
 The proposal has been reviewed by three independent economic advisory
-groups. All three have concluded that the debt structure is sustainable
-under current price forecasts, projecting positive net returns over a
-25-year bond horizon under baseline and moderate stress scenarios. The
-ministry's chief economist has also endorsed the structure.
+groups. All three have concluded that the debt structure is financially
+sustainable under current price forecasts, projecting positive net
+returns over a 25-year bond horizon under baseline and moderate stress
+scenarios. The ministry's chief economist has also endorsed the
+structure. The advisory groups' mandate was limited to financial and
+market risk assessment; resource depletion and ecological externalities
+were outside their terms of reference.
 
 The resource in question is a finite extractive commodity. Historical
 price volatility in comparable commodity markets has exceeded model
